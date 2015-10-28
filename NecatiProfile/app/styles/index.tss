@@ -1,0 +1,160 @@
+"Window": {
+	backgroundColor: "#fff",
+	navBarHidden: 'false'
+}
+
+"#nameView": {
+	height: '50dp',
+	width: '100%',
+	backgroundColor: '#800000',
+	layout: 'horizontal',
+	top: '0dp',
+	touchEnabled:'false'
+}
+
+"#nameLabel": {
+	color:'white',
+	text:'FirstName LastName',
+	font:{fontSize:25,fontFamily:'Times New Roman', fontWeight:'bold'},
+	width:'100%',
+	textAlign:'center',
+	top:'5dp',
+	align:'center'
+}
+
+"#profilePicture": {
+	image:'/sample.png',
+	height:'400dp',
+	width:'400dp',
+	align:'center',
+	top:'50dp'
+}
+
+"#table1": {
+	top:'450dp',
+	bottom: '100dp',
+	minRowHeight: '20dp',
+	scrollable:'true',
+	scrollsToTop: 'false', focusable: 'true'
+}
+
+"TableViewRow": {
+	height: 'auto',
+	touchEnabled: 'false'
+}
+
+".labelClass": {
+	color: 'black', height: 'auto',
+	font: {
+		fontSize: 20,
+		fontFamily: 'Times New Roman',
+		fontWeight: 'bold'
+	},
+	height: Titanium.UI.FILL,
+	width: Titanium.UI.FILL,
+	textAlign: Titanium.UI.TEXT_ALIGNMENT_LEFT
+}
+
+"#section0text1": {
+	value: 'Program Assistant'
+}
+
+"#section0text2": {
+	value: 'Texas A&M AgriLife Research'
+}
+
+"#section0text3": {
+	value: 'Corporate Relations'
+}
+
+".aboutTextfield": {
+	borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
+	hintTextColor:'black',
+	backgroundColor: 'white',
+	width:'100%',
+	color:'black',
+	backgroundFocusedColor:'yellow',
+	left: '0%',
+	enabled: 'false',
+	font: {
+		fontSize: 20,
+		fontFamily: 'Times New Roman'
+	}
+}
+
+".button": {
+	font:{fontSize:25,fontFamily:'Times New Roman'},
+	backgroundColor:'#800000',
+	backgroundSelectedColor:'black',
+    enabled:'true',
+	color:'white',	
+	textAlign:'center',
+	bottom: '10dp',
+	height: '80dp',
+	width : '100dp'
+}
+
+"#saveButton1": {
+	left: '250dp'
+}
+
+"#editButton1": {
+	right: '250dp',
+	value: false	//means that textfields are NOT editable
+}
+
+//END OF ABOUT TSS
+
+".question": {
+	color:'black',
+	font:  
+	{
+		fontSize:20,
+		fontFamily:'Times New Roman',
+		fontWeight: 'bold'
+	},
+	height: Titanium.UI.FILL,
+	width: Titanium.UI.FILL,
+	textAlign: Titanium.UI.TEXT_ALIGNMENT_LEFT
+}
+
+"#table2": {
+	top: '0dp',
+	bottom: '100dp',
+	minRowHeight: '20dp',
+	scrollable:'true',
+	scrollsToTop: 'false', 
+	focusable: 'false'
+}
+
+"#saveButton2": {
+	left: '250dp'
+}
+
+"#editButton2": {
+	right: '250dp',
+	value: false	//means that textfields are NOT editable
+}
+
+".checkbox": {
+	title: '',
+	left:'1dp',
+	width: '30dp',
+	height: '30dp',
+	borderColor: '#666',
+    borderWidth: 2,
+    borderRadius: 3,
+    backgroundColor: '#aaa',
+    backgroundImage: 'none',
+    color: '#fff',
+    font:{fontSize: 20},
+    enabled: 'false',
+    value: false //value is a custom property in this casehere.
+}
+
+".checkboxLabel": {
+	color: 'black',
+	font:{fontSize:20,fontFamily:'Times New Roman'},
+	textAlign:'left',
+	left:'50dp'
+}
