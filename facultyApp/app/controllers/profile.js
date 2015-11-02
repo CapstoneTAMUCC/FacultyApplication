@@ -126,6 +126,12 @@ $.question1yes.addEventListener('click', function(e)
 	        $.question1no.title = '';
         }
     }
+    else
+    {
+    	e.source.value = false;
+        e.source.backgroundColor = '#aaa';
+        e.source.title = '';
+    }
 });
 
 $.question1no.addEventListener('click', function(e)
@@ -140,6 +146,12 @@ $.question1no.addEventListener('click', function(e)
 	        $.question1yes.backgroundColor = '#aaa';
 	        $.question1yes.title = '';
         }
+    }
+    else
+    {
+    	e.source.value = false;
+        e.source.backgroundColor = '#aaa';
+        e.source.title = '';
     }
 });
 
@@ -156,6 +168,12 @@ $.question2yes.addEventListener('click', function(e)
 	        $.question2no.title = '';
         }
     }
+    else
+    {
+    	e.source.value = false;
+        e.source.backgroundColor = '#aaa';
+        e.source.title = '';
+    }
 });
 
 $.question2no.addEventListener('click', function(e)
@@ -170,6 +188,12 @@ $.question2no.addEventListener('click', function(e)
 	        $.question2yes.backgroundColor = '#aaa';
 	        $.question2yes.title = '';
         }
+    }
+    else
+    {
+    	e.source.value = false;
+        e.source.backgroundColor = '#aaa';
+        e.source.title = '';
     }
 });
 
