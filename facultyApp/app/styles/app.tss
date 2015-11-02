@@ -24,36 +24,3 @@ overrode the settings with other TSS, XML, or JS settings:
 }
 
 */
-
-"TabGroup": {
-	tabsBackgroundColor: "white",
-	tabsTintColor: Alloy.CFG.brandPrimary
-}
-
-"Tab": {
-
-	// NEW (iOS): Set the (active) titleColor (defaults to tabsTintColor)
-	activeTitleColor: "#929292",
-	titleColor: Alloy.CFG.brandPrimary
-}
-
-"#index": {
-	layout: "horizontal",
-	horizontalWrap: true
-}
-
-".mainMenuOption": {
-	font:{fontSize:25,fontFamily:'Times New Roman'},
-	backgroundColor:'#800000',
-	backgroundSelectedColor:'black',
-    enabled:'true',
-    color:'white',	
-	textAlign:'center',
-	bottom: '0dp',
-	width: "50%",
-	height: "25%",
-}
-
-"#profileBar": {
-	width: "100%"
-}

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ti:app xmlns:ti="http://ti.appcelerator.org">
-    <id>com.NecatiProfile</id>
-    <name>NecatiProfile</name>
+    <id>fpicarazzi.tamucc.facultyApp</id>
+    <name>TAMUS Faculty</name>
     <version>1.0</version>
-    <publisher>Necati Username</publisher>
+    <publisher>tamucc</publisher>
     <url>http://</url>
     <description>undefined</description>
-    <copyright>2015 by Necati Username</copyright>
+    <copyright>2015 by TAMUCC</copyright>
     <icon>appicon.png</icon>
     <fullscreen>false</fullscreen>
     <navbar-hidden>false</navbar-hidden>
@@ -38,7 +38,16 @@
             </dict>
         </plist>
     </ios>
-    <android xmlns:android="http://schemas.android.com/apk/res/android"/>
+    <android 
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Incremented via Gruntfile.js -->
+    <manifest android:versionCode="123">
+      <application android:theme="@style/appcelerator">
+        <meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyB1ATGRrby9stkKxvdl3SBYxSVB5Kkm7yM"/>
+      </application>
+      <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="21"/>
+    </manifest>
+  </android>
     <mobileweb>
         <precache/>
         <splash>

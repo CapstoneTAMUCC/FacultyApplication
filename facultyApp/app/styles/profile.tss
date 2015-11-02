@@ -1,11 +1,5 @@
 "Window": {
-	backgroundColor: "#fff",
-	navBarHidden: 'false',
-	barColor: Alloy.CFG.brandPrimary,
-}
-
-"TabGroup": {
-	barColor: '#800000'
+	backgroundColor: "#fff"
 }
 
 "#nameView": {

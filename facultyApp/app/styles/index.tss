@@ -1,0 +1,19 @@
+"#index": {
+	layout: "horizontal",
+	horizontalWrap: true
+}
+
+".mainMenuOption": {
+	font:{fontSize:25,fontFamily:'Times New Roman'},
+	backgroundColor:'#800000',
+	backgroundSelectedColor:'white',
+    enabled:'true',
+    color:'white',	
+	textAlign:'center',
+	width: "50%",
+	height: "25%",
+}
+
+"#profileBar": {
+	width: "100%"
+}

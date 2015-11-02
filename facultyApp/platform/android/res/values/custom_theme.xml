@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<style name="appcelerator" parent="@style/Theme.AppCompat">
+		<item name="colorPrimary">#800000</item>
+		<item name="colorAccent">#800000</item>
+		<item name="android:statusBarColor">#800000</item>
+		<item name="android:navigationBarColor">#800000</item>
+	</style>
+</resources>
