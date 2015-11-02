@@ -1,0 +1,5 @@
+<Alloy>
+	<Window id="matches">
+		<Label>Matches section</Label>
+	</Window>
+</Alloy>

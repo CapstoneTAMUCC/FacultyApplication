@@ -1,0 +1,5 @@
+<Alloy>
+	<Window id="search">
+		<Label>Search section</Label>
+	</Window>
+</Alloy>

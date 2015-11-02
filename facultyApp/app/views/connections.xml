@@ -1,0 +1,5 @@
+<Alloy>
+	<Window id="connections">
+		<Label>Connections section</Label>
+	</Window>
+</Alloy>
