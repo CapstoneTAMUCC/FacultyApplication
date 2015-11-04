@@ -9,3 +9,8 @@
 // object. For example:
 //
 // Alloy.Globals.someGlobalFunction = function(){};
+
+Alloy.Globals.onHome = function onHome(e){
+	var newWindow = Alloy.createController('index').getView();
+	newWindow.open();
+};

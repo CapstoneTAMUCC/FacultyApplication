@@ -1,0 +1,53 @@
+{"conversations":[
+  {
+    "id": "53e58687317c74c7d9de6504",
+    "favorite": false,
+    "firstName": "Francine",
+    "lastName": "Rose",
+    "gender": "female",
+    "company": "Appcelerator, Inc",
+    "email": "Francine.Rose@appcelerator.com",
+    "phone": "+1 (850) 571-2723",
+    "about": "Nisi ad commodo culpa veniam incididunt duis consequat. Id nisi ex fugiat adipisicing sint do. Deserunt minim dolore culpa occaecat minim exercitation et commodo sit aute ex incididunt. Non non irure aliqua eu velit deserunt ut eiusmod minim do enim do ad incididunt.\r\n",
+    "latitude": 36.870332,
+    "longitude": -110.962368,
+    "photo": "http://api.randomuser.me/portraits/women/0.jpg",
+    "message": "Bla bla this is a sample message wonder if this will work",
+    "lastUpdated": "2015/01/01",
+    "isNew": false
+  },
+  {
+    "id": "53e5868724a25992582407aa",
+    "favorite": false,
+    "firstName": "Mollie",
+    "lastName": "Knight",
+    "gender": "female",
+    "company": "Appcelerator, Inc",
+    "email": "Mollie.Knight@appcelerator.com",
+    "phone": "+1 (933) 441-3485",
+    "about": "Id aute ipsum pariatur laboris ea sit quis laboris proident. Do et voluptate qui occaecat consectetur cillum adipisicing voluptate ex. Proident eiusmod est officia do amet ut ipsum duis veniam minim duis sint cillum consectetur. Non non aute culpa dolor est nostrud ea commodo pariatur elit pariatur sunt. Nulla id commodo ipsum et excepteur nostrud non ea anim minim deserunt. Ea officia eiusmod enim aute ut dolor. Duis nulla sunt laborum veniam laboris eiusmod.\r\n",
+    "latitude": 34.734229,
+    "longitude": -102.70047,
+    "photo": "http://api.randomuser.me/portraits/women/1.jpg",
+    "message": "Doop bloop bloop typical example Id aute ipsum pariatur laboris ea sit quis laboris proident. Do et voluptate qui occaecat consectetur cillum adipisic",
+    "lastUpdated": "2014/12/05",
+    "isNew": false
+  },
+  {
+    "id": "53e586876f0b9f48e378d860",
+    "favorite": true,
+    "firstName": "Grimes",
+    "lastName": "Erickson",
+    "gender": "male",
+    "company": "Appcelerator, Inc",
+    "email": "Grimes.Erickson@appcelerator.com",
+    "phone": "+1 (802) 546-3219",
+    "about": "Amet nulla deserunt do velit duis ex anim. Officia esse ipsum sint elit amet ex officia consectetur in ut Lorem pariatur occaecat sit. Labore est aliqua voluptate reprehenderit.\r\n",
+    "latitude": 30.764887,
+    "longitude": -118.577644,
+    "photo": "http://api.randomuser.me/portraits/men/2.jpg",
+    "message": "Amet nulla deserunt do velit duis ex anim. Officia esse ipsum sint elit amet ex officia consectetur in ut Lorem pariatur occaecat sit. Labore est aliqua voluptate reprehenderit.",
+    "lastUpdated": "2015/11/15",
+    "isNew": true
+  }
+]}

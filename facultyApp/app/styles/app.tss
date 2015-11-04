@@ -24,3 +24,19 @@ overrode the settings with other TSS, XML, or JS settings:
 }
 
 */
+
+"Window": {
+	backgroundColor: "#fff"
+}
+
+"Label": {
+	color: "#000"
+}
+
+".vgroup": {
+	layout: 'vertical'
+}
+
+".hgroup": {
+	layout: 'horizontal'
+}

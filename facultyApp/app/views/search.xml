@@ -1,5 +1,8 @@
 <Alloy>
-	<Window id="search">
+	<Window id="search" title="Search">
+		<Menu id="menu" platform="android">
+			<MenuItem showAsAction="Ti.Android.SHOW_AS_ACTION_IF_ROOM" title="Home" icon="homeIcon.png" onClick="Alloy.Globals.onHome" />
+        </Menu>
 		<Label>Search section</Label>
 	</Window>
 </Alloy>

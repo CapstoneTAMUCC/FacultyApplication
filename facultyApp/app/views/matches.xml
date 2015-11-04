@@ -1,5 +1,8 @@
 <Alloy>
-	<Window id="matches">
+	<Window id="matches" title="Matches">
+		<Menu id="menu" platform="android">
+			<MenuItem showAsAction="Ti.Android.SHOW_AS_ACTION_IF_ROOM" title="Home" icon="homeIcon.png" onClick="Alloy.Globals.onHome" />
+        </Menu>
 		<Label>Matches section</Label>
 	</Window>
 </Alloy>
