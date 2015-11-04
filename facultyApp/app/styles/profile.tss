@@ -1,22 +1,3 @@
-"#nameView": {
-	height: '50dp',
-	width: '100%',
-	backgroundColor: '#800000',
-	layout: 'horizontal',
-	top: '0dp',
-	touchEnabled:'false'
-}
-
-"#nameLabel": {
-	color:'white',
-	text:'FirstName LastName',
-	font:{fontSize:25,fontFamily:'Times New Roman', fontWeight:'bold'},
-	width:'100%',
-	textAlign:'center',
-	top:'5dp',
-	align:'center'
-}
-
 "#profilePicture": {
 	image:'/sample.png',
 	height:'400dp',

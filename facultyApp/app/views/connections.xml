@@ -1,8 +1,21 @@
 <Alloy>
-	<Window id="connections" title="Connections">
+	<TabGroup title="Connections">
 		<Menu id="menu" platform="android">
 			<MenuItem showAsAction="Ti.Android.SHOW_AS_ACTION_IF_ROOM" title="Home" icon="homeIcon.png" onClick="Alloy.Globals.onHome" />
         </Menu>
-		<Label>Connections section</Label>
-	</Window>
+        <Tab title="Contacts" icon="KS_nav_ui.png">
+			<Window title="Contacts">
+				<View id="nameView">
+					<Label id="nameLabel">Contacts</Label>
+				</View>
+			</Window>
+		</Tab>
+		<Tab title="Pending Requests" icon="KS_nav_views.png">
+			<Window title="Pending Requests">
+				<View id="nameView">
+					<Label id="nameLabel">Pending Requests</Label>
+				</View>
+			</Window>
+		</Tab>
+	</TabGroup>
 </Alloy>

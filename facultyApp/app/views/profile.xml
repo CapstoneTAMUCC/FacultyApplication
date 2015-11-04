@@ -6,7 +6,7 @@
 		<Tab title="About" icon="KS_nav_ui.png">
 			<Window title="About">
 				<View id="nameView">
-					<Label id="nameLabel"></Label>
+					<Label id="nameLabel">Firstname Lastname</Label>
 				</View>
 				<ImageView id="profilePicture"></ImageView>
 				<TableView id="table1">
