@@ -1,5 +1,108 @@
 <Alloy>
-	<Window id="connections">
-		<Label>Connections section</Label>
-	</Window>
+	<TabGroup>
+		<Tab title="Contacts" icon="KS_nav_ui.png">
+			<!--
+				This view wraps all of the child views/lists etc. Creates a base layout, vertically aligned.
+			-->
+			<Window id="wrapper" class="vgroup" title="Contacts"> 
+				
+				
+		        
+				<!--
+					The Directory list. 
+					This listView leverages two ListItem templates to denote regular contacts and those that are bookmarked.
+				-->
+				<ListView id="listView" defaultItemTemplate="userTemplate">
+					<Templates>
+						
+						<!-- UserTemplate - this is the default ListItem template -->
+						<ItemTemplate id="userTemplate" name="userTemplate" class="template">
+							<View class="left-buffer">
+								<ImageView id="userPhoto" bindId="userPhoto" class="avatar" />
+								<View platform="android" class="smoothAvatarBorderRadius" onClick="onPhotoClick"/>
+								<View class="vgroup left size">
+									<Label id="userName" bindId="userName" class="title" />
+									<Label id="userEmail" bindId="userEmail" class="subtitle" />
+									<Label id="userCompany" bindId="userCompany" class="subtitle" />
+								</View>
+								<View class="hgroup right size">
+									<ImageView id="message" image="/images/message_icon.png" visible="true" onClick="messageClick"></ImageView>
+								</View>
+								<View class="gray-line bottom"/>
+							</View>
+						</ItemTemplate>
+						
+						<!-- favoriteTemplate - this is the ListItem template for contacts that have been bookmarked -->
+						<ItemTemplate id="favoriteTemplate" name="favoriteTemplate" class="template">
+							<View class="left-buffer">
+								<ImageView id="userPhoto" bindId="userPhoto" class="avatar" />
+								<View platform="android" class="smoothAvatarBorderRadius" />
+								<View class="vgroup left size">
+									<Label id="userName" bindId="userName" class="title" />
+									<Label id="userEmail" bindId="userEmail" class="subtitle" />
+									<Label id="userCompany" bindId="userCompany" class="subtitle" />
+								</View>
+								<Label class="favorite" />
+								<View class="gray-line bottom"/>
+							</View>
+						</ItemTemplate>	
+					</Templates>
+					
+				</ListView>
+			</Window>
+		</Tab>
+		
+		<Tab title="Pending" icon="KS_nav_ui.png">
+			<!--
+				This view wraps all of the child views/lists etc. Creates a base layout, vertically aligned.
+			-->
+			<Window id="wrapper2" class="vgroup" title="Pending"> 
+				
+				
+				<!--
+					The Directory list. 
+					This listView leverages two ListItem templates to denote regular contacts and those that are bookmarked.
+				-->
+				<ListView id="listView2" defaultItemTemplate="userTemplate">
+					<Templates>
+						
+						<!-- UserTemplate - this is the default ListItem template -->
+						<ItemTemplate id="userTemplate" name="userTemplate" class="template">
+							<View class="left-buffer">
+								<ImageView id="userPhoto" bindId="userPhoto" class="avatar" />
+								<View platform="android" class="smoothAvatarBorderRadius" onClick="onPhotoClick"/>
+								<View class="vgroup left size">
+									<Label id="userName" bindId="userName" class="title" />
+									<Label id="userEmail" bindId="userEmail" class="subtitle" />
+									<Label id="userCompany" bindId="userCompany" class="subtitle" />
+								</View>
+								<View class="hgroup right size">
+									<ImageView id="message" image="/images/message_icon.png" visible="true" onClick="messageClick"></ImageView>
+									<ImageView id="acceptRequest" image="/images/accept_icon.png" visible="true"></ImageView>
+									<ImageView id="declineRequest" image="/images/decline_icon.png" visible="true"></ImageView>
+								</View>
+								<View class="gray-line bottom"/>
+							</View>
+						</ItemTemplate>
+						
+						<!-- favoriteTemplate - this is the ListItem template for contacts that have been bookmarked -->
+						<ItemTemplate id="favoriteTemplate" name="favoriteTemplate" class="template">
+							<View class="left-buffer">
+								<ImageView id="userPhoto" bindId="userPhoto" class="avatar" />
+								<View platform="android" class="smoothAvatarBorderRadius" />
+								<View class="vgroup left size">
+									<Label id="userName" bindId="userName" class="title" />
+									<Label id="userEmail" bindId="userEmail" class="subtitle" />
+									<Label id="userCompany" bindId="userCompany" class="subtitle" />
+								</View>
+								<Label class="favorite" />
+								<View class="gray-line bottom"/>
+							</View>
+						</ItemTemplate>	
+					</Templates>
+					
+				</ListView>
+			</Window>
+		</Tab>
+	</TabGroup>
 </Alloy>

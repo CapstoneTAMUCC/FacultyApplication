@@ -22,7 +22,7 @@
 }
 
 "#profilePicture": {
-	image:'/sample.png',
+	image:'/images/sample.png',
 	height:'400dp',
 	width:'400dp',
 	align:'center',
