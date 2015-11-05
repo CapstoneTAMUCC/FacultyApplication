@@ -1,7 +1,0 @@
-"C:/Users/francesca/Desktop/FacultyApplication/NecatiTest2/build/android/gen/android/support/v7/appcompat/R.java"
-"C:/Users/francesca/Desktop/FacultyApplication/NecatiTest2/build/android/gen/name/test/AssetCryptImpl.java"
-"C:/Users/francesca/Desktop/FacultyApplication/NecatiTest2/build/android/gen/name/test/Necatitest2Activity.java"
-"C:/Users/francesca/Desktop/FacultyApplication/NecatiTest2/build/android/gen/name/test/Necatitest2AppInfo.java"
-"C:/Users/francesca/Desktop/FacultyApplication/NecatiTest2/build/android/gen/name/test/Necatitest2Application.java"
-"C:/Users/francesca/Desktop/FacultyApplication/NecatiTest2/build/android/gen/name/test/R.java"
-"C:/Users/francesca/Desktop/FacultyApplication/NecatiTest2/build/android/gen/ti/modules/titanium/ui/R.java"
