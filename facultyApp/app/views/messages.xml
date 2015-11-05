@@ -11,10 +11,10 @@
 					<View class="left-buffer">
 						<ImageView id="userPhoto" bindId="userPhoto" class="avatar" />
 						<View platform="android" class="smoothAvatarBorderRadius" />
-						<View class="hgroup left size">
+						<View class="hgroup left">
 							<Label id="userName" bindId="userName" class="title" />
 							<Label id="lastUpdated" bindId="lastUpdated" class="subtitle" />
-							<View class="vgroup left size">
+							<View class="vgroup left">
 								<Label id="body" bindId="messageBody" class="subtitle" />
 							</View> 
 						</View>  

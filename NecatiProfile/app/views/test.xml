@@ -1,5 +1,0 @@
-<Alloy>
-	<Window title="Test">
-		<Label textAlign="center">HELLO!</Label>
-	</Window>
-</Alloy>

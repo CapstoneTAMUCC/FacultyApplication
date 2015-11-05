@@ -417,3 +417,8 @@ overrode the settings with other TSS, XML, or JS settings:
 	top:'5dp',
 	align:'center'
 }
+
+".iconSize": {
+	width: '50dp',
+	height: '50dp' 
+}
