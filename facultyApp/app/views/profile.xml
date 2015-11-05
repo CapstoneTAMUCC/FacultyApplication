@@ -1,17 +1,18 @@
 <Alloy>
-	<TabGroup>
-		
+	<TabGroup title="Profile">
+		<Menu id="menu" platform="android">
+			<MenuItem showAsAction="Ti.Android.SHOW_AS_ACTION_IF_ROOM" title="Home" icon="homeIcon.png" onClick="Alloy.Globals.onHome" />
+        </Menu>
+
 		<Tab title="About" icon="KS_nav_ui.png">
 			
 			<Window title="About">
 				
 				<View id="nameView">
-					<Label id="nameLabel"></Label>
+					<Label id="nameLabel">Firstname Lastname</Label>
 				</View>
 				<ImageView id="profilePicture"></ImageView>
 				<TableView id="table1">
-					
-					
 					<TableViewSection id="section1" headerTitle=" ">
 						<TableViewRow id="educationRow1">
 							<Label id="educationLabel" class="labelClass">Education Information:</Label>

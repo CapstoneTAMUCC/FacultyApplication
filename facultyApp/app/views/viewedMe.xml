@@ -3,7 +3,9 @@
 		This view wraps all of the child views/lists etc. Creates a base layout, vertically aligned.
 	-->
 	<Window id="wrapper" class="vgroup" title="Viewed Me"> 
-		
+		<Menu id="menu" platform="android">
+			<MenuItem showAsAction="Ti.Android.SHOW_AS_ACTION_IF_ROOM" title="Home" icon="homeIcon.png" onClick="Alloy.Globals.onHome" />
+        </Menu>
 		<!--
 			The Directory list. 
 			This listView leverages two ListItem templates to denote regular contacts and those that are bookmarked.
@@ -49,6 +51,6 @@
 				</ItemTemplate>	
 			</Templates>
 			
-		</ListView>
+		</ListView>		
 	</Window>
 </Alloy>

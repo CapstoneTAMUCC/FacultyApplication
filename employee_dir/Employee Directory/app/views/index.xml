@@ -1,0 +1,16 @@
+<Alloy>
+	<!-- Default App Window -->
+	<Require id="index" src="directory" platform="android,windows" /> 
+	
+    <!-- iOS Window -->
+    <NavigationWindow id="nav" platform="ios" class="container">
+    		<Require src="directory" />
+    </NavigationWindow>
+    
+    <!-- MobileWeb -->
+    <Window platform="mobileweb">
+    <NavigationGroup id="nav" class="container">
+    	<Require src="directory" />
+    </NavigationGroup>
+    </Window>
+</Alloy>

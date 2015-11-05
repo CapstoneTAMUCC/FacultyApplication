@@ -3,7 +3,9 @@
 		This view wraps all of the child views/lists etc. Creates a base layout, vertically aligned.
 	-->
 	<Window id="wrapper" class="vgroup" title="Search"> 
-		
+		<Menu id="menu" platform="android">
+			<MenuItem showAsAction="Ti.Android.SHOW_AS_ACTION_IF_ROOM" title="Home" icon="homeIcon.png" onClick="Alloy.Globals.onHome" />
+        </Menu>
 		<View id="headerView">
 			<TextField id="searchText"></TextField>
 			<Button id="searchButton"></Button>
@@ -25,7 +27,7 @@
 							<Label id="userEmail" bindId="userEmail" class="subtitle" />
 							<Label id="userCompany" bindId="userCompany" class="subtitle" />
 						</View>
-						<View class="hgroup right size">
+						<View class="hgroup right size"> 
 							<ImageView id="message" image="/images/message_icon.png" visible="true" onClick="messageClick"></ImageView>
 							<ImageView id="requestConnection" image="/images/connection_icon2.png" visible="true" onClick="requestClick"></ImageView>
 							<ImageView id="pendingConnection" image="/images/pending_icon.png" visible="false"></ImageView> 

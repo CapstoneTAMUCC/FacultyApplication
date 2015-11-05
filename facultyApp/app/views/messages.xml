@@ -1,5 +1,27 @@
 <Alloy>
-	<Window id="messages">
-		<Label>Messages section</Label>
+	<Window id="messages" class="vgroup" title="Inbox">
+		<Menu id="menu" platform="android">
+			<MenuItem showAsAction="Ti.Android.SHOW_AS_ACTION_IF_ROOM" title="Compose" icon="Ti.Android.R.drawable.ic_input_add" onClick="onCompose" />
+			<MenuItem showAsAction="Ti.Android.SHOW_AS_ACTION_IF_ROOM" title="Delete" icon="Ti.Android.R.drawable.ic_delete" onClick="onDelete" />
+			<MenuItem showAsAction="Ti.Android.SHOW_AS_ACTION_IF_ROOM" title="Home" icon="homeIcon.png" onClick="Alloy.Globals.onHome" />
+        </Menu>
+		<ListView id="listView" defaultItemTemplate="userTemplate" onItemclick="onItemClick">
+			<Templates>
+				<ItemTemplate id="userTemplate" name="userTemplate" class="template">
+					<View class="left-buffer">
+						<ImageView id="userPhoto" bindId="userPhoto" class="avatar" />
+						<View platform="android" class="smoothAvatarBorderRadius" />
+						<View class="hgroup left size">
+							<Label id="userName" bindId="userName" class="title" />
+							<Label id="lastUpdated" bindId="lastUpdated" class="subtitle" />
+							<View class="vgroup left size">
+								<Label id="body" bindId="messageBody" class="subtitle" />
+							</View> 
+						</View>  
+						<View class="gray-line bottom"/>
+					</View>
+				</ItemTemplate>
+			</Templates>
+		</ListView>
 	</Window>
 </Alloy>

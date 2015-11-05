@@ -1,5 +1,9 @@
 <Alloy>
-	<TabGroup>
+
+	<TabGroup title="Connections">
+		<Menu id="menu" platform="android">
+			<MenuItem showAsAction="Ti.Android.SHOW_AS_ACTION_IF_ROOM" title="Home" icon="homeIcon.png" onClick="Alloy.Globals.onHome" />
+        </Menu>
 		<Tab title="Contacts" icon="KS_nav_ui.png">
 			<!--
 				This view wraps all of the child views/lists etc. Creates a base layout, vertically aligned.
