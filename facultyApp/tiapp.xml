@@ -8,7 +8,7 @@
     <description>undefined</description>
     <copyright>2015 by TAMUCC</copyright>
     <icon>appicon.png</icon>
-    <fullscreen>true</fullscreen>
+    <fullscreen>false</fullscreen>
     <navbar-hidden>false</navbar-hidden>
     <analytics>true</analytics>
     <guid>b2b29ce4-d0ae-40c9-9222-48e6029f02af</guid>
