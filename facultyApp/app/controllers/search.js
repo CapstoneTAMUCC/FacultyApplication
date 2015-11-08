@@ -81,7 +81,7 @@ function init(){
 		 * sections. (leverages the UndrescoreJS _.groupBy function)
 		 */
 		var userGroups  = _.groupBy(users, function(item){
-		 	return item.lastName.charAt(0);
+		 	return item.lastName.charAt(0); 
 		});
         
         /**

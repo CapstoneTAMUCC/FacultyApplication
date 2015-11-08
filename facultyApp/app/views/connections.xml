@@ -30,7 +30,9 @@
 									<Label id="userCompany" bindId="userCompany" class="subtitle" />
 								</View>
 								<View class="hgroup right size">
-									<ImageView id="message"  class="iconSize" image="/images/message_icon.png" visible="true" onClick="messageClick"></ImageView>
+									<Button id="button1" class="greenCheckmark"></Button> 
+									<Button id="button2" class="requestConnection"></Button> 
+									<Button id="button3" class="sendMessage"></Button>
 								</View>
 								<View class="gray-line bottom"/>
 							</View>
@@ -66,9 +68,9 @@
 									<Label id="userCompany" bindId="userCompany" class="subtitle" />
 								</View>
 								<View class="hgroup right size">
-									<ImageView id="message" class="iconSize" image="/images/message_icon.png" visible="true" onClick="messageClick"></ImageView>
-									<ImageView id="acceptRequest" class="iconSize" image="/images/accept_icon.png" visible="true"></ImageView>
-									<ImageView id="declineRequest" class="iconSize" image="/images/decline_icon.png" visible="true"></ImageView>
+									<Button id="button1" class="accept"></Button> 
+									<Button id="button2" class="decline"></Button> 
+									<Button id="button3" class="sendMessage"></Button>
 								</View>
 								<View class="gray-line bottom"/>
 							</View>

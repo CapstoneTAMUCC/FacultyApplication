@@ -422,3 +422,81 @@ overrode the settings with other TSS, XML, or JS settings:
 	width: '50dp',
 	height: '50dp' 
 }
+
+".greenCheckmark": {
+	width: '50dp',
+	height: '50dp',
+	title: '\u2713',
+	backgroundColor: '#07ce00',
+	borderColor: '#666',
+    borderWidth: 2,
+    borderRadius: 3,
+    enabled: 'false',
+	color: '#fff',
+	font:{fontSize: 30}
+}
+
+".sendMessage": {
+	width: 'auto',
+	height: '50dp',
+	title: 'Message',
+	backgroundColor: '#CCCC00',
+	borderColor: '#666',
+    borderWidth: 2,
+    borderRadius: 3,
+    enabled: 'true',
+	color: '#fff',
+	font:{fontSize: 15}
+}
+
+".requestConnection": {
+	width: 'auto', 
+	height: '50dp',
+	title: 'Connect',
+	backgroundColor: '#1E90FF',
+	borderColor: '#666',
+    borderWidth: 2,
+    borderRadius: 3,
+    enabled: 'true',
+	color: '#fff',
+	font:{fontSize: 15}
+}
+
+".pending": {
+	width: 'auto', 
+	height: '50dp',
+	title: 'Pending',
+	backgroundColor: '#696969',
+	borderColor: '#666',
+    borderWidth: 2,
+    borderRadius: 3,
+    enabled: 'true',
+	color: '#fff',
+	font:{fontSize: 15}
+}
+
+".accept": {
+	width: 'auto', 
+	height: '50dp',
+	title: 'Accept',
+	backgroundColor: '#07ce00',
+	borderColor: '#666',
+    borderWidth: 2,
+    borderRadius: 3,
+    enabled: 'true',
+	color: '#fff',
+	font:{fontSize: 15}
+}
+
+".decline": {
+	width: 'auto', 
+	height: '50dp',
+	title: 'Decline',
+	backgroundColor: '#FF0000',
+	borderColor: '#666',
+    borderWidth: 2,
+    borderRadius: 3,
+    enabled: 'true',
+	color: '#fff',
+	font:{fontSize: 15}
+}

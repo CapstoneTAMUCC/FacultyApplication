@@ -26,14 +26,9 @@
 							<Label id="userCompany" bindId="userCompany" class="subtitle" />
 						</View>
 						<View class="hgroup right size">
-							<ImageView id="message" class="iconSize" image="/images/message_icon.png" visible="true"></ImageView>
-							<ImageView id="requestConnection" class="iconSize" image="/images/connection_icon2.png" visible="true"></ImageView>
-							<!--
-							<ImageView id="pendingConnection" class="iconSize" image="/images/pending_icon.png" visible="true"></ImageView> 
-							<ImageView id="establishedConnection" class="iconSize" image="/images/checkmark_icon2.png" visible="false"></ImageView>
-							<ImageView id="acceptRequest" class="iconSize" image="/images/accept_icon.png" visible="false"></ImageView>
-							<ImageView id="declineRequest" class="iconSize" image="/images/decline_icon.png" visible="false"></ImageView>
-							-->
+							<Button id="button1" class="greenCheckmark"></Button> 
+							<Button id="button2" class="requestConnection"></Button> 
+							<Button id="button3" class="sendMessage"></Button>
 						</View>
 						<View class="gray-line bottom"/>
 					</View>
