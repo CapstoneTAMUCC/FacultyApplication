@@ -24,31 +24,14 @@
 							<Label id="userCompany" bindId="userCompany" class="subtitle" />
 						</View>
 						<View class="hgroup right size">
-							<ImageView id="message" image="/images/message_icon.png" visible="true"></ImageView>
-							<ImageView id="requestConnection" image="/images/connection_icon2.png" visible="false"></ImageView>
-							<ImageView id="pendingConnection" image="/images/pending_icon.png" visible="false"></ImageView> 
-							<ImageView id="establishedConnection" image="/images/checkmark_icon2.png" visible="true"></ImageView>
-							<ImageView id="acceptRequest" image="/images/accept_icon.png" visible="false"></ImageView>
-							<ImageView id="declineRequest" image="/images/decline_icon.png" visible="false"></ImageView>
+							<Button id="button1" class="greenCheckmark"></Button> 
+							<Button id="button2" class="requestConnection"></Button> 
+							<Button id="button3" class="sendMessage"></Button>
 						</View>
 						<View class="gray-line bottom"/>
 					</View>
 				</ItemTemplate>
 				
-				<!-- favoriteTemplate - this is the ListItem template for contacts that have been bookmarked -->
-				<ItemTemplate id="favoriteTemplate" name="favoriteTemplate" class="template">
-					<View class="left-buffer">
-						<ImageView id="userPhoto" bindId="userPhoto" class="avatar" />
-						<View platform="android" class="smoothAvatarBorderRadius" />
-						<View class="vgroup left size">
-							<Label id="userName" bindId="userName" class="title" />
-							<Label id="userEmail" bindId="userEmail" class="subtitle" />
-							<Label id="userCompany" bindId="userCompany" class="subtitle" />
-						</View>
-						<Label class="favorite" />
-						<View class="gray-line bottom"/>
-					</View>
-				</ItemTemplate>	
 			</Templates>
 			
 		</ListView>		

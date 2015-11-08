@@ -30,26 +30,14 @@
 									<Label id="userCompany" bindId="userCompany" class="subtitle" />
 								</View>
 								<View class="hgroup right size">
-									<ImageView id="message" image="/images/message_icon.png" visible="true" onClick="messageClick"></ImageView>
+									<Button id="button1" class="greenCheckmark"></Button> 
+									<Button id="button2" class="requestConnection"></Button> 
+									<Button id="button3" class="sendMessage"></Button>
 								</View>
 								<View class="gray-line bottom"/>
 							</View>
 						</ItemTemplate>
 						
-						<!-- favoriteTemplate - this is the ListItem template for contacts that have been bookmarked -->
-						<ItemTemplate id="favoriteTemplate" name="favoriteTemplate" class="template">
-							<View class="left-buffer">
-								<ImageView id="userPhoto" bindId="userPhoto" class="avatar" />
-								<View platform="android" class="smoothAvatarBorderRadius" />
-								<View class="vgroup left size">
-									<Label id="userName" bindId="userName" class="title" />
-									<Label id="userEmail" bindId="userEmail" class="subtitle" />
-									<Label id="userCompany" bindId="userCompany" class="subtitle" />
-								</View>
-								<Label class="favorite" />
-								<View class="gray-line bottom"/>
-							</View>
-						</ItemTemplate>	
 					</Templates>
 					
 				</ListView>
@@ -61,8 +49,7 @@
 				This view wraps all of the child views/lists etc. Creates a base layout, vertically aligned.
 			-->
 			<Window id="wrapper2" class="vgroup" title="Pending"> 
-				
-				
+							
 				<!--
 					The Directory list. 
 					This listView leverages two ListItem templates to denote regular contacts and those that are bookmarked.
@@ -81,28 +68,14 @@
 									<Label id="userCompany" bindId="userCompany" class="subtitle" />
 								</View>
 								<View class="hgroup right size">
-									<ImageView id="message" image="/images/message_icon.png" visible="true" onClick="messageClick"></ImageView>
-									<ImageView id="acceptRequest" image="/images/accept_icon.png" visible="true"></ImageView>
-									<ImageView id="declineRequest" image="/images/decline_icon.png" visible="true"></ImageView>
+									<Button id="button1" class="accept"></Button> 
+									<Button id="button2" class="decline"></Button> 
+									<Button id="button3" class="sendMessage"></Button>
 								</View>
 								<View class="gray-line bottom"/>
 							</View>
 						</ItemTemplate>
 						
-						<!-- favoriteTemplate - this is the ListItem template for contacts that have been bookmarked -->
-						<ItemTemplate id="favoriteTemplate" name="favoriteTemplate" class="template">
-							<View class="left-buffer">
-								<ImageView id="userPhoto" bindId="userPhoto" class="avatar" />
-								<View platform="android" class="smoothAvatarBorderRadius" />
-								<View class="vgroup left size">
-									<Label id="userName" bindId="userName" class="title" />
-									<Label id="userEmail" bindId="userEmail" class="subtitle" />
-									<Label id="userCompany" bindId="userCompany" class="subtitle" />
-								</View>
-								<Label class="favorite" />
-								<View class="gray-line bottom"/>
-							</View>
-						</ItemTemplate>	
 					</Templates>
 					
 				</ListView>
