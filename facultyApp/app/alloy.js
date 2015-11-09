@@ -14,3 +14,5 @@ Alloy.Globals.onHome = function onHome(e){
 	var newWindow = Alloy.createController('index').getView();
 	newWindow.open();
 };
+
+Alloy.Collections.user = Alloy.createCollection('user');  
