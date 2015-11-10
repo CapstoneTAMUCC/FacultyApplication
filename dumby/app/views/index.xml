@@ -1,0 +1,42 @@
+<Alloy> 
+
+        <TabGroup id="mainTabGroup"> 
+
+<!-- On click event execute getTodoList -->
+
+            <Tab id="tab1" onClick="getTodoList"> 
+
+                <Window id="readWin"> 
+
+                     <TableView id="tableView"/> 
+
+                </Window> 
+
+            </Tab> 
+
+            <Tab id="tab2">
+            	
+                <Window id="insertWin">
+                	<ScrollView>
+					 	<View id="mainView">
+								<TextField id="id"/>
+	                        	<TextField id="fname"/>
+	                           <TextField id="lname"/>
+	                           <TextField id="phone"/>
+	                           <TextField id="education"/>
+	                           <TextField id="project"/>
+	                           <TextField id="area"/>
+	                           <TextField id="committees"/>
+	                           <TextField id="oi"/>
+	                           <TextField id="oci"/>
+	                           <TextField id="funding"/>
+	                           <TextField id="expand"/>
+	                 		</View>
+	                	</ScrollView>
+					<Button id="insertBtn" onClick="insertData" /> 
+                </Window> 
+            </Tab> 
+
+        </TabGroup> 
+
+</Alloy>
