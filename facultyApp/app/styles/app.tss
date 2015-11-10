@@ -358,7 +358,7 @@ overrode the settings with other TSS, XML, or JS settings:
 ".black-line":{
 	backgroundColor: "#000",
 	width: Ti.UI.FILL,
-	height: 1	
+	height: 5	
 },
 
 ".gray-line":{

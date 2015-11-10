@@ -17,6 +17,9 @@ $.editButton1.addEventListener('click', function(e)
 		e.source.value = true;
 		e.source.title = 'DONE';
 		e.source.backgroundColor = 'black';
+		$.additionalText1.enabled = 'true';
+		$.additionalText2.enabled = 'true';
+		$.additionalText3.enabled = 'true';
 		$.educationText.enabled = 'true';
 		$.contactInfoText.enabled = 'true';
 		$.projectText.enabled = 'true';
@@ -28,6 +31,9 @@ $.editButton1.addEventListener('click', function(e)
 		e.source.value = false;
 		e.source.title = 'EDIT';
 		e.source.backgroundColor = '#800000';
+		$.additionalText1.enabled = 'false';
+		$.additionalText2.enabled = 'false';
+		$.additionalText3.enabled = 'false';
 		$.educationText.enabled = 'false';
 		$.contactInfoText.enabled = 'false';
 		$.projectText.enabled = 'false';

@@ -6,17 +6,25 @@
 	top:'50dp'
 }
 
-"#table1": {
+"ScrollView": {
 	top:'450dp',
 	bottom: '100dp',
-	minRowHeight: '20dp',
-	scrollable:'true',
-	scrollsToTop: 'false', focusable: 'true'
 }
 
-"TableViewRow": {
-	height: 'auto',
-	touchEnabled: 'false'
+"TextArea": {
+	backgroundColor: 'white',
+    color: "black", 
+    textAlign:"left",
+    width:"100%",
+    height:"auto", 
+    enabled: 'false',
+    font: {
+		fontSize: 20,
+		fontFamily: 'Times New Roman'
+	},
+	hintTextColor:'#686868',
+	backgroundFocusedColor:'yellow',
+	maxLength: '240'
 }
 
 ".labelClass": {
@@ -26,26 +34,13 @@
 		fontFamily: 'Times New Roman',
 		fontWeight: 'bold'
 	},
-	height: Titanium.UI.FILL,
+	height: 75,
 	width: Titanium.UI.FILL,
 	textAlign: Titanium.UI.TEXT_ALIGNMENT_LEFT
 }
 
-"#section0text1": {
-	value: 'Program Assistant'
-}
-
-"#section0text2": {
-	value: 'Texas A&M AgriLife Research'
-}
-
-"#section0text3": {
-	value: 'Corporate Relations'
-}
-
 ".aboutTextfield": {
-	borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
-	hintTextColor:'black',
+	hintTextColor:'#686868',
 	backgroundColor: 'white',
 	width:'100%',
 	color:'black',
@@ -55,7 +50,8 @@
 	font: {
 		fontSize: 20,
 		fontFamily: 'Times New Roman'
-	}
+	},
+	maxLength: '50'
 }
 
 ".button": {

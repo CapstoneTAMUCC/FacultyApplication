@@ -12,67 +12,45 @@
 					<Label id="nameLabel">Firstname Lastname</Label>
 				</View>
 				<ImageView id="profilePicture"></ImageView>
-				<TableView id="table1">
-					<TableViewSection id="section1" headerTitle=" ">
-						<TableViewRow id="educationRow1">
-							<Label id="educationLabel" class="labelClass">Education Information:</Label>
-						</TableViewRow>
-						
-						<TableViewRow id="educationRow2">
-							<TextField id="educationText" class="aboutTextfield" hintText="Enter Education Information"></TextField>
-						</TableViewRow>
-					</TableViewSection>
+				<ScrollView id="aboutScrollView" class="vgroup">
+					<View class="black-line bottom"/>
 					
-					<TableViewSection id="section2" headerTitle=" ">
-						<TableViewRow id="contactInfoRow1">
-							<Label id="contactInfoLabel" class="labelClass">Contact Information:</Label>
-						</TableViewRow>
-						
-						<TableViewRow id="contactInfoRow2">
-							<TextField id="contactInfoText" class="aboutTextfield" hintText="Enter Contact Information"></TextField>
-						</TableViewRow>	
-					</TableViewSection>
+					<TextField id="additionalText1" class="aboutTextfield" hintText="Example: Program Assistant"></TextField>
+					<TextField id="additionalText2" class="aboutTextfield" hintText="Example: Texas A&M AgriLife Research"></TextField>
+					<TextField id="additionalText3" class="aboutTextfield" hintText="Example: Corporate Relations"></TextField>
 					
-					<TableViewSection id="section3" headerTitle=" ">
-						<TableViewRow id="projectRow1">
-							<Label id="projectLabel" class="labelClass">Current Projects:</Label>
-						</TableViewRow>
-						
-						<TableViewRow id="projectRow2">
-							<TextField id="projectText" class="aboutTextfield" hintText="Enter Project Information"></TextField>
-						</TableViewRow>	
-					</TableViewSection>
-						
-					<TableViewSection id="section4" headerTitle=" ">
-						<TableViewRow id="expertiseRow1">
-							<Label id="expertiseLabel" class="labelClass">Areas of Expertise:</Label>
-						</TableViewRow>
-						
-						<TableViewRow id="expertiseRow2">
-							<TextField id="expertiseText" class="aboutTextfield" hintText="Enter Areas of Expertise"></TextField>
-						</TableViewRow>	
-					</TableViewSection>	
-								
-					<TableViewSection id="section5" headerTitle=" ">
-						<TableViewRow id="committeeRow1">
-							<Label id="committeeLabel" class="labelClass">Committees:</Label>
-						</TableViewRow>
-						
-						<TableViewRow id="committeeRow2">
-							<TextField id="committeeText" class="aboutTextfield" hintText="Enter Committees"></TextField>
-						</TableViewRow>
-					</TableViewSection>	
-						
-					<TableViewSection id="section6" headerTitle=" ">
-						<TableViewRow id="otherInterestRow1">
-							<Label id="otherInterestLabel" class="labelClass">Other Professional Interests:</Label>
-						</TableViewRow>
-						
-						<TableViewRow id="otherInterestRow2">
-							<TextField id="otherInterestText" class="aboutTextfield" hintText="Enter Other Professional Interests"></TextField>
-						</TableViewRow>	
-					</TableViewSection>	
-				</TableView>
+					<View class="black-line bottom"/>
+					
+					<Label id="educationLabel" class="labelClass">Education Information:</Label>
+					<TextArea id="educationText" hintText="Enter Education Information"></TextArea>
+					
+					<View class="black-line bottom"/>
+
+					<Label id="contactInfoLabel" class="labelClass">Contact Information:</Label>
+					<TextArea id="contactInfoText" hintText="Enter Contact Information"></TextArea>
+
+					<View class="black-line bottom"/>
+
+					<Label id="projectLabel" class="labelClass">Current Projects:</Label>
+					<TextArea id="projectText" hintText="Enter Project Information"></TextArea>
+
+					<View class="black-line bottom"/>
+
+					<Label id="expertiseLabel" class="labelClass">Areas of Expertise:</Label>
+					<TextArea id="expertiseText" hintText="Enter Areas of Expertise"></TextArea>
+
+					<View class="black-line bottom"/>
+
+					<Label id="committeeLabel" class="labelClass">Committees:</Label>
+					<TextArea id="committeeText" hintText="Enter Committees"></TextArea>										
+				
+					<View class="black-line bottom"/>
+					
+					<Label id="otherInterestLabel" class="labelClass">Other Professional Interests:</Label>											
+					<TextArea id="otherInterestText" hintText="Enter Other Professional Interests"></TextArea>
+					
+					<View class="black-line bottom"/>
+				</ScrollView>
 				
 				<Button id="saveButton1" class="button">SAVE</Button>
 				<Button id="editButton1" class="button">EDIT</Button>
