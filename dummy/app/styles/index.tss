@@ -1,0 +1,233 @@
+".container": {
+	backgroundColor:"white"
+}
+
+"Label": {
+	width: Ti.UI.SIZE,
+	height: Ti.UI.SIZE,
+	color: "#000"
+}
+
+"#label": {
+	font: {
+		fontSize: 12
+	}
+},
+
+"TabGroup":{ 
+
+       backgroundColor:"black", 
+
+}, 
+
+"View":{     
+
+       layout:'vertical', 
+		
+},
+
+"#tab1":{ 
+
+       title:"Remote Read", 
+
+       icon:"KS_nav_ui.png", 
+
+}, 
+
+"#tab2":{ 
+
+       title:"Remote Insert", 
+
+       icon:"KS_nav_ui.png", 
+
+}, 
+
+"#tableView":{ 
+
+       headerTitle : 'To do list', 
+
+}, 
+
+
+"#id":{ 
+
+       color:"#336699", 
+
+       top:"10dp", 
+
+       left:"10dp", 
+
+       width:"290dp", 
+
+       height:"50dp", 
+}, 
+
+"#fname":{ 
+
+       color:"#336699", 
+
+       top:"10dp", 
+
+       left:"10dp", 
+
+       width:"290dp", 
+
+       height:"50dp", 
+}, 
+
+"#lname":{ 
+
+       color:"#336699", 
+
+       top:"10dp", 
+
+       left:"10dp", 
+
+       width:"290dp", 
+
+       height:"50dp", 
+}, 
+
+"#phone":{ 
+
+       color:"#336699", 
+
+       top:"10dp", 
+
+       left:"10dp", 
+
+       width:"290dp", 
+
+       height:"50dp", 
+}, 
+
+"#education":{ 
+
+       color:"#336699", 
+
+       top:"10dp", 
+
+       left:"10dp", 
+
+       width:"290dp", 
+
+       height:"50dp", 
+}, 
+
+"#project":{ 
+
+       color:"#336699", 
+
+       top:"10dp", 
+
+       left:"10dp", 
+
+       width:"290dp", 
+
+       height:"50dp", 
+}, 
+
+"#area":{ 
+
+       color:"#336699", 
+
+       top:"10dp", 
+
+       left:"10dp", 
+
+       width:"290dp", 
+
+       height:"50dp", 
+}, 
+
+"#committees":{ 
+
+       color:"#336699", 
+
+       top:"10dp", 
+
+       left:"10dp", 
+
+       width:"290dp", 
+
+       height:"50dp", 
+}, 
+
+"#oi":{ 
+
+       color:"#336699", 
+
+       top:"10dp", 
+
+       left:"10dp", 
+
+       width:"290dp", 
+
+       height:"50dp", 
+}, 
+
+"#oci":{ 
+
+       color:"#336699", 
+
+       top:"10dp", 
+
+       left:"10dp", 
+
+       width:"290dp", 
+
+       height:"50dp", 
+}, 
+
+"#funding":{ 
+
+       color:"#336699", 
+
+       top:"10dp", 
+
+       left:"10dp", 
+
+       width:"290dp", 
+
+       height:"50dp", 
+}, 
+
+"#expand":{ 
+
+       color:"#336699", 
+
+       top:"10dp", 
+
+       left:"10dp", 
+
+       width:"290dp", 
+
+       height:"50dp", 
+}, 
+
+
+"#Scrol":{
+	showVerticalScrollIndicator: "true",
+	
+	showHorizontalScrollIndicator: "true",
+	
+	height: "80%",
+	
+	width: "80%",
+	
+	top: "25%",
+},
+
+"#insertBtn":{ 
+
+       title:"Insert", 
+
+       top:"10dp", 
+
+       left:"180dp", 
+
+       width:"124dp", 
+
+       height:"50dp", 
+
+},  
