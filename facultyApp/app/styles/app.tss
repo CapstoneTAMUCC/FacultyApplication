@@ -409,13 +409,17 @@ overrode the settings with other TSS, XML, or JS settings:
 	touchEnabled:'false'
 }
 
-"#nameLabel": {
+"#nameField": {
 	color:'white',
 	font:{fontSize:25,fontFamily:'Times New Roman', fontWeight:'bold'},
+	height:'auto',
 	width:'100%',
 	textAlign:'center',
 	top:'5dp',
-	align:'center'
+	align:'center',
+	enabled: 'false',
+	hintText: 'Enter Your Name',
+	hintTextColor: 'white'
 }
 
 ".iconSize": {

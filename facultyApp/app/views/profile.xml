@@ -9,16 +9,17 @@
 			<Window title="About">
 				
 				<View id="nameView">
-					<Label id="nameLabel">Firstname Lastname</Label>
+					<TextField id="nameField">Firstname Lastname</TextField>
 				</View>
 				<ImageView id="profilePicture"></ImageView>
 				<ScrollView id="aboutScrollView" class="vgroup">
+					<!--
 					<View class="black-line bottom"/>
 					
 					<TextField id="additionalText1" class="aboutTextfield" hintText="Example: Program Assistant"></TextField>
 					<TextField id="additionalText2" class="aboutTextfield" hintText="Example: Texas A&M AgriLife Research"></TextField>
 					<TextField id="additionalText3" class="aboutTextfield" hintText="Example: Corporate Relations"></TextField>
-					
+					-->
 					<View class="black-line bottom"/>
 					
 					<Label id="educationLabel" class="labelClass">Education Information:</Label>
@@ -52,7 +53,7 @@
 					<View class="black-line bottom"/>
 				</ScrollView>
 				
-				<Button id="saveButton1" class="button">SAVE</Button>
+				<Button id="saveButton1" class="button" onClick="insertData">SAVE</Button>
 				<Button id="editButton1" class="button">EDIT</Button>
 			</Window>
 		</Tab>

@@ -1,6 +1,6 @@
 $.profileButton.addEventListener('click', function(e)
 {
-	var newWindow = Alloy.createController('test').getView();
+	var newWindow = Alloy.createController('profile').getView();
 	newWindow.open();
 	$.index.close();
 });
