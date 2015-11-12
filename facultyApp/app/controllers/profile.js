@@ -224,29 +224,33 @@ function readData(){
 	var sendit = Ti.Network.createHTTPClient({ 
 	onerror: function(e){ 	
 		Ti.API.debug(e.error); 	
-		alert('There was an error during the connection2222'); 
-	
+		alert('There was an error during the connection2222'); 	
 	}, 	
 	timeout:1000, 
 	});
-	
+
 	//Here you have to change it for your local ip 
 	sendit.open('GET', '52.32.54.34/php/read_user_list.php');  
 	sendit.send();
-	
+
 	sendit.onload = function() {
+		Ti.API.log('I am here!!!');
 		var json = JSON.parse(this.responseText);
 		var json = json.NAME;
-		for( var i=0; i<json.length; i++) {
-			if ( json[i].USER_ID == '1234') //used to be 1234 only without quotations
+
+		for( var i=0; i<json.length; i++) 
+		{
+			if ( json[i].USER_ID == '1') //used to be 1234 only without quotations READING JUSTIN GUERRA
 			{
 				$.nameField.value = json[i].NAME;
 				$.educationText.value = json[i].EDUCATION;
 				$.projectText.value = json[i].CURRENT_PROJ;
 				$.expertiseText.value = json[i].AREA_EXPERTISE;
 				$.committeeText.value = json[i].COMMITTEES;
-				$.otherInterestText.value = json[i].OTHER_INTRESTS;
+				$.otherInterestText.value = json[i].OTHER_INTERESTS;
 				$.contactInfoText.value = json[i].O_CONTACT_INFO;
+				
+				Ti.API.log('I am here 3');
 				
 				if (json[i].EXPAND == 1)
 				{
@@ -273,32 +277,74 @@ function readData(){
 					$.question2no.backgroundColor = '#007690';
 					$.question2no.title = '\u2713';
 				}
+				
 			}	
 		}
 	};
 	
-	alert('end of readData function!');
+	Ti.API.log('end of readData function!');
 }
 
-function insertData(){ 
-	var request = Ti.Network.createHTTPClient({ 
-
-		//onload:alert("Your chore has been submitted"), 
-	
+function updateData(){
+	var request = Ti.Network.createHTTPClient({ 	
 		onerror: function(e){ 
 			Ti.API.debug(e.error); 
 			alert('There was an error during the connection'); 
 		}, 
 		timeout:1000, 	         
 	});  
-
 	//Request the data from the web service, Here you have to change it for your local ip 
+    request.open("POST","52.32.54.34/php/update_user_list.php"); 
 
-    request.open("POST","52.32.54.34/php/insert_into_user.php"); 
-       
-	var params = ({ "USER_ID": 				'0123456789',
+	var params = ({ "USER_ID": 				'1',	//USING JUSTIN GUERRA HERE
 					"NAME": 				$.nameField.value, 
-					"PHONE": 				'TEST1', 
+					"PHONE": 				'715-440-5449', 
+					"EDUCATION": 			$.educationText.value, 
+					"CURRENT_PROJ": 	    $.projectText.value, 
+					"AREA_EXPERTISE":       $.expertiseText.value, 
+					"COMMITTEES" : 			$.committeeText.value, 
+					"OTHER_INTERESTS": 		$.otherInterestText.value,  
+					"O_CONTACT_INFO": 		$.contactInfoText.value,
+					"FUNDING": 				getCheckboxValue($.question2yes),
+					"EXPAND": 				getCheckboxValue($.question1yes),
+					"AGENCY_ID": 			'22223',	//USING AN EXISTING AGENCY ID
+					"TAMU": 				getCheckboxValue($.tamuCheckbox),
+					"PVAMU": 				getCheckboxValue($.prairieCheckbox),
+					"TSU": 					getCheckboxValue($.tarletonCheckbox),
+					"TAMUCC": 				getCheckboxValue($.tamuccCheckbox),
+					"TAMUK": 				getCheckboxValue($.tamukCheckbox),
+					"WTAMU": 				getCheckboxValue($.westamCheckbox),
+					"TAMUC": 				getCheckboxValue($.tamucCheckbox),
+					"TAMUT": 				getCheckboxValue($.tamutCheckbox),
+					"TAMUCT": 				getCheckboxValue($.tamuctCheckbox),
+					"TAMUSA": 				getCheckboxValue($.tamusaCheckbox),
+					"TAMHSC": 				getCheckboxValue($.tamhscCheckbox),
+					"TAMAR": 				getCheckboxValue($.tamarCheckbox),
+					"TAMEEPS": 				getCheckboxValue($.tameesCheckbox),
+					"TAMAEXS": 				getCheckboxValue($.tamaesCheckbox),
+					"TAMFS": 				getCheckboxValue($.tamfsCheckbox),
+					"TAMTI": 				getCheckboxValue($.tamtiCheckbox),
+					"TAMVMDL": 				getCheckboxValue($.tamvmdlCheckbox)
+					});
+
+	request.send(params);
+	Ti.API.log('User info successfully updated!');
+}
+
+function insertData(){ 
+	var request = Ti.Network.createHTTPClient({ 	
+		onerror: function(e){ 
+			Ti.API.debug(e.error); 
+			alert('There was an error during the connection'); 
+		}, 
+		timeout:1000, 	         
+	});  
+	//Request the data from the web service, Here you have to change it for your local ip 
+    request.open("POST","52.32.54.34/php/insert_into_user.php"); 
+
+	var params = ({ "USER_ID": 				'9877',
+					"NAME": 				$.nameField.value, 
+					"PHONE": 				'TEST99', 
 					"EDUCATION": 			$.educationText.value, 
 					"CURRENT_PROJ": 	    $.projectText.value, 
 					"AREA_EXPERTISE":       $.expertiseText.value, 
@@ -308,11 +354,86 @@ function insertData(){
 					"FUNDING": 				getCheckboxValue($.question2yes),
 					"EXPAND": 				getCheckboxValue($.question1yes),
 					});
-      
+
 	request.send(params);
-	alert('Successfully saved!');
+	Ti.API.log('User info successfully saved!');
+	
+	//WE HAVE TO WAIT BETWEEN 2 INSERTS!
+			
+	//BELOW is for INSERT the AGENCY data
+	
+	var request2 = Ti.Network.createHTTPClient({ 	
+		onerror: function(e){ 
+			Ti.API.debug(e.error); 
+			alert('There was an error during the connection 333'); 
+		}, 
+		timeout:3000, 	         
+	});  
+	//Request the data from the web service, Here you have to change it for your local ip 
+    request2.open("POST","52.32.54.34/php/insert_into_agency_list.php"); 
+	var params = ({ 
+					"AGENCY_ID": 			'9877',
+					"USER_ID": 				'9877',
+					"TAMUCC": 				getCheckboxValue($.tamuccCheckbox),
+					"TAMU": 				getCheckboxValue($.tamuCheckbox),
+					"PVAMU": 				getCheckboxValue($.prairieCheckbox),
+					"TSU": 					getCheckboxValue($.tarletonCheckbox),
+					"TAMUCC": 				getCheckboxValue($.tamuccCheckbox),
+					"TAMUK": 				getCheckboxValue($.tamukCheckbox),
+					"WTAMU": 				getCheckboxValue($.westamCheckbox),
+					"TAMUC": 				getCheckboxValue($.tamucCheckbox),
+					"TAMUT": 				getCheckboxValue($.tamutCheckbox),
+					"TAMUCT": 				getCheckboxValue($.tamuctCheckbox),
+					"TAMUSA": 				getCheckboxValue($.tamusaCheckbox),
+					"TAMHSC": 				getCheckboxValue($.tamhscCheckbox),
+					"TAMAR": 				getCheckboxValue($.tamarCheckbox),
+					"TAMEEPS": 				getCheckboxValue($.tameesCheckbox),
+					"TAMAEXS": 				getCheckboxValue($.tamaesCheckbox),
+					"TAMFS": 				getCheckboxValue($.tamfsCheckbox),
+					"TAMTI": 				getCheckboxValue($.tamtiCheckbox),
+					"TAMVMDL": 				getCheckboxValue($.tamvmdlCheckbox)
+					});
+
+	request2.send(params);
+	Ti.API.log('Agency information successfully saved!');
+};
+
+function insertData2(){ 
+	var request2 = Ti.Network.createHTTPClient({ 	
+		onerror: function(e){ 
+			Ti.API.debug(e.error); 
+			alert('There was an error during the connection 333'); 
+		}, 
+		timeout:3000, 	         
+	});  
+	//Request the data from the web service, Here you have to change it for your local ip 
+    request2.open("POST","52.32.54.34/php/update_agency_list.php"); 
+	var params = ({ 
+					"AGENCY_ID": 			'22223',
+					"USER_ID": 				'1',
+					"TAMU": 				getCheckboxValue($.tamuCheckbox),
+					"PVAMU": 				getCheckboxValue($.prairieCheckbox),
+					"TSU": 					getCheckboxValue($.tarletonCheckbox),
+					"TAMUCC": 				getCheckboxValue($.tamuccCheckbox),
+					"TAMUK": 				getCheckboxValue($.tamukCheckbox),
+					"WTAMU": 				getCheckboxValue($.westamCheckbox),
+					"TAMUC": 				getCheckboxValue($.tamucCheckbox),
+					"TAMUT": 				getCheckboxValue($.tamutCheckbox),
+					"TAMUCT": 				getCheckboxValue($.tamuctCheckbox),
+					"TAMUSA": 				getCheckboxValue($.tamusaCheckbox),
+					"TAMHSC": 				getCheckboxValue($.tamhscCheckbox),
+					"TAMAR": 				getCheckboxValue($.tamarCheckbox),
+					"TAMEEPS": 				getCheckboxValue($.tameesCheckbox),
+					"TAMAEXS": 				getCheckboxValue($.tamaesCheckbox),
+					"TAMFS": 				getCheckboxValue($.tamfsCheckbox),
+					"TAMTI": 				getCheckboxValue($.tamtiCheckbox),
+					"TAMVMDL": 				getCheckboxValue($.tamvmdlCheckbox)
+					});
+
+	request2.send(params);
+	Ti.API.log('Agency information successfully saved!');
 };
 
 
 $.profile.open();
-//readData();
+readData();

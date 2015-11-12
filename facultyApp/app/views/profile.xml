@@ -53,7 +53,7 @@
 					<View class="black-line bottom"/>
 				</ScrollView>
 				
-				<Button id="saveButton1" class="button" onClick="insertData">SAVE</Button>
+				<Button id="saveButton1" class="button" onClick="updateData">SAVE</Button>
 				<Button id="editButton1" class="button">EDIT</Button>
 			</Window>
 		</Tab>
@@ -240,7 +240,7 @@
 					</TableViewSection>
 				</TableView>
 				
-				<Button id="saveButton2" class="button">SAVE</Button>
+				<Button id="saveButton2" class="button" onClick="insertData2">SAVE</Button>
 				<Button id="editButton2" class="button">EDIT</Button>
 			</Window>
 		</Tab>
