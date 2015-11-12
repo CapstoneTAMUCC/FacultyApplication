@@ -17,10 +17,10 @@
 },
 
 "#searchText": { 
-	top: 7,
+	bottom: 7,
 	left: 15,
 	width: '85%',
-	hintText: 'Enter Search Phrase', 
+	hintText: 'Reply', 
 	hintTextColor: 'black',
 	color: 'black',
 	backgroundColor: 'white',
@@ -28,15 +28,15 @@
 }
 
 "#searchButton": {
-	top: 5,
-	backgroundImage: '/images/search_button.png',
-	left: 15,
+	bottom: 5,
+	backgroundImage: '/images/sendIcon.png',
+	right: 15,
 	height: '55dp',
 	width : '55dp'
 }
 
-"#headerView": {
-	height: '60dp',
+"FooterView": {
+	height: '180dp',
 	width: '100%',
 	backgroundColor: 'black',
 	layout: 'horizontal',

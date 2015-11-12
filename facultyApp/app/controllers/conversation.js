@@ -181,6 +181,14 @@ var preprocessForListView = function(rawData) {
 	});	
 };
 		
+/*
+$.searchButton.addEventListener('click', function(e)
+{
+	//alert('You clicked the search button!');
+	init();
+});
+*/
+		
 /**
  * Listen for the refresh event, and re-initialize
  */
@@ -193,7 +201,6 @@ var onDelete = function onDelete(e){
 
 var onCompose = function onCompose(e){
 };
-
 
 /**
  * Initialize View
