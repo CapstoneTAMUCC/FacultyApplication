@@ -16,7 +16,7 @@ function init(){
             	hasChild : true, 
      		});
         
-        	Titanium.API.log("OTHER_ID: " + json[i].OTHER_ID);                                          
+        	Titanium.API.log("OTHER_ID: " + json[i].OTHER_ID);                                        
      		Titanium.API.log("TO: " + json[i].TO_ID);
      		Titanium.API.log("FROM: " + json[i].FROM_ID);
      		Titanium.API.log("BODY: " + json[i].BODY);   
@@ -133,26 +133,6 @@ function init(){
  */
 function onItemClick(e){
 	
-	/**
-	 * Appcelerator Analytics Call
-	 */
-	Ti.Analytics.featureEvent(Ti.Platform.osname+"."+title+".contact.clicked");
-	
-	/**
-	 * Get the Item that was clicked
-	 */
-	var item = $.listView.sections[e.sectionIndex].items[e.itemIndex];
-	
-	/**
-	 * Open the profile view, and pass in the user data for this contact
-	 */
-	
-	Titanium.API.log("WUT: " + item.properties.user.OTHER_ID);
-	Titanium.API.log("WUT2: " + exists(item.properties.user.OTHER_ID));
-	printArray();
-	//Titanium.API.log("HAHA: " + JSON.stringify(item, null, 4));
-	var newWindow = Alloy.createController('conversation', JSON.parse(makeJsonConversationString(exists(item.properties.user.OTHER_ID))).messages).getView();
-	newWindow.open();
 }
 		
 		
@@ -193,7 +173,7 @@ var preprocessForListView = function(rawData) {
 				],
 				canEdit:true
 			},
-			userName: {text: item.FROM_ID == thisUserID ? "Me" : item.FROM_ID},
+			userName: {text: item.FROM_ID == thisUserID ? "Me" : item.OTHER_NAME},
 			userEmail: {text: ""},
 			messageBody: {text: item.BODY},
 			lastUpdated: {text: item.DATE}
@@ -209,13 +189,9 @@ Ti.App.addEventListener("refresh-data", function(e){
 });
 
 var onDelete = function onDelete(e){
-	var newWindow = Alloy.createController('conversation').getView();
-	newWindow.open();
 };
 
 var onCompose = function onCompose(e){
-	var newWindow = Alloy.createController('conversation').getView();
-	newWindow.open();
 };
 
 

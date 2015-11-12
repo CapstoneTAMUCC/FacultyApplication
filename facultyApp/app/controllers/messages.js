@@ -7,6 +7,7 @@ var _args = arguments[0] || {}, // Any passed in arguments will fall into this p
 	users = null,  // Array placeholder for all users
 	indexes = [];  // Array placeholder for the ListView Index (used by iOS only);
 	
+var namesJson;
 
 /**
  * Appcelerator Analytics Call
@@ -65,16 +66,16 @@ function init(){
     });                      
 
     //Here you have to change it for your local ip 
-    connection.open('GET', '52.32.54.34/php/read_message_list.php');
- //   connection.open('GET', '52.32.54.34/php/conversation_list.php');
+ //   connection.open('GET', '52.32.54.34/php/read_message_list.php');
+    connection.open('POST', '52.32.54.34/php/conversation_list.php');
     var params = ({ "USER_ID": '1' });  
-    connection.send();
+    connection.send(params);
     //Function to be called upon a successful response 
     connection.onload = function(){ 
     	var json = JSON.parse(this.responseText); 
     	var json = json.MESSAGE_ID;
     	//if the database is empty show an alert 
-    	if(json.length == 0){ 
+    	if(json.length == 0){
 			Titanium.API.log("CRAP");
     //    $.tableView.headerTitle = "The database row is empty"; 
     	}
@@ -121,116 +122,127 @@ function init(){
 	 	*/
 		var file = Ti.Filesystem.getFile(Ti.Filesystem.resourcesDirectory + "userData/messageData.json"); 
 	
-		/**
-	 	* Populate the users variable from the file this call returns an array
-	 	*/
-	//	conversations = JSON.parse(file.read().text).conversations;
-		conversations = JSON.parse(makeJsonInboxString ()).conversations;
-	
-		/**
-	 	* Sorts the `conversations` array by the lastName property of the user (leverages UnderscoreJS _.sortBy function)
-	 	*/
-	//	conversations = _.sortBy(conversations, function(conversation){
-	//		return conversation.DATE;
-	//	});
-	
-	//	conversations = conversations.reverse();
-	
-		/**
-	 	* IF the users array exists
-	 	*/
-		if(conversations) {
+		//function to use HTTP to connect to a web server and transfer the data. 
+		var sendit = Ti.Network.createHTTPClient({ 
+		onerror: function(e){ 	
+				Ti.API.debug(e.error); 	
+				alert('There was an error during the connection'); 
+		
+			}, 	
+			timeout:1000, 
+		});
+		
+		//Here you have to change it for your local ip 
+		sendit.open('GET', '52.32.54.34/php/read_user_list.php');  
+		sendit.send();
+		
+		sendit.onload = function() {
+			var json = JSON.parse(this.responseText);
+			var json = json.NAME;
+			
+			namesJson = json;
+			
+			/**
+		 	* Populate the users variable from the file this call returns an array
+		 	*/
+			conversations = JSON.parse(makeJsonInboxString ()).conversations;
 		
 			/**
-		 	* Setup our Indexes and Sections Array for building out the ListView components
-		 	* 
+		 	* IF the users array exists
 		 	*/
-			indexes = [];
-			var sections = [];
-			var conversationGroups  = _.groupBy(conversations, function(item){
-		 		return item.DATE;
-			});
-        
-        	/**
-         	* Iterate through each group created, and prepare the data for the ListView
-         	* (Leverages the UnderscoreJS _.each function)
-         	*/
-			_.each(conversationGroups, function(group){
-
-				/**
-			 	* Take the group data that is passed into the function, and parse/transform
-			 	* it for use in the ListView templates as defined in the directory.xml file.
-			 	*/
-				var dataToAdd = preprocessForListView(group);
-
-				/**
-			 	* Check to make sure that there is data to add to the table,
-			 	* if not lets exit
-			 	*/
-				if(dataToAdd.length < 1) return;
-			
+			if(conversations) {
 			
 				/**
-			 	* Lets take the first Character of the LastName and push it onto the index
-			 	* Array - this will be used to generate the indices for the ListView on IOS
+			 	* Setup our Indexes and Sections Array for building out the ListView components
+			 	* 
 			 	*/
-			
-				indexes.push({
-					index: indexes.length,
-					title: "what is this"
+				indexes = [];
+				var sections = [];
+				var conversationGroups  = _.groupBy(conversations, function(item){
+			 		return item.DATE;
 				});
-
-				/**
-			 	* Create a new ListViewSection, and ADD the header view created above to it.
-			 	*/
-			 	var section = Ti.UI.createListSection({});
-
-				/**
-			 	* Add Data to the ListViewSection
-			 	*/
-				section.items = dataToAdd;
-			
-				/**
-			 	* Push the newly created ListViewSection onto the `sections` array. This will be used to populate
-			 	* the ListView 
-			 	*/
-				sections.push(section);
-			});
-
-			/**
-		 	* Add the ListViewSections and data elements created above to the ListView
-		 	*/
-			$.listView.sections = sections;
-		
-			/**
-		 	* For iOS, we add an event listener on the swipe of the ListView to display the index of the ListView we 
-		 	* created above. The `sectionIndexTitles` property is only valid on iOS, so we put these handlers in the iOS block.
-		 	*/
-			if(OS_IOS) {
-				$.messages.addEventListener("swipe", function(e){
-					if(e.direction === "left"){
-						$.listView.sectionIndexTitles = indexes;
-					}
-					if(e.direction === "right"){
-						$.listView.sectionIndexTitles = null;
-					}
-				});
-			}
-		}
+	        
+	        	/**
+	         	* Iterate through each group created, and prepare the data for the ListView
+	         	* (Leverages the UnderscoreJS _.each function)
+	         	*/
+				_.each(conversationGroups, function(group){
 	
-		else {
-			
-			if(OS_IOS){
-				$.messages.leftNavButton = Ti.UI.createLabel({
-					text: "\ue601",
-					color: "#C41230",
-					font:{
-						fontFamily:"icomoon",
-						fontSize:36
-					}
+					/**
+				 	* Take the group data that is passed into the function, and parse/transform
+				 	* it for use in the ListView templates as defined in the directory.xml file.
+				 	*/
+					var dataToAdd = preprocessForListView(group);
+	
+					/**
+				 	* Check to make sure that there is data to add to the table,
+				 	* if not lets exit
+				 	*/
+					if(dataToAdd.length < 1) return;
+				
+				
+					/**
+				 	* Lets take the first Character of the LastName and push it onto the index
+				 	* Array - this will be used to generate the indices for the ListView on IOS
+				 	*/
+				
+					indexes.push({
+						index: indexes.length,
+						title: "what is this"
+					});
+	
+					/**
+				 	* Create a new ListViewSection, and ADD the header view created above to it.
+				 	*/
+				 	var section = Ti.UI.createListSection({});
+	
+					/**
+				 	* Add Data to the ListViewSection
+				 	*/
+					section.items = dataToAdd;
+				
+					/**
+				 	* Push the newly created ListViewSection onto the `sections` array. This will be used to populate
+				 	* the ListView 
+				 	*/
+					sections.push(section);
 				});
+	
+				/**
+			 	* Add the ListViewSections and data elements created above to the ListView
+			 	*/
+				$.listView.sections = sections;
+			
+				/**
+			 	* For iOS, we add an event listener on the swipe of the ListView to display the index of the ListView we 
+			 	* created above. The `sectionIndexTitles` property is only valid on iOS, so we put these handlers in the iOS block.
+			 	*/
+				if(OS_IOS) {
+					$.messages.addEventListener("swipe", function(e){
+						if(e.direction === "left"){
+							$.listView.sectionIndexTitles = indexes;
+						}
+						if(e.direction === "right"){
+							$.listView.sectionIndexTitles = null;
+						}
+					});
+				}
 			}
-		}
+		
+			else {
+				
+				if(OS_IOS){
+					$.messages.leftNavButton = Ti.UI.createLabel({
+						text: "\ue601",
+						color: "#C41230",
+						font:{
+							fontFamily:"icomoon",
+							fontSize:36
+						}
+					});
+				}
+			}
+		};		
     };              
     
     var orderArray = function () {
@@ -251,7 +263,7 @@ function init(){
     	printArray ();
     };             
     
-    var makeJsonInboxString = function () {
+    var makeJsonInboxString = function (otherUserName) {
     	var result = "{\"conversations\":[";
     	for (var i = 0; i < dataArray.length; i++) {
     		for (var j = dataArray[i].length - 1; j < dataArray[i].length; j++) {
@@ -261,6 +273,7 @@ function init(){
     			result +="\"TO_ID\":" + "\"" + dataArray[i][j].TO_ID + "\",";
     			result +="\"FROM_ID\":" + "\"" + dataArray[i][j].FROM_ID + "\",";
     			result +="\"OTHER_ID\":" + "\"" + otherUserID + "\",";
+    			result +="\"OTHER_NAME\":" + "\"" + getOtherName(otherUserID) + "\",";
     			result +="\"BODY\":" + "\"" + dataArray[i][j].BODY + "\",";
     			result +="\"STATUS\":" + "" + dataArray[i][j].STATUS + ",";
     			result +="\"DATE\":" + "\"" + dataArray[i][j].DATE + "\"";
@@ -274,6 +287,16 @@ function init(){
     	Titanium.API.log("HERE: " + result);
     	return result;
     };
+};
+
+var getOtherName = function (otherID) {
+	for( var i=0; i<namesJson.length; i++) {
+		if ( namesJson[i].USER_ID == otherID)
+		{
+			return namesJson[i].NAME;
+		}
+	}
+	return "Not found";
 };
 
 var printArray = function () {
@@ -329,7 +352,7 @@ var preprocessForListView = function(rawData) {
 				],
 				canEdit:true
 			},
-			userName: {text: item.OTHER_ID},
+			userName: {text: item.OTHER_NAME},
 			userEmail: {text: ""},
 			messageBody: {text: item.BODY},
 			lastUpdated: {text: item.DATE}
@@ -372,11 +395,13 @@ var makeJsonConversationString = function (index) {
     	var result = "{\"messages\":[";
     	for (var j = 0; j < dataArray[index].length; j++) {
     		result += "{";
-    		var otherUserID = dataArray[index][j].TO_ID == thisUserID ? dataArray[index][j].FROM_ID : dataArray[index][j].TO_ID;
+    		var otherUserID = dataArray[index][j].TO_ID == thisUserID ? dataArray[index][j].FROM_ID : dataArray[index][j].TO_ID;	
+    		var otherUserName = getOtherName(otherUserID);
     		result +="\"MESSAGE_ID\":" + "\"" + dataArray[index][j].MESSAGE_ID + "\",";
     		result +="\"TO_ID\":" + "\"" + dataArray[index][j].TO_ID + "\",";
     		result +="\"FROM_ID\":" + "\"" + dataArray[index][j].FROM_ID + "\",";
     		result +="\"OTHER_ID\":" + "\"" + otherUserID + "\",";
+    		result +="\"OTHER_NAME\":" + "\"" + otherUserName + "\",";
     		result +="\"BODY\":" + "\"" + dataArray[index][j].BODY + "\",";
     		result +="\"STATUS\":" + "" + dataArray[index][j].STATUS + ",";
     		result +="\"DATE\":" + "\"" + dataArray[index][j].DATE + "\"";
@@ -391,13 +416,17 @@ var makeJsonConversationString = function (index) {
 };
 
 var onDelete = function onDelete(e){
+	/*
 	var newWindow = Alloy.createController('conversation').getView();
 	newWindow.open();
+	*/
 };
 
 var onCompose = function onCompose(e){
+	/*
 	var newWindow = Alloy.createController('conversation').getView();
 	newWindow.open();
+	*/
 };
 
 /**

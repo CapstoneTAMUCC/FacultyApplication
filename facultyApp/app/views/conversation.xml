@@ -23,5 +23,9 @@
 				</ItemTemplate>
 			</Templates>
 		</ListView>
+		<View id="headerView">
+			<TextField id="searchText"></TextField>
+			<Button id="searchButton"></Button>
+		</View>
 	</Window>
 </Alloy>
