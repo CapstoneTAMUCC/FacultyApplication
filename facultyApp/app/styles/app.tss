@@ -432,9 +432,6 @@ overrode the settings with other TSS, XML, or JS settings:
 	height: '50dp',
 	title: '\u2713',
 	backgroundColor: '#07ce00',
-	borderColor: '#666',
-    borderWidth: 2,
-    borderRadius: 3,
     enabled: 'false',
 	color: '#fff',
 	font:{fontSize: 30}

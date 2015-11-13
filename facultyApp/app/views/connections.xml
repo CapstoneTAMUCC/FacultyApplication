@@ -31,8 +31,8 @@
 								</View>
 								<View class="hgroup right size">
 									<Button id="button1" class="greenCheckmark"></Button> 
-									<Button id="button2" class="requestConnection"></Button> 
-									<Button id="button3" class="sendMessage"></Button>
+									<Button id="disregard" class="requestConnection" visible="false"></Button>
+									<Button id="button2" class="sendMessage"></Button>
 								</View>
 								<View class="gray-line bottom"/>
 							</View>
@@ -68,9 +68,9 @@
 									<Label id="userCompany" bindId="userCompany" class="subtitle" />
 								</View>
 								<View class="hgroup right size">
-									<Button id="button1" class="accept"></Button> 
-									<Button id="button2" class="decline"></Button> 
-									<Button id="button3" class="sendMessage"></Button>
+									<Button id="button3" bindId="button3" class="accept"></Button> 
+									<Button id="button4" bindId="button4" class="decline"></Button> 
+									<Button id="button5" bindId="button5" class="sendMessage"></Button>
 								</View>
 								<View class="gray-line bottom"/>
 							</View>

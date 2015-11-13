@@ -255,7 +255,7 @@ function readTextfieldData(){
 
 		for( var i=0; i<json.length; i++) 
 		{
-			if ( json[i].USER_ID == '1') //used to be 1234 only without quotations READING JUSTIN GUERRA
+			if ( json[i].USER_ID == Alloy.Globals.thisUserID) //used to be 1234 only without quotations READING JUSTIN GUERRA
 			{
 				$.nameField.value = json[i].NAME;
 				$.educationText.value = json[i].EDUCATION;
@@ -300,7 +300,7 @@ function readAgencyData(){
 
 		for( var i=0; i<json.length; i++) 
 		{
-			if ( json[i].USER_ID == '1') //READING JUSTIN GUERRA
+			if ( json[i].USER_ID == Alloy.Globals.thisUserID) //READING JUSTIN GUERRA
 			{				
 				if (json[i].TAMU == 1) { setCheckboxTrue($.tamuCheckbox); }		
 				if (json[i].PVAMU == 1) { setCheckboxTrue($.prairieCheckbox); }
@@ -346,7 +346,7 @@ function readResearchData(){
 
 		for( var i=0; i<json.length; i++) 
 		{
-			if ( json[i].USER_ID == '1') //READING JUSTIN GUERRA
+			if ( json[i].USER_ID == Alloy.Globals.thisUserID) //READING JUSTIN GUERRA
 			{				
 				if (json[i].FOOD_SAFETY == 1) { setCheckboxTrue($.foodSafetyCheckbox); }
 				if (json[i].NUTRITION == 1) { setCheckboxTrue($.nutritionCheckbox); }	
@@ -376,7 +376,7 @@ function updateData(){
 	//Request the data from the web service, Here you have to change it for your local ip 
     request.open("POST","52.32.54.34/php/update_user_list.php"); 
 
-	var params = ({ "USER_ID": 				'1',	//USING JUSTIN GUERRA HERE
+	var params = ({ "USER_ID": 				Alloy.Globals.thisUserID,	//USING JUSTIN GUERRA HERE
 					"NAME": 				$.nameField.value, 
 					"PHONE": 				'715-440-5449', 
 					"EDUCATION": 			$.educationText.value, 

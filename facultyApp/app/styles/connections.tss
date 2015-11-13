@@ -122,3 +122,64 @@
 "#listView":{
 	tintColor: "#666"
 }
+
+"#button1":{	//green checkmark
+	width: '50dp',
+	height: '50dp',
+	title: '\u2713',
+	backgroundColor: '#07ce00',
+    enabled: 'false',
+	color: '#fff',
+	font:{fontSize: 30}
+}
+
+"#button2":{	//send message for CONTACTS
+	width: 'auto',
+	height: '50dp',
+	title: 'Message',
+	backgroundColor: '#CCCC00',
+	borderColor: '#666',
+    borderWidth: 2,
+    borderRadius: 3,
+    enabled: 'true',
+	color: '#fff',
+	font:{fontSize: 15}
+}
+
+"#button3":{	//accept button
+	width: 'auto', 
+	height: '50dp',
+	title: 'Accept',
+	backgroundColor: '#07ce00',
+	borderColor: '#666',
+    borderWidth: 2,
+    borderRadius: 3,
+    enabled: 'true',
+	color: '#fff',
+	font:{fontSize: 15}
+}
+"#button4":{	//decline button
+	width: 'auto', 
+	height: '50dp',
+	title: 'Decline',
+	backgroundColor: '#FF0000',
+	borderColor: '#666',
+    borderWidth: 2,
+    borderRadius: 3,
+    enabled: 'true',
+	color: '#fff',
+	font:{fontSize: 15}
+}
+
+"#button5":{	//send message for PENDING
+	width: 'auto',
+	height: '50dp',
+	title: 'Message',
+	backgroundColor: '#CCCC00',
+	borderColor: '#666',
+    borderWidth: 2,
+    borderRadius: 3,
+    enabled: 'true',
+	color: '#fff',
+	font:{fontSize: 15}
+}
