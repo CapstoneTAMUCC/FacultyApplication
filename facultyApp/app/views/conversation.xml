@@ -23,7 +23,7 @@
 			</Templates>
 			<FooterView>
 				<View backgroundColor="#DDD" height="Ti.UI.SIZE">
-                    <TextField name="messageBox" id="messageText"></TextField>
+                    <TextArea name="messageBox" id="messageText"></TextArea>
 				<Button id="replyButton"></Button>
                 </View>
 			</FooterView>

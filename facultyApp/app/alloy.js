@@ -18,16 +18,18 @@ Alloy.Globals.Navigate = function Navigate(v, fromView, toView) {
         fromView.remove(view);
  	});
  	*/
- 	fromView.close();
- 	v.destroy();
  	var newWindow = toView;
 	newWindow.open();
+ 	fromView.close();
+ 	v.destroy();
 };
 
 Alloy.Globals.MMNavigate = function MMNavigate(v, fromView, toView) {
 	Titanium.API.log("Navigating from Main Menu");
  	var newWindow = toView;
 	newWindow.open();
+ 	fromView.close();
+ 	v.destroy();
 };
 
 Alloy.Globals.goToHome = function goToHome(v, fromView){

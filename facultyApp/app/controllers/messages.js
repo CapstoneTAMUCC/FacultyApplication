@@ -53,10 +53,6 @@ function init(){
     	//Insert the JSON data to the table view 
 
    		for( var i=0; i<json.length; i++){ 
-        	var row = Ti.UI.createTableViewRow({ 
-        		title: json[i].BODY, 
-            	hasChild : true, 
-     		});
         
         	Titanium.API.log("MESSAGE_ID: " + json[i].MESSAGE_ID);                                          
      		Titanium.API.log("TO: " + json[i].TO_ID);
@@ -321,9 +317,40 @@ var preprocessForListView = function(rawData) {
 			userName: {text: item.OTHER_NAME},
 			userEmail: {text: ""},
 			messageBody: {text: item.BODY},
-			lastUpdated: {text: item.DATE}
+			lastUpdated: {text: makeReadable(item.DATE)}
 		};
 	});	
+};
+
+var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+var days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+// yyyy-mm-dd hh:mm:ss to month/day hh:mm am 
+var makeReadable = function (date) {
+	var result = "";
+	date = date.substring (5, 16);
+	var month = date.substring (0, 2);
+	var day = date.substring (3, 5);
+	var hour = date.substring (6, 8) - 1;
+	var min = date.substring (9, 11);
+	var ampm;
+	
+	if (hour < 12) {
+		ampm = "AM";
+	}
+	else if (hour == 12) {
+		ampm = "PM";
+	}
+	else {
+		ampm = "PM";
+		hour = hour - 12;
+	}
+	
+	month = month.length == 1 ? month.substring (1, 2) : month;
+	day = day.length == 1 ? day.substring (1, 2) : day;
+	hour = hour.length == 1 ? hour.substring (1, 2) : hour;
+	
+	return month + "/" + day + " " + hour + ":" + min + " " + ampm;
 };
 
 /**

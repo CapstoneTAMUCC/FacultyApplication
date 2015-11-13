@@ -162,9 +162,40 @@ var preprocessForListView = function(rawData) {
 			userName: {text: item.FROM_ID == thisUserID ? "Me" : item.OTHER_NAME},
 			userEmail: {text: ""},
 			messageBody: {text: item.BODY},
-			lastUpdated: {text: item.DATE}
+			lastUpdated: {text: makeReadable(item.DATE)}
 		};
 	});	
+};
+
+var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+var days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+// yyyy-mm-dd hh:mm:ss to month/day hh:mm am 
+var makeReadable = function (date) {
+	var result = "";
+	date = date.substring (5, 16);
+	var month = date.substring (0, 2);
+	var day = date.substring (3, 5);
+	var hour = date.substring (6, 8) - 1;
+	var min = date.substring (9, 11);
+	var ampm;
+	
+	if (hour < 12) {
+		ampm = "AM";
+	}
+	else if (hour == 12) {
+		ampm = "PM";
+	}
+	else {
+		ampm = "PM";
+		hour = hour - 12;
+	}
+	
+	month = month.length == 1 ? month.substring (1, 2) : month;
+	day = day.length == 1 ? day.substring (1, 2) : day;
+	hour = hour.length == 1 ? hour.substring (1, 2) : hour;
+	
+	return month + "/" + day + " " + hour + ":" + min + " " + ampm;
 };
 
 $.replyButton.addEventListener('click', function(e)
@@ -208,7 +239,7 @@ var makeDate = function (date) {
 	var result = "";
 	
 	result += date.getFullYear() + "-";
-	result += date.getMonth() + "-";
+	result += (date.getMonth() + 1) + "-";
 	result += (day < 10 ? ("0" + day) : day) + " ";
 	result += (hour < 10 ? ("0" + hour) : hour) + ":";
 	result += (min < 10 ? ("0" + min) : min) + ":";
