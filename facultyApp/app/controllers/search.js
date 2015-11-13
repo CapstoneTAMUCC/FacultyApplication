@@ -40,6 +40,13 @@ var _args = arguments[0] || {}, // Any passed in arguments will fall into this p
 var title = _args.title ? _args.title.toLowerCase() : "directory";
 Ti.Analytics.featureEvent(Ti.Platform.osname+"."+title+".viewed");
 
+$.search.addEventListener('androidback' , function (e) {
+	Alloy.Globals.goToHome ($, $.search);
+});
+
+var homeButtonFunc = function () {
+	Alloy.Globals.goToHome ($, $.search);
+};
 
 /** 
  * Function to inialize the View, gathers data from the flat file and sets up the ListView
@@ -165,7 +172,7 @@ function init(){
 		 * created above. The `sectionIndexTitles` property is only valid on iOS, so we put these handlers in the iOS block.
 		 */
 		if(OS_IOS) {
-			$.wrapper.addEventListener("swipe", function(e){
+			$.search.addEventListener("swipe", function(e){
 				if(e.direction === "left"){
 					$.listView.sectionIndexTitles = indexes;
 				}
@@ -180,7 +187,7 @@ function init(){
 	 * Update the Window title if required (only used when we create the Bookmarks View)
 	 */
 	if(_args.title){
-		$.wrapper.title = _args.title;
+		$.search.title = _args.title;
 	}
 	
 	/**
@@ -194,7 +201,7 @@ function init(){
 	else {
 			
 		if(OS_IOS){
-			$.wrapper.leftNavButton = Ti.UI.createLabel({
+			$.search.leftNavButton = Ti.UI.createLabel({
 				text: "\ue601",
 				color: "#C41230",
 				font:{
@@ -371,10 +378,10 @@ if(OS_IOS){
 /**
  * Hide Bookmark Icon (Android)
  */
-$.wrapper.addEventListener("open", function onWindowOpen(){
+$.search.addEventListener("open", function onWindowOpen(){
 	if(OS_ANDROID && _args.restrictToFavorites){
 		
-		var activity = $.wrapper.getActivity();
+		var activity = $.search.getActivity();
 		activity.onCreateOptionsMenu = function(e) {
 	 		e.menu.clear();
 		};	

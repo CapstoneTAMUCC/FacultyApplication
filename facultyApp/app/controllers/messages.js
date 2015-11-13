@@ -14,42 +14,8 @@ var namesJson;
  */
 var title = _args.title ? _args.title.toLowerCase() : "directory";
 Ti.Analytics.featureEvent(Ti.Platform.osname+"."+title+".viewed");  
-	          
- function insertStuff(){ 
-	var request = Ti.Network.createHTTPClient({ 
-
-   		onload:alert("Your chore has been submitted"), 
-
-    	onerror: function(e){ 
-
-        	Ti.API.debug(e.error); 
-
-    		alert('There was an error during the conexion'); 
-
-    	}, 
-
-       		timeout:1000, 
-    	});  
-
-		//Request the data from the web service, Here you have to change it for your local ip 
-
-        request.open("POST","52.32.54.34/php/insert_into_message.php"); 
-                   
-        var params = ({ "MESSAGE_ID": '555',
-           				"FROM_ID": '1',
-                        "TO_ID":  '1', 
-                        "DATE": ' ', 
-                        "BODY": 'HELLO', 
-                        "STATUS": '-1', 
-        });
-                                       
-        request.send(params); 
-        Titanium.API.log("SDFFSDF: " + params);
-
-};  
 
 var dataArray = []; 
-var thisUserID = 1;
 
 /**
  * Function to inialize the View, gathers data from the flat file and sets up the ListView
@@ -100,7 +66,7 @@ function init(){
      		Titanium.API.log("STATUS: " + json[i].STATUS); 
      		Titanium.API.log("LENGTH: " + dataArray.length);       
 
-			var otherUserID = json[i].TO_ID == thisUserID ? json[i].FROM_ID : json[i].TO_ID;
+			var otherUserID = json[i].TO_ID == Alloy.Globals.thisUserID ? json[i].FROM_ID : json[i].TO_ID;
 			
 			var index = exists(otherUserID);
 			
@@ -267,7 +233,7 @@ function init(){
     	var result = "{\"conversations\":[";
     	for (var i = 0; i < dataArray.length; i++) {
     		for (var j = dataArray[i].length - 1; j < dataArray[i].length; j++) {
-    			var otherUserID = dataArray[i][j].TO_ID == thisUserID ? dataArray[i][j].FROM_ID : dataArray[i][j].TO_ID;
+    			var otherUserID = dataArray[i][j].TO_ID == Alloy.Globals.thisUserID ? dataArray[i][j].FROM_ID : dataArray[i][j].TO_ID;
     			result += "{";
     			result +="\"MESSAGE_ID\":" + "\"" + dataArray[i][j].MESSAGE_ID + "\",";
     			result +="\"TO_ID\":" + "\"" + dataArray[i][j].TO_ID + "\",";
@@ -391,11 +357,20 @@ function onItemClick(e){
 	newWindow.open();
 }
 
+$.messages.addEventListener('androidback' , function (e) {
+	Alloy.Globals.goToHome ($, $.messages);
+});
+
+var homeButtonFunc = function () {
+	Alloy.Globals.goToHome ($, $.messages);
+};
+
 var makeJsonConversationString = function (index) {
     	var result = "{\"messages\":[";
     	for (var j = 0; j < dataArray[index].length; j++) {
     		result += "{";
-    		var otherUserID = dataArray[index][j].TO_ID == thisUserID ? dataArray[index][j].FROM_ID : dataArray[index][j].TO_ID;	
+    		var otherUserID = dataArray[index][j].TO_ID == Alloy.Globals.
+    		thisUserID ? dataArray[index][j].FROM_ID : dataArray[index][j].TO_ID;	
     		var otherUserName = getOtherName(otherUserID);
     		result +="\"MESSAGE_ID\":" + "\"" + dataArray[index][j].MESSAGE_ID + "\",";
     		result +="\"TO_ID\":" + "\"" + dataArray[index][j].TO_ID + "\",";

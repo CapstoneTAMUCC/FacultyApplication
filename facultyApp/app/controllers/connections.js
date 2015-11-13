@@ -40,6 +40,13 @@ var _args = arguments[0] || {}, // Any passed in arguments will fall into this p
 var title = _args.title ? _args.title.toLowerCase() : "directory";
 Ti.Analytics.featureEvent(Ti.Platform.osname+"."+title+".viewed");
 
+$.connections.addEventListener('androidback' , function (e) {
+	Alloy.Globals.goToHome ($, $.connections);
+});
+
+var homeButtonFunc = function () {
+	Alloy.Globals.goToHome ($, $.connections);
+};
 
 /** 
  * Function to inialize the View, gathers data from the flat file and sets up the ListView
@@ -165,7 +172,7 @@ function init(){
 		 * created above. The `sectionIndexTitles` property is only valid on iOS, so we put these handlers in the iOS block.
 		 */
 		if(OS_IOS) {
-			$.wrapper.addEventListener("swipe", function(e){
+			$.connections.addEventListener("swipe", function(e){
 				if(e.direction === "left"){
 					$.listView.sectionIndexTitles = indexes;
 				}
@@ -180,7 +187,7 @@ function init(){
 	 * Update the Window title if required (only used when we create the Bookmarks View)
 	 */
 	if(_args.title){
-		$.wrapper.title = _args.title;
+		$.connections.title = _args.title;
 	}
 	
 	/**
@@ -194,7 +201,7 @@ function init(){
 	else {
 			
 		if(OS_IOS){
-			$.wrapper.leftNavButton = Ti.UI.createLabel({
+			$.connections.leftNavButton = Ti.UI.createLabel({
 				text: "\ue601",
 				color: "#C41230",
 				font:{
@@ -328,7 +335,7 @@ function init2(){
 		 * created above. The `sectionIndexTitles` property is only valid on iOS, so we put these handlers in the iOS block.
 		 */
 		if(OS_IOS) {
-			$.wrapper2.addEventListener("swipe", function(e){
+			$.connections2.addEventListener("swipe", function(e){
 				if(e.direction === "left"){
 					$.listView2.sectionIndexTitles = indexes;
 				}
@@ -343,7 +350,7 @@ function init2(){
 	 * Update the Window title if required (only used when we create the Bookmarks View)
 	 */
 	if(_args.title){
-		$.wrapper2.title = _args.title;
+		$.connections2.title = _args.title;
 	}
 	
 	/**
@@ -357,7 +364,7 @@ function init2(){
 	else {
 			
 		if(OS_IOS){
-			$.wrapper2.leftNavButton = Ti.UI.createLabel({
+			$.connections2.leftNavButton = Ti.UI.createLabel({
 				text: "\ue601",
 				color: "#C41230",
 				font:{
@@ -563,10 +570,10 @@ if(OS_IOS){
 /**
  * Hide Bookmark Icon (Android)
  */
-$.wrapper.addEventListener("open", function onWindowOpen(){
+$.connections.addEventListener("open", function onWindowOpen(){
 	if(OS_ANDROID && _args.restrictToFavorites){
 		
-		var activity = $.wrapper.getActivity();
+		var activity = $.connections.getActivity();
 		activity.onCreateOptionsMenu = function(e) {
 	 		e.menu.clear();
 		};	
@@ -576,10 +583,10 @@ $.wrapper.addEventListener("open", function onWindowOpen(){
 /**
  * Hide Bookmark Icon (Android)
  */
-$.wrapper2.addEventListener("open", function onWindowOpen(){
+$.connections.addEventListener("open", function onWindowOpen(){
 	if(OS_ANDROID && _args.restrictToFavorites){
 		
-		var activity = $.wrapper2.getActivity();
+		var activity = $.connections.getActivity();
 		activity.onCreateOptionsMenu = function(e) {
 	 		e.menu.clear();
 		};	

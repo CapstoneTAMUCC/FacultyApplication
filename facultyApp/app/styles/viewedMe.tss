@@ -5,7 +5,7 @@
 	height: 100,
 	width: Ti.UI.FILL
 },
-".wrapper": {
+".viewedMe": {
 	backgroundColor:"#fff",
 	orientationModes: [Ti.UI.PORTRAIT,Ti.UI.LANDSCAPE_LEFT,Ti.UI.LANDSCAPE_RIGHT,Ti.UI.UPSIDE_PORTRAIT],
 	//navBarHidden: true,
@@ -20,7 +20,7 @@
    extendEdges: Titanium.UI.EXTEND_EDGE_TOP
 },
 
-".wrapper[platform=ios]":{
+".viewedMe[platform=ios]":{
 	navTintColor: "#ae331f"
 }
 

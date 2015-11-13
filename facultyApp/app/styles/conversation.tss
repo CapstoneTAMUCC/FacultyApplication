@@ -16,7 +16,7 @@
    extendEdges: Titanium.UI.EXTEND_EDGE_TOP
 },
 
-"#searchText": { 
+"#messageText": { 
 	bottom: 7,
 	left: 15,
 	width: '85%',
@@ -27,9 +27,9 @@
 	borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED
 }
 
-"#searchButton": {
+"#replyButton": {
 	bottom: 5,
-	backgroundImage: '/images/sendIcon.png',
+	backgroundImage: '/sendIcon.png',
 	right: 15,
 	height: '55dp',
 	width : '55dp'

@@ -11,6 +11,14 @@ function checkboxFunction(e)
     }
 }
 
+$.profile.addEventListener('androidback' , function (e) {
+	Alloy.Globals.goToHome ($, $.profile);
+});
+
+var homeButtonFunc = function () {
+	Alloy.Globals.goToHome ($, $.profile);
+};
+
 $.editButton1.addEventListener('click', function(e)
 {
 	if (false == e.source.value) {

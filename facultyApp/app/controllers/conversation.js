@@ -133,8 +133,7 @@ function init(){
  */
 function onItemClick(e){
 	
-}
-		
+}	
 		
 /**
  *	Convert an array of data from a JSON file into a format that can be added to the ListView
@@ -142,19 +141,6 @@ function onItemClick(e){
  * 	@param {Object} Raw data elements from the JSON file.
  */
 var preprocessForListView = function(rawData) {
-	/*
-	if(_args.restrictTonews) {
-		rawData = _.filter(rawData, function(item){
-			
-			/**
-			 * each item (or user) that is referenced, we look to see if the user id is included in news array
-			 * retrieved from persistent storage above
-			 *
-			return $FM.exists(item.id);
-		});
-	}
-	*/
-	
 	/**
 	 * Using the rawData collection, we map data properties of the users in this array to an array that maps an array to properly
 	 * display the data in the ListView based on the template defined in messages.xml (levearges the _.map Function of UnderscoreJS)
@@ -180,14 +166,57 @@ var preprocessForListView = function(rawData) {
 		};
 	});	
 };
-		
-/*
-$.searchButton.addEventListener('click', function(e)
+
+$.replyButton.addEventListener('click', function(e)
 {
-	//alert('You clicked the search button!');
-	init();
+	var request = Ti.Network.createHTTPClient({  
+    	onerror: function(e){ 
+        	Ti.API.debug(e.error); 
+    		alert('There was an error during the connection'); 
+    	}, 
+       		timeout:1000, 
+    	}); 
+    	 
+    //	Titanium.API.log("Am I getting this correctly? " + messageBox.value);
+		//Request the data from the web service, Here you have to change it for your local ip 
+        request.open("POST","52.32.54.34/php/insert_into_message.php");
+        var newMessage = ({"FROM_ID": Alloy.Globals.thisUserID,
+          	               "TO_ID":  args[0].OTHER_ID, 
+             	           "DATE": makeDate (new Date()), 
+                           "BODY": $.messageText.value, 
+                   	       "STATUS": 1, 
+      	});
+      	args.push(newMessage);
+        request.send(newMessage);
+       	$.messageText.value = '';
+        init(); 
+}); 
+
+$.conversation.addEventListener('androidback' , function (e) {
+	Alloy.Globals.Navigate ($, $.conversation, Alloy.createController('messages').getView());
 });
-*/
+
+var homeButtonFunc = function () {
+	Alloy.Globals.goToHome ($, $.conversation);
+};
+
+var makeDate = function (date) {
+	var day = date.getDate();
+	var hour = date.getHours();
+	var min = date.getMinutes();
+	var sec = date.getSeconds();
+	var result = "";
+	
+	result += date.getFullYear() + "-";
+	result += date.getMonth() + "-";
+	result += (day < 10 ? ("0" + day) : day) + " ";
+	result += (hour < 10 ? ("0" + hour) : hour) + ":";
+	result += (min < 10 ? ("0" + min) : min) + ":";
+	result += (sec < 10 ? ("0" + sec) : sec);
+	
+	Titanium.API.log("Current time: " + result);
+	return result;
+};
 		
 /**
  * Listen for the refresh event, and re-initialize

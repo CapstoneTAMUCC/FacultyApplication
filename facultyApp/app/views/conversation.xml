@@ -1,9 +1,7 @@
 <Alloy>
 	<Window id="conversation" class="vgroup" title="Conversation">
 		<Menu id="menu" platform="android">
-			<MenuItem showAsAction="Ti.Android.SHOW_AS_ACTION_IF_ROOM" title="Compose" icon="Ti.Android.R.drawable.ic_input_add" onClick="onCompose" />
-			<MenuItem showAsAction="Ti.Android.SHOW_AS_ACTION_IF_ROOM" title="Delete" icon="Ti.Android.R.drawable.ic_delete" onClick="onDelete" />
-			<MenuItem showAsAction="Ti.Android.SHOW_AS_ACTION_IF_ROOM" title="Home" icon="homeIcon.png" onClick="Alloy.Globals.onHome" />
+			<MenuItem showAsAction="Ti.Android.SHOW_AS_ACTION_IF_ROOM" title="Home" icon="homeIcon.png" onClick="homeButtonFunc" />
         </Menu>
         
 		<ListView id="listView" defaultItemTemplate="userTemplate" onItemclick="onItemClick">
@@ -25,8 +23,8 @@
 			</Templates>
 			<FooterView>
 				<View backgroundColor="#DDD" height="Ti.UI.SIZE">
-                    <TextField id="searchText"></TextField>
-				<Button id="searchButton"></Button>
+                    <TextField name="messageBox" id="messageText"></TextField>
+				<Button id="replyButton"></Button>
                 </View>
 			</FooterView>
 		</ListView>
