@@ -58,7 +58,7 @@ function populateMatches()
 	var request1 = Ti.Network.createHTTPClient({ 
 	onerror: function(e){ 	
 		Ti.API.debug(e.error); 	
-		alert('There was an error during the connection MATCHES'); 	
+		alert('There was an error during the connection MATCHES 1'); 	
 	}, 	
 	timeout:1000, 
 	});
@@ -103,7 +103,7 @@ function populateMatches()
 		var request2 = Ti.Network.createHTTPClient({ 
 		onerror: function(e){ 	
 			Ti.API.debug(e.error); 	
-			alert('There was an error during the connection MATCHES'); 	
+			alert('There was an error during the connection MATCHES 2'); 	
 		}, 	
 		timeout:1000, 
 		});
@@ -141,86 +141,61 @@ function populateMatches()
 				 * Setup our Indexes and Sections Array for building out the ListView components
 				 * 
 				 */
-				indexes = [];
 				var sections = [];
+				//var dataToAdd = new Array();
+				/**
+				 * Create the ListViewSection header view
+				 * DOCS: http://docs.appcelerator.com/platform/latest/#!/api/Titanium.UI.ListSection-property-headerView
+				 */
+	
+				 var sectionHeader = Ti.UI.createView({
+				 	backgroundColor: "#ececec",
+				 	width: Ti.UI.FILL,
+				 	height: 30
+				 });
+	
+				 /**
+				  * Create and Add the Label to the ListView Section header view
+				  */
+				 var sectionLabel = Ti.UI.createLabel({
+				 	text: 'Matches based on your areas of research',
+				 	left: 20,
+				 	font:{
+				 		fontSize: 20
+				 	},
+				 	color: "#666"
+				 });
+				 sectionHeader.add(sectionLabel);
+	
+				/**
+				 * Create a new ListViewSection, and ADD the header view created above to it.
+				 */
+				 var section = Ti.UI.createListSection({
+					headerView: sectionHeader
+				});
+
+				/**
+				 * Take the group data that is passed into the function, and parse/transform
+				 * it for use in the ListView templates as defined in the directory.xml file.
+				 */
+				var dataToAdd = preprocessForListView( matchResults );
 				
 				/**
-				 * Group the data by first letter of last name to make it easier to create 
-				 * sections. (leverages the UndrescoreJS _.groupBy function)
+				 * Check to make sure that there is data to add to the table,
+				 * if not lets exit
 				 */
-				var userGroups  = _.groupBy(matchResults, function(item){
-				 	return item.NAME.charAt(0);
-				});
-		        /**
-		         * Iterate through each group created, and prepare the data for the ListView
-		         * (Leverages the UnderscoreJS _.each function)
-		         */
-				_.each(userGroups, function(group)
-				{
-					/**
-					 * Take the group data that is passed into the function, and parse/transform
-					 * it for use in the ListView templates as defined in the directory.xml file.
-					 */
-					var dataToAdd = preprocessForListView(group);
-		
-					/**
-					 * Check to make sure that there is data to add to the table,
-					 * if not lets exit
-					 */
-					if(dataToAdd.length < 1) return;
-					
-					
-					/**
-					 * Lets take the first Character of the LastName and push it onto the index
-					 * Array - this will be used to generate the indices for the ListView on IOS
-					 */
-					indexes.push({
-						index: indexes.length,
-						title: group[0].NAME.charAt(0)
-					});
-		
-					/**
-					 * Create the ListViewSection header view
-					 * DOCS: http://docs.appcelerator.com/platform/latest/#!/api/Titanium.UI.ListSection-property-headerView
-					 */
-		
-					 var sectionHeader = Ti.UI.createView({
-					 	backgroundColor: "#ececec",
-					 	width: Ti.UI.FILL,
-					 	height: 30
-					 });
-		
-					 /**
-					  * Create and Add the Label to the ListView Section header view
-					  */
-					 var sectionLabel = Ti.UI.createLabel({
-					 	text: group[0].NAME.charAt(0),
-					 	left: 20,
-					 	font:{
-					 		fontSize: 20
-					 	},
-					 	color: "#666"
-					 });
-					 sectionHeader.add(sectionLabel);
-		
-					/**
-					 * Create a new ListViewSection, and ADD the header view created above to it.
-					 */
-					 var section = Ti.UI.createListSection({
-						headerView: sectionHeader
-					});
-		
-					/**
-					 * Add Data to the ListViewSection
-					 */
-					section.items = dataToAdd;
-					
-					/**
-					 * Push the newly created ListViewSection onto the `sections` array. This will be used to populate
-					 * the ListView 
-					 */
-					sections.push(section);
-				});	//end of each function
+				if(dataToAdd.length < 1) return;
+
+				/**
+				 * Add Data to the ListViewSection
+				 */
+				section.items = dataToAdd;
+				
+				/**
+				 * Push the newly created ListViewSection onto the `sections` array. This will be used to populate
+				 * the ListView 
+				 */
+				sections.push(section);
 				
 				/**
 				 * Add the ListViewSections and data elements created above to the ListView
