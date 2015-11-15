@@ -48,171 +48,191 @@ var homeButtonFunc = function () {
 	Alloy.Globals.goToHome ($, $.matches);
 };
 
-/** 
- * Function to inialize the View, gathers data from the flat file and sets up the ListView
- */
-function init(){
+function populateMatches()
+{
+	var matchResults = new Array();
+	var myUser = new Array();	//holds the client's area of research information
+	var matchIds = new Array();	//holds the ID's of matches
 	
-	/**
-	 * Access the FileSystem Object to read in the information from a flat file (lib/userData/data.js)
-	 * DOCS: http://docs.appcelerator.com/platform/latest/#!/api/Titanium.Filesystem
-	 */
-	var file = Ti.Filesystem.getFile(Ti.Filesystem.resourcesDirectory + "userData/data.json"); 
-	
-	/**
-	 * Populate the users variable from the file this call returns an array
-	 */
-	users = JSON.parse(file.read().text).users;
-	
-	/**
-	 * Sorts the `users` array by the lastName property of the user (leverages UnderscoreJS _.sortBy function)
-	 */
-	users = _.sortBy(users, function(user){
-		return user.lastName
+	//function to use HTTP to connect to a web server and transfer the data. 
+	var request1 = Ti.Network.createHTTPClient({ 
+	onerror: function(e){ 	
+		Ti.API.debug(e.error); 	
+		alert('There was an error during the connection MATCHES'); 	
+	}, 	
+	timeout:1000, 
 	});
+
+	//Here you have to change it for your local ip 
+	request1.open('GET', '52.32.54.34/php/read_area_of_research.php');  
+	request1.send();
 	
-	/**
-	 * IF the users array exists
-	 */
-	if(users) {
+	request1.onload = function() {
+		var json = JSON.parse(this.responseText);
+		var json = json.USER_ID;
 		
-		/**
-		 * Setup our Indexes and Sections Array for building out the ListView components
-		 * 
-		 */
-		indexes = [];
-		var sections = [];
-		
-		/**
-		 * Group the data by first letter of last name to make it easier to create 
-		 * sections. (leverages the UndrescoreJS _.groupBy function)
-		 */
-		var userGroups  = _.groupBy(users, function(item){
-		 	return item.lastName.charAt(0);
-		});
-        
-        /**
-         * Iterate through each group created, and prepare the data for the ListView
-         * (Leverages the UnderscoreJS _.each function)
-         */
-		_.each(userGroups, function(group){
-
-			/**
-			 * Take the group data that is passed into the function, and parse/transform
-			 * it for use in the ListView templates as defined in the directory.xml file.
-			 */
-			var dataToAdd = preprocessForListView(group);
-
-			/**
-			 * Check to make sure that there is data to add to the table,
-			 * if not lets exit
-			 */
-			if(dataToAdd.length < 1) return;
-			
-			
-			/**
-			 * Lets take the first Character of the LastName and push it onto the index
-			 * Array - this will be used to generate the indices for the ListView on IOS
-			 */
-			indexes.push({
-				index: indexes.length,
-				title: group[0].lastName.charAt(0)
-			});
-
-			/**
-			 * Create the ListViewSection header view
-			 * DOCS: http://docs.appcelerator.com/platform/latest/#!/api/Titanium.UI.ListSection-property-headerView
-			 */
-
-			 var sectionHeader = Ti.UI.createView({
-			 	backgroundColor: "#ececec",
-			 	width: Ti.UI.FILL,
-			 	height: 30
-			 });
-
-			 /**
-			  * Create and Add the Label to the ListView Section header view
-			  */
-			 var sectionLabel = Ti.UI.createLabel({
-			 	text: group[0].lastName.charAt(0),
-			 	left: 20,
-			 	font:{
-			 		fontSize: 20
-			 	},
-			 	color: "#666"
-			 });
-			 sectionHeader.add(sectionLabel);
-
-			/**
-			 * Create a new ListViewSection, and ADD the header view created above to it.
-			 */
-			 var section = Ti.UI.createListSection({
-				headerView: sectionHeader
-			});
-
-			/**
-			 * Add Data to the ListViewSection
-			 */
-			section.items = dataToAdd;
-			
-			/**
-			 * Push the newly created ListViewSection onto the `sections` array. This will be used to populate
-			 * the ListView 
-			 */
-			sections.push(section);
-		});
-
-		/**
-		 * Add the ListViewSections and data elements created above to the ListView
-		 */
-		$.listView.sections = sections;
-		
-		/**
-		 * For iOS, we add an event listener on the swipe of the ListView to display the index of the ListView we 
-		 * created above. The `sectionIndexTitles` property is only valid on iOS, so we put these handlers in the iOS block.
-		 */
-		if(OS_IOS) {
-			$.matches.addEventListener("swipe", function(e){
-				if(e.direction === "left"){
-					$.listView.sectionIndexTitles = indexes;
-				}
-				if(e.direction === "right"){
-					$.listView.sectionIndexTitles = null;
-				}
-			});
+		for ( var i = 0; i < json.length; i++ )
+		{
+			if ( json[i].USER_ID == Alloy.Globals.thisUserID )
+			{
+				myUser.push(json[i]);	//myUser now has only the client's area of research information
+			}
 		}
-	}
-	
-	/**
-	 * Update the Window title if required (only used when we create the Bookmarks View)
-	 */
-	if(_args.title){
-		$.matches.title = _args.title;
-	}
-	
-	/**
-	 * Check to see if the `restrictToFavorites` flag has been passed in as an argument, and 
-	 * hide the favorite icon accordingly
-	 */
-	if(_args.restrictToFavorites){
-		OS_IOS && ($.searchBar.showBookmark = false);
 		
-	}
-	else {
-			
-		if(OS_IOS){
-			$.matches.leftNavButton = Ti.UI.createLabel({
-				text: "\ue601",
-				color: "#C41230",
-				font:{
-					fontFamily:"icomoon",
-					fontSize:36
+		for ( var i = 0; i < json.length; i++ )
+		{
+			if ( json[i].USER_ID != Alloy.Globals.thisUserID ) //we are looking for other users
+			{
+				if ( json[i].FOOD_SAFETY === myUser[0].FOOD_SAFETY ||
+					json[i].NUTRITION === myUser[0].NUTRITION ||
+					json[i].PUBLIC_HEALTH === myUser[0].PUBLIC_HEALTH ||
+					json[i].PRODUCTION_ECON === myUser[0].PRODUCTION_ECON ||
+					json[i].ANIMAL_HEALTH === myUser[0].ANIMAL_HEALTH ||
+					json[i].FISH === myUser[0].FISH ||
+					json[i].BIO_ENERGY === myUser[0].BIO_ENERGY ||
+					json[i].WILDLIFE === myUser[0].WILDLIFE ||
+					json[i].PUBLIC_POLICY === myUser[0].PUBLIC_POLICY ||
+					json[i].TRADE === myUser[0].TRADE )
+				{
+					matchIds.push(json[i].USER_ID);	//matchIds will have the ids of our matches
 				}
-			});
+			}
 		}
-	}
+		
+		//function to use HTTP to connect to a web server and transfer the data. 
+		var request2 = Ti.Network.createHTTPClient({ 
+		onerror: function(e){ 	
+			Ti.API.debug(e.error); 	
+			alert('There was an error during the connection MATCHES'); 	
+		}, 	
+		timeout:1000, 
+		});
+	
+		//Here you have to change it for your local ip 
+		request2.open('GET', '52.32.54.34/php/read_user_list.php');  
+		request2.send();
+		
+		request2.onload = function() {
+			var json = JSON.parse(this.responseText);
+			var json = json.NAME;	
+			
+			for( var i=0; i < json.length; i++) 
+			{
+				if ( json[i].USER_ID != Alloy.Globals.thisUserID ) //we are looking for other users
+				{
+					for ( var j = 0; j < matchIds.length; j++)
+					{
+						if ( json[i].USER_ID === matchIds[j] )	//find the match from user table
+						{
+							matchResults.push(json[i]);	//push the match user into the match results
+						}
+					}
+					
+				}
+			}
+		
+			matchResults = _.sortBy(matchResults, function(user){
+				return user.NAME
+			});
+	
+			if (matchResults)
+			{
+				/**
+				 * Setup our Indexes and Sections Array for building out the ListView components
+				 * 
+				 */
+				indexes = [];
+				var sections = [];
+				
+				/**
+				 * Group the data by first letter of last name to make it easier to create 
+				 * sections. (leverages the UndrescoreJS _.groupBy function)
+				 */
+				var userGroups  = _.groupBy(matchResults, function(item){
+				 	return item.NAME.charAt(0);
+				});
+		        /**
+		         * Iterate through each group created, and prepare the data for the ListView
+		         * (Leverages the UnderscoreJS _.each function)
+		         */
+				_.each(userGroups, function(group)
+				{
+					/**
+					 * Take the group data that is passed into the function, and parse/transform
+					 * it for use in the ListView templates as defined in the directory.xml file.
+					 */
+					var dataToAdd = preprocessForListView(group);
+		
+					/**
+					 * Check to make sure that there is data to add to the table,
+					 * if not lets exit
+					 */
+					if(dataToAdd.length < 1) return;
+					
+					
+					/**
+					 * Lets take the first Character of the LastName and push it onto the index
+					 * Array - this will be used to generate the indices for the ListView on IOS
+					 */
+					indexes.push({
+						index: indexes.length,
+						title: group[0].NAME.charAt(0)
+					});
+		
+					/**
+					 * Create the ListViewSection header view
+					 * DOCS: http://docs.appcelerator.com/platform/latest/#!/api/Titanium.UI.ListSection-property-headerView
+					 */
+		
+					 var sectionHeader = Ti.UI.createView({
+					 	backgroundColor: "#ececec",
+					 	width: Ti.UI.FILL,
+					 	height: 30
+					 });
+		
+					 /**
+					  * Create and Add the Label to the ListView Section header view
+					  */
+					 var sectionLabel = Ti.UI.createLabel({
+					 	text: group[0].NAME.charAt(0),
+					 	left: 20,
+					 	font:{
+					 		fontSize: 20
+					 	},
+					 	color: "#666"
+					 });
+					 sectionHeader.add(sectionLabel);
+		
+					/**
+					 * Create a new ListViewSection, and ADD the header view created above to it.
+					 */
+					 var section = Ti.UI.createListSection({
+						headerView: sectionHeader
+					});
+		
+					/**
+					 * Add Data to the ListViewSection
+					 */
+					section.items = dataToAdd;
+					
+					/**
+					 * Push the newly created ListViewSection onto the `sections` array. This will be used to populate
+					 * the ListView 
+					 */
+					sections.push(section);
+				});	//end of each function
+				
+				/**
+				 * Add the ListViewSections and data elements created above to the ListView
+				 */
+				$.listView.sections = sections;
+			}// end of if statement
+			
+		};//end of second onload function
+		
+	};//end of first onload function
 
-};
+}//end of populatematchResults function
 
 /**
  *	Convert an array of data from a JSON file into a format that can be added to the ListView
@@ -222,54 +242,28 @@ function init(){
 var preprocessForListView = function(rawData) {
 	 
 	/**
-	 * If we need to filter the view to only show bookmars, check to see if the `restrictToFavorites` 
-	 * flag has been passed in as an argument to the controller, and only show users that are favorites
-	 */
-	if(_args.restrictToFavorites) {
-		
-		/**
-		 * redefines the collection to only have users that are currently listed as favorites (leverages
-		 * 	the UnderscoreJS _.filter function )
-		 */
-		rawData = _.filter(rawData, function(item){
-			
-			/**
-			 * each item (or user) that is referenced, we look to see if the user id is included in favorites array
-			 * retrieved from persistent storage above
-			 */
-			return $FM.exists(item.id);
-		});
-	}
-	
-	/**
 	 * Using the rawData collection, we map data properties of the users in this array to an array that maps an array to properly
 	 * display the data in the ListView based on the templates defined in directory.xml (levearges the _.map Function of UnderscoreJS)
 	 */
 	return _.map(rawData, function(item) {
 		
 		/**
-		 * Need to check to see if this user item is a favorite. If it is, we will use the `favoriteTemplate` in the ListView.
-		 * (leverages the _.find function of UnderscoreJS)
-		 */
-		var isFavorite = $FM.exists(item.id);
-		
-		/**
 		 * Create the new user object which is added to the Array that is returned by the _.map function. 
 		 */
 		return {
-			template: isFavorite ? "favoriteTemplate" : "userTemplate",
+			template: "userTemplate",
 			properties: {
-				searchableText: item.firstName + ' ' + item.lastName + ' ' + item.company + ' ' + item.email,
+				searchableText: "",
 				user: item,
 				editActions: [
-					{title: isFavorite ? "- Favorite" : "+ Favorite", color: isFavorite ? "#C41230" : "#038BC8" }
+					{title: "Does this even matter", color: item.isNew ? "#C41230" : "#038BC8" }
 				],
 				canEdit:true
 			},
-			userName: {text: item.firstName+" "+item.lastName},
-			userCompany: {text: item.company},
-			userPhoto: {image: item.photo},
-			userEmail: {text: item.email} 
+			userName: {text: item.NAME}//,
+			//userCompany: {text: item.company},
+			//userPhoto: {image: item.photo}, EXLUDE PHOTO FOR NOW
+			//userEmail: {text: item.email} 
 		};
 	});	
 };
@@ -299,118 +293,6 @@ function onItemClick(e){
 	Alloy.Globals.Navigator.open("profile", item.properties.user);
 }
 
-/**
- * This code is only relevant to iOS - to make it cleaner, we are declaring variables, and
- * then assigning them to functions within an iOS Block. On MobileWeb, Android, etc this code block will not
- * exist
- */
-var onSearchChange, onSearchFocus, onSearchCancel;
-
-/**
- * Handles the favorite icon click event. Launches this same control as a child window, but limits the view
- * to only favoitems.
- * 
- * @param {Object} Event data passed to the function
- */
-var onBookmarkClick = function onClick (e){
-	
-	/**
-	 * Appcelerator Analytics Call
-	 */
-	Ti.Analytics.featureEvent(Ti.Platform.osname+"."+title+".favorites.clicked");
-	
-	/**
-	 * Open this same controller into a new page, pass the flag to restrict the list only to favorite Contacts and force the title
-	 */
-	Alloy.Globals.Navigator.open("directory", {restrictToFavorites:true, title:"Favorites", displayHomeAsUp:true});
-};
-
-/**
- * Handles the SearchBar OnChange event
- * 
- * @description On iOS we want the search bar to always be on top, so we use the onchange event to tie it back
- * 				to the ListView
- * 
- * @param {Object} Event data passed to the function
- */
-onSearchChange = function onChange(e){
-	$.listView.searchText = e.source.value;
-};
-	 
-if(OS_IOS){
-	
-	/**
-	 * Updates the UI when the SearchBar gains focus. Hides the Bookmark icon and shows
-	 * the Cancel button.
-	 * 
-	 * @description We want to use both the bookmark feature and Cancel, but don't want them to show up together (EWW!)
-	 * 				so we use the focus event to show the Cancel button and hide the bookmark
-	 * 
-	 * @param {Object} Event data passed to the function
-	 */
-	onSearchFocus = function onFocus(e){
-			$.searchBar.showBookmark = false;
-			$.searchBar.showCancel = true;
-	};
-	
-	/**
-	 * Updates the UI when the Cancel button is clicked within the search bar. Hides the Cancel button and shows
-	 * the Bookmark icon
-	 * 
-	 * @param {Object} Event data passed to the function
-	 */
-	onSearchCancel = function onCancel(e){
-		if(!_args.restrictToFavorites){
-			$.searchBar.showBookmark = true;
-			$.searchBar.showCancel = false;
-		}	
-		$.searchBar.blur();
-	};
-	
-	/**
-	 * Updates user record favorite classification and the list elements
-	 * 
-	 *  @param {Object} e  Event data passed to the function
-	 */
-	function onRowAction(e){
-		
-		var row = e.section.getItemAt(e.itemIndex);
-		var id = row.properties.user.id;
-		
-		if(e.action === "+ Favorite") {
-			$FM.add(id);
-		}
-		else {
-			$FM.remove(id);
-		}
-		
-		$.listView.editing = false;
-		init();
-	}
-	
-	/* 
-	 * Assign `editaction` event listener to ListView 
-	 * 
-	 * NOTE: Updated to 'editaction' instead of 'rowAction' per
-	 * ticket
-	 * https://jira.appcelerator.org/browse/TIMOB-19096
-	 */
-	$.listView.addEventListener("editaction", onRowAction);
-}
-
-/**
- * Hide Bookmark Icon (Android)
- */
-$.matches.addEventListener("open", function onWindowOpen(){
-	if(OS_ANDROID && _args.restrictToFavorites){
-		
-		var activity = $.matches.getActivity();
-		activity.onCreateOptionsMenu = function(e) {
-	 		e.menu.clear();
-		};	
-		activity.invalidateOptionsMenu();
-	}
-});
 
 function onPhotoClick(e){
 	var newWindow = Alloy.createController('profile').getView();
@@ -421,5 +303,5 @@ function onPhotoClick(e){
 /**
  * Initialize View
  */
-init();
+populateMatches();
 
