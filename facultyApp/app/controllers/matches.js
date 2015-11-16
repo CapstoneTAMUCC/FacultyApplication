@@ -53,6 +53,8 @@ function populateMatches()
 	var matchResults = new Array();
 	var myUser = new Array();	//holds the client's area of research information
 	var matchIds = new Array();	//holds the ID's of matches
+	var matchIdsAndRanks = new Array();	//holds IDs and ranking numbers
+	var matchRank = 0;
 	
 	//function to use HTTP to connect to a web server and transfer the data. 
 	var request1 = Ti.Network.createHTTPClient({ 
@@ -83,20 +85,30 @@ function populateMatches()
 		{
 			if ( json[i].USER_ID != Alloy.Globals.thisUserID ) //we are looking for other users
 			{
-				if ( json[i].FOOD_SAFETY === myUser[0].FOOD_SAFETY ||
-					json[i].NUTRITION === myUser[0].NUTRITION ||
-					json[i].PUBLIC_HEALTH === myUser[0].PUBLIC_HEALTH ||
-					json[i].PRODUCTION_ECON === myUser[0].PRODUCTION_ECON ||
-					json[i].ANIMAL_HEALTH === myUser[0].ANIMAL_HEALTH ||
-					json[i].FISH === myUser[0].FISH ||
-					json[i].BIO_ENERGY === myUser[0].BIO_ENERGY ||
-					json[i].WILDLIFE === myUser[0].WILDLIFE ||
-					json[i].PUBLIC_POLICY === myUser[0].PUBLIC_POLICY ||
-					json[i].TRADE === myUser[0].TRADE )
-				{
-					matchIds.push(json[i].USER_ID);	//matchIds will have the ids of our matches
-				}
+				//Increment the match rank counter for every common areas of research checked both by the client and the other user
+				if ( json[i].FOOD_SAFETY === myUser[0].FOOD_SAFETY && json[i].FOOD_SAFETY == '1' ) { matchRank++; }
+				if ( json[i].NUTRITION === myUser[0].NUTRITION && json[i].NUTRITION == '1') { matchRank++; }
+				if ( json[i].PUBLIC_HEALTH === myUser[0].PUBLIC_HEALTH && json[i].PUBLIC_HEALTH == '1' ) { matchRank++; }
+				if ( json[i].PRODUCTION_ECON === myUser[0].PRODUCTION_ECON && json[i].PRODUCTION_ECON == '1' ) { matchRank++; }
+				if ( json[i].ANIMAL_HEALTH === myUser[0].ANIMAL_HEALTH && json[i].ANIMAL_HEALTH == '1' ) { matchRank++; }
+				if ( json[i].FISH === myUser[0].FISH && json[i].FISH == '1' ) { matchRank++; }
+				if ( json[i].BIO_ENERGY === myUser[0].BIO_ENERGY && json[i].BIO_ENERGY == '1' ) { matchRank++; }
+				if ( json[i].WILDLIFE === myUser[0].WILDLIFE && json[i].WILDLIFE == '1' ) { matchRank++; }
+				if ( json[i].PUBLIC_POLICY === myUser[0].PUBLIC_POLICY && json[i].PUBLIC_POLICY == '1' ) { matchRank++; }
+				if ( json[i].TRADE === myUser[0].TRADE && json[i].TRADE == '1' ) { matchRank++; }
+				
+				matchIdsAndRanks.push(json[i].USER_ID + '' + matchRank);
 			}
+			matchRank = 0;	//set it back to 0 for a health loop iteration
+		}
+		
+		matchIdsAndRanks = _.sortBy(matchIdsAndRanks, function(match){	//sort the matchIdsAndRanks by the last character (the match rank)
+			return match.charAt(match.length - 1)
+		});
+		
+		for ( var i = 0; i < matchIdsAndRanks.length; i++) //Now that matctIdsAndRanks is sorted, copy it all into matchIds in the same exact order
+		{
+			matchIds[i] = matchIdsAndRanks[i].slice( 0, (matchIdsAndRanks[i].length - 1) );
 		}
 		
 		//function to use HTTP to connect to a web server and transfer the data. 
@@ -116,24 +128,18 @@ function populateMatches()
 			var json = JSON.parse(this.responseText);
 			var json = json.NAME;	
 			
-			for( var i=0; i < json.length; i++) 
+			for ( var i = 0; i < matchIds.length; i++ )
 			{
-				if ( json[i].USER_ID != Alloy.Globals.thisUserID ) //we are looking for other users
+				for ( var j = 0; j < json.length; j++ )
 				{
-					for ( var j = 0; j < matchIds.length; j++)
+					if ( matchIds[i] === json[j].USER_ID )	//find the match from user table
 					{
-						if ( json[i].USER_ID === matchIds[j] )	//find the match from user table
-						{
-							matchResults.push(json[i]);	//push the match user into the match results
-						}
+						matchResults.push(json[j]);	//push the match user into the match results
 					}
-					
 				}
 			}
-		
-			matchResults = _.sortBy(matchResults, function(user){
-				return user.NAME
-			});
+			
+			matchResults.reverse();	//we want the highest rank to be at the top, so reverse the order of the array
 	
 			if (matchResults)
 			{
@@ -142,7 +148,6 @@ function populateMatches()
 				 * 
 				 */
 				var sections = [];
-				//var dataToAdd = new Array();
 				/**
 				 * Create the ListViewSection header view
 				 * DOCS: http://docs.appcelerator.com/platform/latest/#!/api/Titanium.UI.ListSection-property-headerView
@@ -158,7 +163,7 @@ function populateMatches()
 				  * Create and Add the Label to the ListView Section header view
 				  */
 				 var sectionLabel = Ti.UI.createLabel({
-				 	text: 'Matches based on your areas of research',
+				 	text: 'Matches listed based on your areas of research',
 				 	left: 20,
 				 	font:{
 				 		fontSize: 20
