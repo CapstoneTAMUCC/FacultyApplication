@@ -88,102 +88,99 @@ function populateSearchResults()
 			}
 		}
 		
-		searchResults = _.sortBy(searchResults, function(user){
-			return user.NAME
-		});
-
-		if (searchResults)
+		if (searchResults.length < 1)	//if there are no search results display a warning
 		{
-			/**
-			 * Setup our Indexes and Sections Array for building out the ListView components
-			 * 
-			 */
-			indexes = [];
-			var sections = [];
-			
-			/**
-			 * Group the data by first letter of last name to make it easier to create 
-			 * sections. (leverages the UndrescoreJS _.groupBy function)
-			 */
-			var userGroups  = _.groupBy(searchResults, function(item){
-			 	return item.NAME.charAt(0);
+			alert('No results found!');
+		}
+		else
+		{
+			searchResults = _.sortBy(searchResults, function(user){
+				return user.NAME
 			});
-	        /**
-	         * Iterate through each group created, and prepare the data for the ListView
-	         * (Leverages the UnderscoreJS _.each function)
-	         */
-			_.each(userGroups, function(group)
+			
+			if (searchResults)
 			{
 				/**
-				 * Take the group data that is passed into the function, and parse/transform
-				 * it for use in the ListView templates as defined in the directory.xml file.
+				 * Setup our Indexes and Sections Array for building out the ListView components
+				 * 
 				 */
-				var dataToAdd = preprocessForListView(group);
-	
-				/**
-				 * Check to make sure that there is data to add to the table,
-				 * if not lets exit
-				 */
-				if(dataToAdd.length < 1) return;
-				
+				var sections = [];
 				
 				/**
-				 * Lets take the first Character of the LastName and push it onto the index
-				 * Array - this will be used to generate the indices for the ListView on IOS
+				 * Group the data by first letter of last name to make it easier to create 
+				 * sections. (leverages the UndrescoreJS _.groupBy function)
 				 */
-				indexes.push({
-					index: indexes.length,
-					title: group[0].NAME.charAt(0)
+				var userGroups  = _.groupBy(searchResults, function(item){
+				 	return item.NAME.charAt(0);
 				});
-	
-				/**
-				 * Create the ListViewSection header view
-				 * DOCS: http://docs.appcelerator.com/platform/latest/#!/api/Titanium.UI.ListSection-property-headerView
-				 */
-	
-				 var sectionHeader = Ti.UI.createView({
-				 	backgroundColor: "#ececec",
-				 	width: Ti.UI.FILL,
-				 	height: 30
-				 });
-	
-				 /**
-				  * Create and Add the Label to the ListView Section header view
-				  */
-				 var sectionLabel = Ti.UI.createLabel({
-				 	text: group[0].NAME.charAt(0),
-				 	left: 20,
-				 	font:{
-				 		fontSize: 20
-				 	},
-				 	color: "#666"
-				 });
-				 sectionHeader.add(sectionLabel);
-	
-				/**
-				 * Create a new ListViewSection, and ADD the header view created above to it.
-				 */
-				 var section = Ti.UI.createListSection({
-					headerView: sectionHeader
-				});
-	
-				/**
-				 * Add Data to the ListViewSection
-				 */
-				section.items = dataToAdd;
+		        /**
+		         * Iterate through each group created, and prepare the data for the ListView
+		         * (Leverages the UnderscoreJS _.each function)
+		         */
+				_.each(userGroups, function(group)
+				{
+					/**
+					 * Take the group data that is passed into the function, and parse/transform
+					 * it for use in the ListView templates as defined in the directory.xml file.
+					 */
+					var dataToAdd = preprocessForListView(group);
+					/**
+					 * Check to make sure that there is data to add to the table,
+					 * if not lets exit
+					 */
+					if(dataToAdd.length < 1) return;
+		
+					/**
+					 * Create the ListViewSection header view
+					 * DOCS: http://docs.appcelerator.com/platform/latest/#!/api/Titanium.UI.ListSection-property-headerView
+					 */
+		
+					 var sectionHeader = Ti.UI.createView({
+					 	backgroundColor: "#ececec",
+					 	width: Ti.UI.FILL,
+					 	height: 30
+					 });
+		
+					 /**
+					  * Create and Add the Label to the ListView Section header view
+					  */
+					 var sectionLabel = Ti.UI.createLabel({
+					 	text: group[0].NAME.charAt(0),
+					 	left: 20,
+					 	font:{
+					 		fontSize: 20
+					 	},
+					 	color: "#666"
+					 });
+					 sectionHeader.add(sectionLabel);
+		
+					/**
+					 * Create a new ListViewSection, and ADD the header view created above to it.
+					 */
+					 var section = Ti.UI.createListSection({
+						headerView: sectionHeader
+					});
+		
+					/**
+					 * Add Data to the ListViewSection
+					 */
+					section.items = dataToAdd;
+					
+					/**
+					 * Push the newly created ListViewSection onto the `sections` array. This will be used to populate
+					 * the ListView 
+					 */
+					sections.push(section);
+				});	//end of each function
 				
 				/**
-				 * Push the newly created ListViewSection onto the `sections` array. This will be used to populate
-				 * the ListView 
+				 * Add the ListViewSections and data elements created above to the ListView
 				 */
-				sections.push(section);
-			});	//end of each function
+				$.listView.sections = sections;
+			}// end of if statement if (searchResults)
 			
-			/**
-			 * Add the ListViewSections and data elements created above to the ListView
-			 */
-			$.listView.sections = sections;
-		}// end of if statement
+		}//end of else 
+		
 	};//end of onload function
 
 }//end of populateSearchResults function
@@ -224,7 +221,14 @@ var preprocessForListView = function(rawData) {
 
 $.searchButton.addEventListener('click', function(e)
 {
-	populateSearchResults();
+	if ($.searchText.value == '' || $.searchText.value == ' ' )
+	{
+		alert('Please enter a search phrase');
+	}
+	else
+	{
+		populateSearchResults();
+	}
 });
 
 function onPhotoClick(e){

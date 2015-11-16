@@ -400,28 +400,6 @@ overrode the settings with other TSS, XML, or JS settings:
 	layout: 'horizontal'
 }
 
-"#nameView": {
-	height: '50dp',
-	width: '100%',
-	backgroundColor: '#800000',
-	layout: 'horizontal',
-	top: '0dp',
-	touchEnabled:'false'
-}
-
-"#nameField": {
-	color:'white',
-	font:{fontSize:25,fontFamily:'Times New Roman', fontWeight:'bold'},
-	height:'auto',
-	width:'100%',
-	textAlign:'center',
-	top:'5dp',
-	align:'center',
-	enabled: 'false',
-	hintText: 'Enter Your Name',
-	hintTextColor: 'white'
-}
-
 ".iconSize": {
 	width: '50dp',
 	height: '50dp' 

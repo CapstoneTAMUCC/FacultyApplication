@@ -139,74 +139,83 @@ function populateMatches()
 				}
 			}
 			
-			matchResults.reverse();	//we want the highest rank to be at the top, so reverse the order of the array
-	
-			if (matchResults)
+			if (matchResults.length < 1)	//if there are no matches to display, warn the user
 			{
-				/**
-				 * Setup our Indexes and Sections Array for building out the ListView components
-				 * 
-				 */
-				var sections = [];
-				/**
-				 * Create the ListViewSection header view
-				 * DOCS: http://docs.appcelerator.com/platform/latest/#!/api/Titanium.UI.ListSection-property-headerView
-				 */
+				alert('No results found!');
+			}
+			else
+			{
+				matchResults.reverse();	//we want the highest rank to be at the top, so reverse the order of the array
 	
-				 var sectionHeader = Ti.UI.createView({
-				 	backgroundColor: "#ececec",
-				 	width: Ti.UI.FILL,
-				 	height: 30
-				 });
+				if (matchResults)
+				{
+					/**
+					 * Setup our Indexes and Sections Array for building out the ListView components
+					 * 
+					 */
+					var sections = [];
+					/**
+					 * Create the ListViewSection header view
+					 * DOCS: http://docs.appcelerator.com/platform/latest/#!/api/Titanium.UI.ListSection-property-headerView
+					 */
+		
+					 var sectionHeader = Ti.UI.createView({
+					 	backgroundColor: "#ececec",
+					 	width: Ti.UI.FILL,
+					 	height: 30
+					 });
+		
+					 /**
+					  * Create and Add the Label to the ListView Section header view
+					  */
+					 var sectionLabel = Ti.UI.createLabel({
+					 	text: 'Matches listed based on your areas of research',
+					 	left: 20,
+					 	font:{
+					 		fontSize: 20
+					 	},
+					 	color: "#666"
+					 });
+					 sectionHeader.add(sectionLabel);
+		
+					/**
+					 * Create a new ListViewSection, and ADD the header view created above to it.
+					 */
+					 var section = Ti.UI.createListSection({
+						headerView: sectionHeader
+					});
 	
-				 /**
-				  * Create and Add the Label to the ListView Section header view
-				  */
-				 var sectionLabel = Ti.UI.createLabel({
-				 	text: 'Matches listed based on your areas of research',
-				 	left: 20,
-				 	font:{
-				 		fontSize: 20
-				 	},
-				 	color: "#666"
-				 });
-				 sectionHeader.add(sectionLabel);
+					/**
+					 * Take the group data that is passed into the function, and parse/transform
+					 * it for use in the ListView templates as defined in the directory.xml file.
+					 */
+					var dataToAdd = preprocessForListView( matchResults );
+					
+					/**
+					 * Check to make sure that there is data to add to the table,
+					 * if not lets exit
+					 */
+					if(dataToAdd.length < 1) return;
 	
-				/**
-				 * Create a new ListViewSection, and ADD the header view created above to it.
-				 */
-				 var section = Ti.UI.createListSection({
-					headerView: sectionHeader
-				});
-
-				/**
-				 * Take the group data that is passed into the function, and parse/transform
-				 * it for use in the ListView templates as defined in the directory.xml file.
-				 */
-				var dataToAdd = preprocessForListView( matchResults );
-				
-				/**
-				 * Check to make sure that there is data to add to the table,
-				 * if not lets exit
-				 */
-				if(dataToAdd.length < 1) return;
-
-				/**
-				 * Add Data to the ListViewSection
-				 */
-				section.items = dataToAdd;
-				
-				/**
-				 * Push the newly created ListViewSection onto the `sections` array. This will be used to populate
-				 * the ListView 
-				 */
-				sections.push(section);
-				
-				/**
-				 * Add the ListViewSections and data elements created above to the ListView
-				 */
-				$.listView.sections = sections;
-			}// end of if statement
+					/**
+					 * Add Data to the ListViewSection
+					 */
+					section.items = dataToAdd;
+					
+					/**
+					 * Push the newly created ListViewSection onto the `sections` array. This will be used to populate
+					 * the ListView 
+					 */
+					sections.push(section);
+					
+					/**
+					 * Add the ListViewSections and data elements created above to the ListView
+					 */
+					$.listView.sections = sections;
+					
+				}// end of if statement if(matchResults)
+			
+			}//end of else
 			
 		};//end of second onload function
 		
