@@ -401,29 +401,17 @@ var preprocessForListView = function(rawData) {
 function onItemClick(e){
 	
 	/**
-	 * Appcelerator Analytics Call
-	 */
-	Ti.Analytics.featureEvent(Ti.Platform.osname+"."+title+".contact.clicked");
-	
-	/**
 	 * Get the Item that was clicked
 	 */
 	var item = $.listView.sections[e.sectionIndex].items[e.itemIndex];
-	
 	/**
 	 * Open the profile view, and pass in the user data for this contact
 	 */
-	Alloy.Globals.Navigator.open("profile", item.properties.user);
-}
 
-function messageClick(e){
-	alert('You clicked the message button!');
-}
-
-function onPhotoClick(e){
-	var newWindow = Alloy.createController('profile').getView();
-	Ti.UI.currentWindow.close();
-	newWindow.open();
+	Alloy.Globals.profileViewID = item.properties.user.USER_ID;
+	Titanium.API.log("Alloy.Globals.profileViewID is -->", Alloy.Globals.profileViewID);
+	Titanium.API.log("Alloy.Globals.thisUserID is -->", Alloy.Globals.thisUserID);
+	Alloy.Globals.Navigate2($, $.connections, Alloy.createController('profileView').getView() );
 }
 
 /**

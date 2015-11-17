@@ -1,0 +1,250 @@
+<Alloy>  
+	<TabGroup title="Profile">
+		<Menu id="menu" platform="android">
+			<MenuItem showAsAction="Ti.Android.SHOW_AS_ACTION_IF_ROOM" title="Home" icon="homeIcon.png" onClick="homeButtonFunc" />
+        </Menu>
+
+		<Tab title="About" icon="KS_nav_ui.png">
+			
+			<Window title="About">
+				<!--
+				<View id="nameView">
+					<TextField id="nameField">Firstname Lastname</TextField>
+				</View>
+				<ImageView id="profilePicture"></ImageView>
+				-->
+				<ScrollView id="aboutScrollView" class="vgroup">
+					<!--
+					<View class="black-line bottom"/>
+					
+					<TextField id="additionalText1" class="aboutTextfield" hintText="Example: Program Assistant"></TextField>
+					<TextField id="additionalText2" class="aboutTextfield" hintText="Example: Texas A&M AgriLife Research"></TextField>
+					<TextField id="additionalText3" class="aboutTextfield" hintText="Example: Corporate Relations"></TextField>
+					-->
+					<View id="nameView">
+						<TextField id="nameField">Firstname Lastname</TextField>
+					</View>
+					<ImageView id="profilePicture"></ImageView>
+					
+					<View class="black-line bottom"/>
+					
+					<Label id="educationLabel" class="labelClass">Education Information:</Label>
+					<TextArea id="educationText" hintText="No education information provided"></TextArea>
+					
+					<View class="black-line bottom"/>
+
+					<Label id="contactInfoLabel" class="labelClass">Contact Information:</Label>
+					<TextArea id="contactInfoText" hintText="No contact information provided"></TextArea>
+
+					<View class="black-line bottom"/>
+
+					<Label id="projectLabel" class="labelClass">Current Projects:</Label>
+					<TextArea id="projectText" hintText="No project information provided"></TextArea>
+
+					<View class="black-line bottom"/>
+
+					<Label id="expertiseLabel" class="labelClass">Areas of Expertise:</Label>
+					<TextArea id="expertiseText" hintText="No areas of expertise provided"></TextArea>
+
+					<View class="black-line bottom"/>
+
+					<Label id="committeeLabel" class="labelClass">Committees:</Label>
+					<TextArea id="committeeText" hintText="No committees provided"></TextArea>										
+				
+					<View class="black-line bottom"/>
+					
+					<Label id="otherInterestLabel" class="labelClass">Other Professional Interests:</Label>											
+					<TextArea id="otherInterestText" hintText="No other professional interests provided"></TextArea>
+					
+					<View class="black-line bottom"/>
+				</ScrollView>
+				
+			</Window>
+		</Tab>
+		<Tab title="Questionnaire" icon="KS_nav_views.png">
+			<Window title="Questionnaire">
+				<TableView id="table2">
+					<TableViewSection id="question1" headerTitle=" ">
+						<TableViewRow id="question1Row1">
+							<Label id="question1Label" class="question">Are you looking to expand your research team?</Label>
+						</TableViewRow>
+						
+						<TableViewRow id="question1Row2">
+							<Button id="question1yes" class="checkbox"></Button>
+							<Label class="checkboxLabel">Yes</Label>
+						</TableViewRow>
+						
+						<TableViewRow id="question1Row2">
+							<Button id="question1no" class="checkbox"></Button>
+							<Label class="checkboxLabel">No</Label>
+						</TableViewRow>
+					</TableViewSection>
+					
+					<TableViewSection id="question2" headerTitle=" ">
+						<TableViewRow id="question2Row1">
+							<Label id="question2Label" class="question">Are you looking for new funding opportunities?</Label>
+						</TableViewRow>
+						
+						<TableViewRow id="question2Row2">
+							<Button id="question2yes" class="checkbox"></Button>
+							<Label class="checkboxLabel">Yes</Label>
+						</TableViewRow>
+						
+						<TableViewRow id="question2Row2">
+							<Button id="question2no" class="checkbox"></Button>
+							<Label class="checkboxLabel">No</Label>
+						</TableViewRow>
+					</TableViewSection>
+					
+					<TableViewSection id="question3" headerTitle=" ">
+						<TableViewRow id="question3Row1">
+							<Label id="question3Label" class="question">What Agency/University of the Texas A&M System do you belong to?</Label>
+						</TableViewRow>
+						
+						<TableViewRow id="question3Row2">
+							<Button id="tamuCheckbox" class="checkbox" onClick="checkboxFunction"></Button>
+							<Label class="checkboxLabel">Texas A&M University - College Station</Label>
+						</TableViewRow>
+						
+						<TableViewRow id="question3Row3">
+							<Button id="tamuccCheckbox" class="checkbox" onClick="checkboxFunction"></Button>
+							<Label class="checkboxLabel">Texas A&M University - Corpus Christi</Label>
+						</TableViewRow>			
+						
+						<TableViewRow id="question3Row4">
+							<Button id="tamukCheckbox" class="checkbox" onClick="checkboxFunction"></Button>
+							<Label class="checkboxLabel">Texas A&M University - Kingsville</Label>
+						</TableViewRow>
+						
+						<TableViewRow id="question3Row5">
+							<Button id="tamucCheckbox" class="checkbox" onClick="checkboxFunction"></Button>
+							<Label class="checkboxLabel">Texas A&M University - Commerce</Label>
+						</TableViewRow>
+						
+						<TableViewRow id="question3Row6">
+							<Button id="tamutCheckbox" class="checkbox" onClick="checkboxFunction"></Button>
+							<Label class="checkboxLabel">Texas A&M University - Texarkana</Label>
+						</TableViewRow>
+						
+						<TableViewRow id="question3Row7">
+							<Button id="tamuctCheckbox" class="checkbox" onClick="checkboxFunction"></Button>
+							<Label class="checkboxLabel">Texas A&M University - Central Texas</Label>
+						</TableViewRow>
+						
+						<TableViewRow id="question3Row8">
+							<Button id="tamusaCheckbox" class="checkbox" onClick="checkboxFunction"></Button>
+							<Label class="checkboxLabel">Texas A&M University - San Antonio</Label>
+						</TableViewRow>
+						
+						<TableViewRow id="question3Row9">
+							<Button id="prairieCheckbox" class="checkbox" onClick="checkboxFunction"></Button>
+							<Label class="checkboxLabel">Prairie View A&M University</Label>
+						</TableViewRow>
+						
+						<TableViewRow id="question3Row10">
+							<Button id="tarletonCheckbox" class="checkbox" onClick="checkboxFunction"></Button>
+							<Label class="checkboxLabel">Tarleton State University</Label>
+						</TableViewRow>
+						
+						<TableViewRow id="question3Row11">
+							<Button id="westamCheckbox" class="checkbox" onClick="checkboxFunction"></Button>
+							<Label class="checkboxLabel">West Texas A&M University</Label>
+						</TableViewRow>
+						
+						<TableViewRow id="question3Row12">
+							<Button id="tamhscCheckbox" class="checkbox" onClick="checkboxFunction"></Button>
+							<Label class="checkboxLabel">Texas A&M Health Science Center</Label>
+						</TableViewRow>
+						
+						<TableViewRow id="question3Row13">
+							<Button id="tamarCheckbox" class="checkbox" onClick="checkboxFunction"></Button>
+							<Label class="checkboxLabel">Texas A&M AgriLife Research</Label>
+						</TableViewRow>
+						
+						<TableViewRow id="question3Row14">
+							<Button id="tameesCheckbox" class="checkbox" onClick="checkboxFunction"></Button>
+							<Label class="checkboxLabel">Texas A&M Engineering Experiment Station</Label>
+						</TableViewRow>
+						
+						<TableViewRow id="question3Row15">
+							<Button id="tamaesCheckbox" class="checkbox" onClick="checkboxFunction"></Button>
+							<Label class="checkboxLabel">Texas A&M AgriLife Extension Service</Label>
+						</TableViewRow>
+						
+						<TableViewRow id="question3Row16">
+							<Button id="tamfsCheckbox" class="checkbox" onClick="checkboxFunction"></Button>
+							<Label class="checkboxLabel">Texas A&M Forest Service</Label>
+						</TableViewRow>
+						
+						<TableViewRow id="question3Row17">
+							<Button id="tamtiCheckbox" class="checkbox" onClick="checkboxFunction"></Button>
+							<Label class="checkboxLabel">Texas A&M Transportation Institute</Label>
+						</TableViewRow>
+						
+						<TableViewRow id="question3Row18">
+							<Button id="tamvmdlCheckbox" class="checkbox" onClick="checkboxFunction"></Button>
+							<Label class="checkboxLabel">Texas A&M Veterinary Medical Diagnostic Laboratory</Label>
+						</TableViewRow>
+					</TableViewSection>
+					
+					<TableViewSection id="question4" headerTitle=" ">
+						<TableViewRow id="question4Row1">
+							<Label id="question4Label" class="question">Select your main areas of research:</Label>
+						</TableViewRow>
+						
+						<TableViewRow id="question4Row2">
+							<Button id="foodSafetyCheckbox" class="checkbox" onClick="checkboxFunction"></Button>
+							<Label class="checkboxLabel">Food Safety</Label>
+						</TableViewRow>
+						
+						<TableViewRow id="question4Row3">
+							<Button id="nutritionCheckbox" class="checkbox" onClick="checkboxFunction"></Button>
+							<Label class="checkboxLabel">Nutrition</Label>
+						</TableViewRow>
+						
+						<TableViewRow id="question4Row4">
+							<Button id="publicHealthCheckbox" class="checkbox" onClick="checkboxFunction"></Button>
+							<Label class="checkboxLabel">Public Health and Well-being</Label>
+						</TableViewRow>
+						
+						<TableViewRow id="question4Row5">
+							<Button id="productionEconCheckbox" class="checkbox" onClick="checkboxFunction"></Button>
+							<Label class="checkboxLabel">Production Economics</Label>
+						</TableViewRow>
+						
+						<TableViewRow id="question4Row6">
+							<Button id="tradeCheckbox" class="checkbox" onClick="checkboxFunction"></Button>
+							<Label class="checkboxLabel">Domestic and International Trade</Label>
+						</TableViewRow>
+						
+						<TableViewRow id="question4Row7">
+							<Button id="publicPolicyCheckbox" class="checkbox" onClick="checkboxFunction"></Button>
+							<Label class="checkboxLabel">Public Policy</Label>
+						</TableViewRow>
+						
+						<TableViewRow id="question4Row8">
+							<Button id="animalHealthCheckbox" class="checkbox" onClick="checkboxFunction"></Button>
+							<Label class="checkboxLabel">Animal Health and Well-being</Label>
+						</TableViewRow>
+						
+						<TableViewRow id="question4Row9">
+							<Button id="fishCheckbox" class="checkbox" onClick="checkboxFunction"></Button>
+							<Label class="checkboxLabel">Fish and Aquaculture</Label>
+						</TableViewRow>
+						
+						<TableViewRow id="question4Row10">
+							<Button id="bioenergyCheckbox" class="checkbox" onClick="checkboxFunction"></Button>
+							<Label class="checkboxLabel">Bioenergy</Label>
+						</TableViewRow>
+						
+						<TableViewRow id="question4Row11">
+							<Button id="wildlifeCheckbox" class="checkbox" onClick="checkboxFunction"></Button>
+							<Label class="checkboxLabel">Wildlife Management</Label>
+						</TableViewRow>
+					</TableViewSection>
+				</TableView>
+				
+			</Window>
+		</Tab>
+	</TabGroup>
+</Alloy>
