@@ -9,7 +9,6 @@
         
         	<Picker id='picker' selectionIndicator="true">
         	</Picker>
-        	<Button id="Select" onClick="onSelectButton"></Button>
-        
+        	<Button id="Select" title="Select" top="20dp" backgroundColor="#000" onClick="onSelectButton"></Button>
     </Window>
 </Alloy>

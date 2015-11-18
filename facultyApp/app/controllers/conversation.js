@@ -214,9 +214,11 @@ $.replyButton.addEventListener('click', function(e)
         init(); 
 }); 
 
+/*
 $.conversation.addEventListener('androidback' , function (e) {
 	Alloy.Globals.Navigate ($, $.conversation, Alloy.createController('messages').getView());
 });
+*/
 
 var homeButtonFunc = function () {
 	Alloy.Globals.goToHome ($, $.conversation);

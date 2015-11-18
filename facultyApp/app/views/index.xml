@@ -1,6 +1,6 @@
 <Alloy>
 	<Window id="index">
-		<Button id="profileBar" class="mainMenuOption">Pic FirstName LastName</Button>
+		<Button id="profileBar" class="mainMenuOption"></Button>
 		<Button id="profileButton" class="mainMenuOption">Profile</Button>
 		<Button id="messagesButton" class="mainMenuOption">Messages</Button>
 		<Button id="searchButton" class="mainMenuOption">Search</Button>

@@ -10,7 +10,7 @@ function init(){
 			alert('There was an error during the connection'); 
 	    },
 	    timeout:1000,
-	});                      
+	});                  
 	
 	//Here you have to change it for your local ip 
 	connection.open('POST', '52.32.54.34/php/read_contact_list.php');
@@ -42,9 +42,6 @@ function init(){
 		conn.onload = function() {
 			namesJson = JSON.parse(this.responseText);
 			namesJson = namesJson.NAME;
-		  	    
-		  	var row = Ti.UI.createPickerRow({title: "Select", id: "select"});
-		  	data.push (row);
 		  	                  
 			//Insert the JSON data to the table view 
 			for( var i=0; i<json.length; i++){ 
