@@ -22,13 +22,17 @@
 						<View platform="android" class="smoothAvatarBorderRadius" onClick="onPhotoClick"/>
 						<View class="vgroup left size">
 							<Label id="userName" bindId="userName" class="title" />
+							<Button id="button1" bindId="button1" class="greenCheckmark" visible="false"></Button>
 							<Label id="userEmail" bindId="userEmail" class="subtitle" />
 							<Label id="userCompany" bindId="userCompany" class="subtitle" />
 						</View>
-						<View class="hgroup right size">
-							<Button id="button1" class="greenCheckmark"></Button> 
-							<Button id="button2" class="requestConnection"></Button> 
-							<Button id="button3" class="sendMessage"></Button>
+						
+						<View class="hgroup right size">	
+							<!--					
+							<Button id="button2" bindId="button2" class="requestConnection left-buffer right-buffer"></Button> 
+							<Button id="button3" bindId="button3" class="decline left-buffer right-buffer" visible="false"></Button> 
+							-->
+							<Button id="sendMessage" bindId="sendMessage" class="sendMessage left-buffer right-buffer"></Button> 				
 						</View>
 						<View class="gray-line bottom"/>
 					</View>

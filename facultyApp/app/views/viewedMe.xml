@@ -24,11 +24,15 @@
 							<Label id="userEmail" bindId="userEmail" class="subtitle" />
 							<Label id="userCompany" bindId="userCompany" class="subtitle" />
 						</View>
-						<View class="hgroup right size">
-							
-							<Button id="button2" bindId="button2" class="requestConnection"></Button> 
-							<Button id="button3" bindId="button3" class="sendMessage"></Button>
+						
+						<View class="hgroup right size">	
+							<!--					
+							<Button id="button2" bindId="button2" class="requestConnection left-buffer right-buffer"></Button> 
+							<Button id="button3" bindId="button3" class="decline left-buffer right-buffer" visible="false"></Button> 
+							-->
+							<Button id="sendMessage" bindId="sendMessage" class="sendMessage left-buffer right-buffer"></Button> 				
 						</View>
+						
 						<View class="gray-line bottom"/>
 					</View>
 				</ItemTemplate>

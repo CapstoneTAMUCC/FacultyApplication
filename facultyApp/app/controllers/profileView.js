@@ -199,7 +199,7 @@ function button1Click(e)
 		request3.send(params);
 		
 		//Set the button to checkmark and get rid of decline button, we are now contacts
-		e.source.title = '\u2713';
+		e.source.title = '\u2713 Friends';
 		e.source.backgroundColor = '#07ce00'; 
 		$.button2.visible = 'false';
 	}
