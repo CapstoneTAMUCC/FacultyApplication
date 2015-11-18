@@ -251,7 +251,8 @@ function onItemClick(e){
 	
 	request.send(params);
 	
-	Alloy.Globals.Navigate2($, $.search, Alloy.createController('profileView').getView() );
+	Alloy.Globals.comingFrom = 'search';	//we are going to open profileView from search
+	Alloy.Globals.Navigate($, $.search, Alloy.createController('profileView').getView() );
 }
 
 $.searchButton.addEventListener('click', function(e)

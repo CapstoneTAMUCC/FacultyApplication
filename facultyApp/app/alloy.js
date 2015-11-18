@@ -24,19 +24,6 @@ Alloy.Globals.Navigate = function Navigate(v, fromView, toView) {
  	v.destroy();
 };
 
-Alloy.Globals.Navigate2 = function Navigate2(v, fromView, toView) {
-	Titanium.API.log("Back button pressed, global function called, " + fromView.children.length + " items to remove");
-    /*
-    _.each(fromView.children, function(view) {
-        fromView.remove(view);
- 	});
- 	*/
- 	var newWindow = toView;
-	newWindow.open();
- 	//fromView.close();
- 	v.destroy();
-};
-
 Alloy.Globals.MMNavigate = function MMNavigate(v, fromView, toView) {
 	Titanium.API.log("Navigating from Main Menu");
  	var newWindow = toView;
@@ -52,3 +39,4 @@ Alloy.Globals.goToHome = function goToHome(v, fromView){
 Alloy.Collections.user = Alloy.createCollection('user'); 
 Alloy.Globals.thisUserID = 1; 
 Alloy.Globals.profileViewID = 1;
+Alloy.Globals.comingFrom = 'nowhere';

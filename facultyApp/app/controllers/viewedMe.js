@@ -269,7 +269,8 @@ function onItemClick(e){
 	
 	request.send(params);
 	
-	Alloy.Globals.Navigate2($, $.viewedMe, Alloy.createController('profileView').getView() );
+	Alloy.Globals.comingFrom = 'viewedMe';	//we are going to open profileView from viewedMe
+	Alloy.Globals.Navigate($, $.viewedMe, Alloy.createController('profileView').getView() );
 }
 
 function onPhotoClick(e){

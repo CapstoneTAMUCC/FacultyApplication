@@ -289,7 +289,8 @@ function onItemClick(e){
 	
 	request.send(params);
 	
-	Alloy.Globals.Navigate2($, $.matches, Alloy.createController('profileView').getView() );
+	Alloy.Globals.comingFrom = 'matches';	//we are going to open profileView from matches
+	Alloy.Globals.Navigate($, $.matches, Alloy.createController('profileView').getView() );
 }
 
 

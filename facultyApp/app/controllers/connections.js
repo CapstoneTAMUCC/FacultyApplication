@@ -423,6 +423,7 @@ function onItemClick(e){
 	
 	request.send(params);
 	
+	Alloy.Globals.comingFrom = 'connections';	//we are going to open profileView from connections
 	Alloy.Globals.Navigate2($, $.connections, Alloy.createController('profileView').getView() );
 }
 
@@ -458,7 +459,8 @@ function onItemClick2(e){
 	
 	request.send(params);
 	
-	Alloy.Globals.Navigate2($, $.connections, Alloy.createController('profileView').getView() );
+	Alloy.Globals.comingFrom = 'connections';	//we are going to open profileView from connections
+	Alloy.Globals.Navigate($, $.connections, Alloy.createController('profileView').getView() );
 }
 
 /**
