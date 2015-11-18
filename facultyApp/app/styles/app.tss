@@ -406,13 +406,14 @@ overrode the settings with other TSS, XML, or JS settings:
 }
 
 ".greenCheckmark": {
-	width: '50dp',
-	height: '50dp',
+	width: 'auto',
+	height: 'auto',
 	title: '\u2713',
 	backgroundColor: '#07ce00',
     enabled: 'false',
 	color: '#fff',
-	font:{fontSize: 30}
+	font:{fontSize: 14},
+	left: 85
 }
 
 ".sendMessage": {

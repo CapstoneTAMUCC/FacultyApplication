@@ -228,6 +228,7 @@ var preprocessForListView = function(rawData) {
 				],
 				canEdit:true
 			},
+			//button1: {visible: }
 			userName: {text: item.NAME}//,
 			//userCompany: {text: item.company},
 			//userPhoto: {image: item.photo}, EXLUDE PHOTO FOR NOW
@@ -235,7 +236,6 @@ var preprocessForListView = function(rawData) {
 		};
 	});	
 };
-
 
 /**
  * This function handles the click events for the rows in the ListView.
@@ -247,19 +247,29 @@ var preprocessForListView = function(rawData) {
 function onItemClick(e){
 	
 	/**
-	 * Appcelerator Analytics Call
-	 */
-	Ti.Analytics.featureEvent(Ti.Platform.osname+"."+title+".contact.clicked");
-	
-	/**
 	 * Get the Item that was clicked
 	 */
 	var item = $.listView.sections[e.sectionIndex].items[e.itemIndex];
+	Alloy.Globals.profileViewID = item.properties.user.USER_ID;	//set the profile I want to view
+
+	//Add my information to the profile's VIEWED ME list as I am going to view it
+	var request = Ti.Network.createHTTPClient({ 	
+	onerror: function(e){ 
+		Ti.API.debug(e.error); 
+		alert('There was an error during the connection PROFILE VIEW'); 
+	}, 
+	timeout:1000, 	         
+	});  
+	//Request the data from the web service, Here you have to change it for your local ip 
+	request.open("POST","52.32.54.34/php/insert_into_viewed_me.php"); 
 	
-	/**
-	 * Open the profile view, and pass in the user data for this contact
-	 */
-	Alloy.Globals.Navigator.open("profile", item.properties.user);
+	var params = ({ "USER_ID": 				Alloy.Globals.profileViewID,	
+					"OTHER_USER_ID": 		Alloy.Globals.thisUserID,
+					});
+	
+	request.send(params);
+	
+	Alloy.Globals.Navigate2($, $.viewedMe, Alloy.createController('profileView').getView() );
 }
 
 function onPhotoClick(e){

@@ -54,7 +54,7 @@
 					The Directory list. 
 					This listView leverages two ListItem templates to denote regular contacts and those that are bookmarked.
 				-->
-				<ListView id="listView2" defaultItemTemplate="userTemplate">
+				<ListView id="listView2" defaultItemTemplate="userTemplate" onItemclick="onItemClick2">
 					<Templates>
 						
 						<!-- UserTemplate - this is the default ListItem template -->

@@ -6,6 +6,10 @@
 	top:'50dp'
 }
 
+".leftClass": {
+	left: 350
+}
+
 "#nameView": {
 	height: '50dp',
 	width: '100%',

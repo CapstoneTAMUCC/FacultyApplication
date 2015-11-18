@@ -13,6 +13,221 @@ function checkboxFunction(e)
     }
 }
 
+function setConnectButtonStatus()
+{
+	var statusFound = false;	//if set to true, means that we know the button's status
+	
+	//FIRST CHECK --> CHECK TO SEE IF THE PROFILE I AM VIEWING IS ALREADY A CONTACT OF MINE
+	var request1 = Ti.Network.createHTTPClient({ 
+	onerror: function(e){ 	
+		Ti.API.debug(e.error); 	
+		alert('There was an error during the connection PENDING'); 	
+	}, 	
+	timeout:1000, 
+	});
+
+	//Here you have to change it for your local ip 
+	request1.open('POST', '52.32.54.34/php/read_contact_list.php');  
+	var params = ({ "USER_ID": Alloy.Globals.thisUserID }); 
+	request1.send(params);
+	request1.onload = function() {
+		var json = JSON.parse(this.responseText);
+		var json = json.OTHER_USER_ID;
+		
+		for( var i = 0; i < json.length; i++)
+		{
+			if (json[i].OTHER_USER_ID == Alloy.Globals.profileViewID )	//THIS MEANS HE IS MY CONTACT
+			{
+				Titanium.API.log("I am within if statement 1");
+				$.button1.title = '\u2713 Friends';
+				$.button1.backgroundColor = '#07ce00';
+				$.button2.visible = 'false';	//DECLINE BUTTON
+				statusFound = true;
+				break;
+			}
+		}
+	};	//end of onload function
+	
+	if (statusFound == false)
+	{
+		Titanium.API.log("2nd status check");
+		//SECOND CHECK --> CHECK TO SEE IF I ALREADY SENT A REQUEST TO THE PROFILE I AM VIEWING
+		var request2 = Ti.Network.createHTTPClient({ 
+		onerror: function(e){ 	
+			Ti.API.debug(e.error); 	
+			alert('There was an error during the connection PENDING'); 	
+		}, 	
+		timeout:1000, 
+		});
+	
+		//Here you have to change it for your local ip 
+		request2.open('POST', '52.32.54.34/php/read_pending_list.php');  
+		var params = ({ "USER_ID": Alloy.Globals.profileViewID }); 
+		request2.send(params);
+		request2.onload = function() {
+			var json = JSON.parse(this.responseText);
+			var json = json.OTHER_USER_ID;
+			
+			for( var i = 0; i < json.length; i++)
+			{
+				if (json[i].OTHER_USER_ID == Alloy.Globals.thisUserID )	//THIS MEANS THE CLIENT ALREADY SENT A CONTACT REQUEST
+				{
+					Titanium.API.log("I am within if statement 1");
+					$.button1.title = 'Pending';
+					$.button1.backgroundColor = '#696969';
+					$.button2.visible = 'false';	//DECLINE BUTTON
+					statusFound = true;
+					break;
+				}
+			}
+		};	//end of onload function
+	}
+	
+	if (statusFound == false)
+	{
+		Titanium.API.log("3rd status check");
+		//THIRD CHECK --> CHECK TO SEE IF THE PROFILE I AM VIEWING SENT ME A REQUEST
+		var request3 = Ti.Network.createHTTPClient({ 
+		onerror: function(e){ 	
+			Ti.API.debug(e.error); 	
+			alert('There was an error during the connection PENDING'); 	
+		}, 	
+		timeout:1000, 
+		});
+	
+		//Here you have to change it for your local ip 
+		request3.open('POST', '52.32.54.34/php/read_pending_list.php');  
+		var params = ({ "USER_ID": Alloy.Globals.thisUserID }); 
+		request3.send(params);
+		request3.onload = function() {
+			var json = JSON.parse(this.responseText);
+			var json = json.OTHER_USER_ID;
+			
+			for( var i = 0; i < json.length; i++)
+			{
+				if (json[i].OTHER_USER_ID == Alloy.Globals.profileViewID )	//THIS MEANS THAT HE SENT US A REQUEST ALREADY
+				{
+					Titanium.API.log("I am within if statement 2");
+					$.button1.title = 'Accept';
+					$.button1.backgroundColor = '#07ce00';
+					$.button2.visible = 'true';	//DECLINE BUTTON
+					statusFound = true;
+					break;
+				}
+			}
+		};
+	}
+}
+
+function button1Click(e)
+{
+	if (e.source.title == 'Connect')
+	{
+		var request = Ti.Network.createHTTPClient({ 	
+		onerror: function(e){ 
+			Ti.API.debug(e.error); 
+			alert('There was an error during the connection PROFILE VIEW'); 
+		}, 
+		timeout:1000, 	         
+		});  
+		//Request the data from the web service, Here you have to change it for your local ip 
+	    request.open("POST","52.32.54.34/php/insert_into_pending.php"); 
+		
+		var params = ({ "USER_ID": 				Alloy.Globals.profileViewID,	
+						"OTHER_USER_ID": 		Alloy.Globals.thisUserID,
+						});
+	
+		request.send(params);
+		
+		//Set the button to Pending, I sent a request, now we are waiting for a response
+		e.source.title = 'Pending';
+		e.source.backgroundColor = '#696969';
+	}
+	else if (e.source.title == 'Accept')
+	{
+		//Add this profile to my contacts 
+		var request1 = Ti.Network.createHTTPClient({ 	
+		onerror: function(e){ 
+			Ti.API.debug(e.error); 
+			alert('There was an error during the connection PROFILE VIEW'); 
+		}, 
+		timeout:1000, 	         
+		});  
+		//Request the data from the web service, Here you have to change it for your local ip 
+	    request1.open("POST","52.32.54.34/php/insert_into_contact.php"); 
+		
+		var params = ({ "USER_ID": 				Alloy.Globals.thisUserID,	
+						"OTHER_USER_ID": 		Alloy.Globals.profileViewID,
+						});
+	
+		request1.send(params);
+		
+		
+		//Add myself to this profile's contacts list
+		var request2 = Ti.Network.createHTTPClient({ 	
+		onerror: function(e){ 
+			Ti.API.debug(e.error); 
+			alert('There was an error during the connection PROFILE VIEW'); 
+		}, 
+		timeout:1000, 	         
+		});  
+		//Request the data from the web service, Here you have to change it for your local ip 
+	    request2.open("POST","52.32.54.34/php/insert_into_contact.php"); 
+		
+		var params = ({ "USER_ID": 				Alloy.Globals.profileViewID,	
+						"OTHER_USER_ID": 		Alloy.Globals.thisUserID,
+						});
+	
+		request2.send(params);
+		
+		
+		//Delete him from my pending list
+		var request3 = Ti.Network.createHTTPClient({ 	
+		onerror: function(e){ 
+			Ti.API.debug(e.error); 
+			alert('There was an error during the connection PROFILE VIEW'); 
+		}, 
+		timeout:1000, 	         
+		});  
+		//Request the data from the web service, Here you have to change it for your local ip 
+	    request3.open("POST","52.32.54.34/php/delete_pending.php"); 
+		
+		var params = ({ "USER_ID": 				Alloy.Globals.thisUserID,	
+						"OTHER_USER_ID": 		Alloy.Globals.profileViewID,
+						});
+	
+		request3.send(params);
+		
+		//Set the button to checkmark and get rid of decline button, we are now contacts
+		e.source.title = '\u2713';
+		e.source.backgroundColor = '#07ce00'; 
+		$.button2.visible = 'false';
+	}
+}
+
+//Decline the request
+function button2Click(e)
+{
+	//Delete him from my pending
+	var request = Ti.Network.createHTTPClient({ 	
+	onerror: function(e){ 
+		Ti.API.debug(e.error); 
+		alert('There was an error during the connection PROFILE VIEW'); 
+	}, 
+	timeout:1000, 	         
+	});  
+	//Request the data from the web service, Here you have to change it for your local ip 
+    request.open("POST","52.32.54.34/php/delete_pending.php"); 
+	
+	var params = ({ "USER_ID": 				Alloy.Globals.thisUserID,	
+					"OTHER_USER_ID": 		Alloy.Globals.profileViewID,
+					});
+
+	request.send(params);
+	
+	e.source.visible = 'false';	//Decline button disappears once again
+}
+
 $.profileView.addEventListener('androidback' , function (e) {
 	Titanium.API.log("I AM USING ANDROID BACK IN PROFILEVIEW!");
 	//Alloy.Globals.Navigate ($, $.profileView, Alloy.createController('profile').getView());	//maybe this will work
@@ -163,6 +378,7 @@ function readResearchData(){
 }
 
 $.profileView.open();
+setConnectButtonStatus();
 readTextfieldData();
 readAgencyData();
 readResearchData();

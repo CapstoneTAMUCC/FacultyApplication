@@ -404,13 +404,60 @@ function onItemClick(e){
 	 * Get the Item that was clicked
 	 */
 	var item = $.listView.sections[e.sectionIndex].items[e.itemIndex];
-	/**
-	 * Open the profile view, and pass in the user data for this contact
-	 */
+	Alloy.Globals.profileViewID = item.properties.user.USER_ID;	//set the profile I want to view
 
-	Alloy.Globals.profileViewID = item.properties.user.USER_ID;
-	Titanium.API.log("Alloy.Globals.profileViewID is -->", Alloy.Globals.profileViewID);
-	Titanium.API.log("Alloy.Globals.thisUserID is -->", Alloy.Globals.thisUserID);
+	//Add my information to the profile's VIEWED ME list as I am going to view it
+	var request = Ti.Network.createHTTPClient({ 	
+	onerror: function(e){ 
+		Ti.API.debug(e.error); 
+		alert('There was an error during the connection PROFILE VIEW'); 
+	}, 
+	timeout:1000, 	         
+	});  
+	//Request the data from the web service, Here you have to change it for your local ip 
+	request.open("POST","52.32.54.34/php/insert_into_viewed_me.php"); 
+	
+	var params = ({ "USER_ID": 				Alloy.Globals.profileViewID,	
+					"OTHER_USER_ID": 		Alloy.Globals.thisUserID,
+					});
+	
+	request.send(params);
+	
+	Alloy.Globals.Navigate2($, $.connections, Alloy.createController('profileView').getView() );
+}
+
+/**
+ * This function handles the click events for the rows in the ListView.
+ * We want to capture the user property associated with the row, and pass
+ * it into the profile View
+ * 
+ * @param {Object} Event data passed to the function
+ */
+function onItemClick2(e){
+	
+	/**
+	 * Get the Item that was clicked
+	 */
+	var item = $.listView2.sections[e.sectionIndex].items[e.itemIndex];
+	Alloy.Globals.profileViewID = item.properties.user.USER_ID;	//set the profile I want to view
+
+	//Add my information to the profile's VIEWED ME list as I am going to view it
+	var request = Ti.Network.createHTTPClient({ 	
+	onerror: function(e){ 
+		Ti.API.debug(e.error); 
+		alert('There was an error during the connection PROFILE VIEW'); 
+	}, 
+	timeout:1000, 	         
+	});  
+	//Request the data from the web service, Here you have to change it for your local ip 
+	request.open("POST","52.32.54.34/php/insert_into_viewed_me.php"); 
+	
+	var params = ({ "USER_ID": 				Alloy.Globals.profileViewID,	
+					"OTHER_USER_ID": 		Alloy.Globals.thisUserID,
+					});
+	
+	request.send(params);
+	
 	Alloy.Globals.Navigate2($, $.connections, Alloy.createController('profileView').getView() );
 }
 
