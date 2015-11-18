@@ -380,7 +380,7 @@ function onItemClick(e){
 	Titanium.API.log("WUT2: " + exists(item.properties.user.OTHER_ID));
 	printArray();
 	//Titanium.API.log("HAHA: " + JSON.stringify(item, null, 4));
-	var newWindow = Alloy.createController('conversation', JSON.parse(makeJsonConversationString(exists(item.properties.user.OTHER_ID))).messages).getView();
+	var newWindow = Alloy.createController('conversation', JSON.parse(makeJsonConversationString(exists(item.properties.user.OTHER_ID)), item.properties.user.OTHER_ID)).getView();
 	newWindow.open();
 }
 
@@ -392,7 +392,16 @@ var homeButtonFunc = function () {
 	Alloy.Globals.goToHome ($, $.messages);
 };
 
-var makeJsonConversationString = function (index) {
+var makeTitleNameString = function (name) {
+    	var result = "{\"name\":[";
+    		result += "{";
+    		result +="\"USER_NAME\":" + "\"" + name + "\"";
+    		result += "}";
+    	result += "]}";
+    	return result;
+};
+
+var makeJsonConversationString = function (index, otherID) {
     	var result = "{\"messages\":[";
     	for (var j = 0; j < dataArray[index].length; j++) {
     		result += "{";
@@ -412,7 +421,9 @@ var makeJsonConversationString = function (index) {
     			result += ",";
     		}
     	}
-    	result += "]}";
+    	result += "], \"name\":" + "\"" + otherUserName + "\",";
+    	result += "\"id\":" + "\"" + otherID + "\"";
+    	result += "}";
     	Titanium.API.log("HERETWICE: " + result);
     	return result;
 };
@@ -425,10 +436,13 @@ var onDelete = function onDelete(e){
 };
 
 var onCompose = function onCompose(e){
-	/*
-	var newWindow = Alloy.createController('conversation').getView();
-	newWindow.open();
-	*/
+	Titanium.API.log("ONCOMPOSE");
+	for (var i = 0; i < dataArray.length; i++) {
+   		Titanium.API.log("ID: " + dataArray[i][0].TO_ID + " " + dataArray[i][0].FROM_ID);
+   	}
+	Alloy.Globals.Navigate ($, $.messages, Alloy.createController('newMessage').getView());
+	var newWindow = Alloy.createController('newMessage', dataArray).getView();
+	newWindow.open ();
 };
 
 /**

@@ -1,0 +1,15 @@
+<Alloy>
+    <Window id="newMessage" backgroundColor="white" layout="vertical" title="Compose Message">
+        <Menu id="menu" platform="android">
+			<MenuItem showAsAction="Ti.Android.SHOW_AS_ACTION_IF_ROOM" title="Home" icon="homeIcon.png" onClick="homeButtonFunc" />
+        </Menu>
+        
+        <Label id="label1" color="#900" shadowColor="#aaa" text="Select a recipient:" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER"
+            top="30" width="Ti.UI.SIZE" height="Ti.UI.SIZE" />
+        
+        	<Picker id='picker' selectionIndicator="true">
+        	</Picker>
+        	<Button id="Select" onClick="onSelectButton"></Button>
+        
+    </Window>
+</Alloy>

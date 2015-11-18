@@ -1,0 +1,35 @@
+"#picker":{
+	touchEnabled: true,
+//	pullBackgroundColor: '#000',
+	width: '75%',
+	height: '50dp',
+//    left : '40%',
+    font: {
+        fontFamily:'Arial',
+        fontSize: '14dp',
+        fontStyle: 'normal',
+        fontWeight: 'normal',
+        fontcolor:'black'
+  	},
+    paddingLeft : '10dp',
+    top:"20dp",
+    borderWidth : '1dp',
+    borderColor: "#000",
+    backgroundColor:"#800000",
+    color:"#FFF"
+}
+"#areaView":{
+    color:"#000",
+    
+}
+
+"#messageText": { 
+	bottom: 7,
+	left: 15,
+	width: '85%',
+	hintText: 'Reply', 
+	hintTextColor: 'black',
+	color: 'black',
+	backgroundColor: 'white',
+	borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED
+}

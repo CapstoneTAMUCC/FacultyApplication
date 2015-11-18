@@ -1,12 +1,13 @@
 var args = arguments[0] || {};
 var thisUserID = 1;
+var json = args.messages; 
 
 /**
  * Function to inialize the View, gathers data from the flat file and sets up the ListView
  */
 function init(){
-    	//Emptying the data to refresh the view 
-		var json = args;                  
+		$.conversation.title = args.name;
+    	//Emptying the data to refresh the view                  
 
     	//Insert the JSON data to the table view 
 
@@ -30,7 +31,11 @@ function init(){
 		/**
 	 	* IF the users array exists
 	 	*/
-		if(conversations) {
+	 	/*
+	 	if (!conversations) {
+	 		
+	 	}
+		else { */
 		
 			/**
 		 	* Setup our Indexes and Sections Array for building out the ListView components
@@ -107,21 +112,7 @@ function init(){
 					}
 				});
 			}
-		}
-	
-		else {
-			
-			if(OS_IOS){
-				$.messages.leftNavButton = Ti.UI.createLabel({
-					text: "\ue601",
-					color: "#C41230",
-					font:{
-						fontFamily:"icomoon",
-						fontSize:36
-					}
-				});
-			}
-		}
+	//	}
 };        
 
 /**
@@ -212,12 +203,12 @@ $.replyButton.addEventListener('click', function(e)
 		//Request the data from the web service, Here you have to change it for your local ip 
         request.open("POST","52.32.54.34/php/insert_into_message.php");
         var newMessage = ({"FROM_ID": Alloy.Globals.thisUserID,
-          	               "TO_ID":  args[0].OTHER_ID, 
+          	               "TO_ID": args.id, 
              	           "DATE": makeDate (new Date()), 
                            "BODY": $.messageText.value, 
                    	       "STATUS": 1, 
       	});
-      	args.push(newMessage);
+      	json.push(newMessage);
         request.send(newMessage);
        	$.messageText.value = '';
         init(); 
@@ -255,12 +246,6 @@ var makeDate = function (date) {
 Ti.App.addEventListener("refresh-data", function(e){
 	init();
 });
-
-var onDelete = function onDelete(e){
-};
-
-var onCompose = function onCompose(e){
-};
 
 /**
  * Initialize View

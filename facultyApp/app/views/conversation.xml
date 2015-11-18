@@ -1,9 +1,8 @@
 <Alloy>
-	<Window id="conversation" class="vgroup" title="Conversation">
+	<Window id="conversation" class="vgroup">
 		<Menu id="menu" platform="android">
 			<MenuItem showAsAction="Ti.Android.SHOW_AS_ACTION_IF_ROOM" title="Home" icon="homeIcon.png" onClick="homeButtonFunc" />
         </Menu>
-        
 		<ListView id="listView" defaultItemTemplate="userTemplate" onItemclick="onItemClick">
 			<Templates>
 				<ItemTemplate id="userTemplate" name="userTemplate" class="template">
@@ -24,7 +23,7 @@
 			<FooterView>
 				<View backgroundColor="#DDD" height="Ti.UI.SIZE">
                     <TextArea name="messageBox" id="messageText"></TextArea>
-				<Button id="replyButton"></Button>
+					<Button id="replyButton"></Button>
                 </View>
 			</FooterView>
 		</ListView>
