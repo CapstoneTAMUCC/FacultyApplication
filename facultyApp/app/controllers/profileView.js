@@ -199,7 +199,7 @@ function button1Click(e)
 		request3.send(params);
 		
 		//Set the button to checkmark and get rid of decline button, we are now contacts
-		e.source.title = '\u2713';
+		e.source.title = '\u2713 Friends';
 		e.source.backgroundColor = '#07ce00'; 
 		$.button2.visible = 'false';
 	}
@@ -230,8 +230,28 @@ function button2Click(e)
 
 $.profileView.addEventListener('androidback' , function (e) {
 	Titanium.API.log("I AM USING ANDROID BACK IN PROFILEVIEW!");
-	//Alloy.Globals.Navigate ($, $.profileView, Alloy.createController('profile').getView());	//maybe this will work
-	$.profileView.close();	//might be a better option for speed?
+	if (Alloy.Globals.comingFrom == 'connections')
+	{
+		Titanium.API.log("COMING FROM CONNECTIONS!");
+		Alloy.Globals.Navigate ($, $.profileView, Alloy.createController('connections').getView());	
+	}
+	else if (Alloy.Globals.comingFrom == 'matches')
+	{
+		Titanium.API.log("COMING FROM MATCHES!");
+		Alloy.Globals.Navigate ($, $.profileView, Alloy.createController('matches').getView());	
+	}
+	else if (Alloy.Globals.comingFrom == 'search')
+	{
+		Titanium.API.log("COMING FROM SEARCH!");
+		Alloy.Globals.Navigate ($, $.profileView, Alloy.createController('search').getView());	
+	}
+	else if (Alloy.Globals.comingFrom == 'viewedMe')
+	{
+		Titanium.API.log("COMING FROM VIEWED ME!");
+		Alloy.Globals.Navigate ($, $.profileView, Alloy.createController('viewedMe').getView());	
+	}
+	
+	//$.profileView.close();	//might be a better option for speed?
 });
 
 var homeButtonFunc = function () {	//might be problematic 

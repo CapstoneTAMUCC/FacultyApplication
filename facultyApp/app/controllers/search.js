@@ -234,24 +234,33 @@ function onItemClick(e){
 	var item = $.listView.sections[e.sectionIndex].items[e.itemIndex];
 	Alloy.Globals.profileViewID = item.properties.user.USER_ID;	//set the profile I want to view
 
-	//Add my information to the profile's VIEWED ME list as I am going to view it
-	var request = Ti.Network.createHTTPClient({ 	
-	onerror: function(e){ 
-		Ti.API.debug(e.error); 
-		alert('There was an error during the connection PROFILE VIEW'); 
-	}, 
-	timeout:1000, 	         
-	});  
-	//Request the data from the web service, Here you have to change it for your local ip 
-	request.open("POST","52.32.54.34/php/insert_into_viewed_me.php"); 
-	
-	var params = ({ "USER_ID": 				Alloy.Globals.profileViewID,	
-					"OTHER_USER_ID": 		Alloy.Globals.thisUserID,
-					});
-	
-	request.send(params);
-	
-	Alloy.Globals.Navigate2($, $.search, Alloy.createController('profileView').getView() );
+	if (e.bindId == 'sendMessage')
+	{
+		alert('You clicked on send message!');
+	}
+	else
+	{
+		//Add my information to the profile's VIEWED ME list as I am going to view it
+		var request = Ti.Network.createHTTPClient({ 	
+		onerror: function(e){ 
+			Ti.API.debug(e.error); 
+			alert('There was an error during the connection PROFILE VIEW'); 
+		}, 
+		timeout:1000, 	         
+		});  
+		//Request the data from the web service, Here you have to change it for your local ip 
+		request.open("POST","52.32.54.34/php/insert_into_viewed_me.php"); 
+		
+		var params = ({ "USER_ID": 				Alloy.Globals.profileViewID,	
+						"OTHER_USER_ID": 		Alloy.Globals.thisUserID,
+						});
+		
+		request.send(params);
+		
+		Alloy.Globals.comingFrom = 'search';	//we are going to open profileView from search
+		Alloy.Globals.Navigate($, $.search, Alloy.createController('profileView').getView() );
+	}
+
 }
 
 $.searchButton.addEventListener('click', function(e)

@@ -25,14 +25,18 @@
 								<ImageView id="userPhoto" bindId="userPhoto" class="avatar" />
 								<View platform="android" class="smoothAvatarBorderRadius"/>
 								<View class="vgroup left size">
-									<Label id="userName" bindId="userName" class="title" />
+									<Label id="userName" bindId="userName" class="title top-buffer" />
+									<Button id="button1" bindId="button1" class="greenCheckmark top-buffer" visible="true"></Button>
 									<Label id="userEmail" bindId="userEmail" class="subtitle" />
 									<Label id="userCompany" bindId="userCompany" class="subtitle" />
 								</View>
-								<View class="hgroup right size">
-									<Button id="button1" class="greenCheckmark"></Button> 
-									<Button id="disregard" class="requestConnection" visible="false"></Button>
-									<Button id="button2" class="sendMessage"></Button>
+								
+								<View class="hgroup right size">	
+									<!--					
+									<Button id="button2" bindId="button2" class="requestConnection left-buffer right-buffer"></Button> 
+									<Button id="button3" bindId="button3" class="decline left-buffer right-buffer" visible="false"></Button> 
+									-->
+									<Button id="sendMessage" bindId="sendMessage" class="sendMessage left-buffer right-buffer"></Button> 				
 								</View>
 								<View class="gray-line bottom"/>
 							</View>
@@ -67,10 +71,11 @@
 									<Label id="userEmail" bindId="userEmail" class="subtitle" />
 									<Label id="userCompany" bindId="userCompany" class="subtitle" />
 								</View>
-								<View class="hgroup right size">
-									<Button id="button3" bindId="button3" class="accept"></Button> 
-									<Button id="button4" bindId="button4" class="decline"></Button> 
-									<Button id="button5" bindId="button5" class="sendMessage"></Button>
+								
+								<View class="hgroup right size">					
+									<Button id="acceptButton" bindId="accept" class="accept left-buffer right-buffer"></Button> 
+									<Button id="declineButton" bindId="decline" class="decline left-buffer right-buffer" visible="true"></Button> 
+									<Button id="sendMessage" bindId="sendMessage" class="sendMessage left-buffer right-buffer"></Button> 				
 								</View>
 								<View class="gray-line bottom"/>
 							</View>

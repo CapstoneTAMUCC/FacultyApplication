@@ -202,6 +202,48 @@ function populatePending()
 
 }//end of populatePending function
 
+function isConnection(user)
+{	
+
+	var foundUser = false;
+	//CHECK TO SEE IF THE LIST ITEM IS ALREADY A CONTACT OF MINE
+	var request1 = Ti.Network.createHTTPClient({ 
+	onerror: function(e){ 	
+		Ti.API.debug(e.error); 	
+		alert('There was an error during the connection PENDING'); 	
+	}, 	
+	timeout:1000, 
+	});
+
+	//Here you have to change it for your local ip 
+	request1.open('POST', '52.32.54.34/php/read_contact_list.php');  
+	var params = ({ "USER_ID": Alloy.Globals.thisUserID }); 
+	request1.send(params);
+	request1.onload = function() {
+		var json = JSON.parse(this.responseText);
+		var json = json.OTHER_USER_ID;
+		
+		for( var i = 0; i < json.length; i++)
+		{
+			Titanium.API.log("WITHIN THE FOR LOOP!");
+			if (json[i].OTHER_USER_ID == user.USER_ID )	//THIS MEANS HE IS MY CONTACT
+			{
+				Titanium.API.log("FOUND USER !");
+				foundUser = true;
+				break;
+			}
+		}
+		
+		
+	};	//end of onload function
+	
+  
+
+	if (foundUser) { Titanium.API.log("I AM RETURNING TRUE"); return true;} 
+	else { Titanium.API.log("I AM RETURNING FALSE");  return false;} 
+	Titanium.API.log("END OF THIS FUNCTION!");
+}
+
 /**
  *	Convert an array of data from a JSON file into a format that can be added to the ListView
  * 
@@ -228,12 +270,12 @@ var preprocessForListView = function(rawData) {
 				],
 				canEdit:true
 			},
-			//button1: {visible: }
+			button1: {visible: isConnection(item) ? 'true' : 'false'},	//DOES NOT WORK BECAUSE FUNCTION DOES NOT WAIT FOR ONLOAD TO FINISH BEFORE RETURNING
 			userName: {text: item.NAME}//,
 			//userCompany: {text: item.company},
 			//userPhoto: {image: item.photo}, EXLUDE PHOTO FOR NOW
 			//userEmail: {text: item.email} 
-		};
+		}; 
 	});	
 };
 
@@ -251,25 +293,34 @@ function onItemClick(e){
 	 */
 	var item = $.listView.sections[e.sectionIndex].items[e.itemIndex];
 	Alloy.Globals.profileViewID = item.properties.user.USER_ID;	//set the profile I want to view
+	
+	if (e.bindId == 'sendMessage')
+	{
+		alert('You clicked on send message!');
+	}
+	else
+	{
+		//Add my information to the profile's VIEWED ME list as I am going to view it
+		var request = Ti.Network.createHTTPClient({ 	
+		onerror: function(e){ 
+			Ti.API.debug(e.error); 
+			alert('There was an error during the connection PROFILE VIEW'); 
+		}, 
+		timeout:1000, 	         
+		});  
+		//Request the data from the web service, Here you have to change it for your local ip 
+		request.open("POST","52.32.54.34/php/insert_into_viewed_me.php"); 
+		
+		var params = ({ "USER_ID": 				Alloy.Globals.profileViewID,	
+						"OTHER_USER_ID": 		Alloy.Globals.thisUserID,
+						});
+		
+		request.send(params);
+		
+		Alloy.Globals.comingFrom = 'viewedMe';	//we are going to open profileView from viewedMe
+		Alloy.Globals.Navigate($, $.viewedMe, Alloy.createController('profileView').getView() );
+	}
 
-	//Add my information to the profile's VIEWED ME list as I am going to view it
-	var request = Ti.Network.createHTTPClient({ 	
-	onerror: function(e){ 
-		Ti.API.debug(e.error); 
-		alert('There was an error during the connection PROFILE VIEW'); 
-	}, 
-	timeout:1000, 	         
-	});  
-	//Request the data from the web service, Here you have to change it for your local ip 
-	request.open("POST","52.32.54.34/php/insert_into_viewed_me.php"); 
-	
-	var params = ({ "USER_ID": 				Alloy.Globals.profileViewID,	
-					"OTHER_USER_ID": 		Alloy.Globals.thisUserID,
-					});
-	
-	request.send(params);
-	
-	Alloy.Globals.Navigate2($, $.viewedMe, Alloy.createController('profileView').getView() );
 }
 
 function onPhotoClick(e){
