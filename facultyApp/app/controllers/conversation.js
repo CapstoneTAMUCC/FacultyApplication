@@ -1,5 +1,5 @@
 var args = arguments[0] || {};
-var thisUserID = 1;
+var thisUserID = Alloy.Globals.thisUserID;
 var json = args.messages; 
 
 /**
