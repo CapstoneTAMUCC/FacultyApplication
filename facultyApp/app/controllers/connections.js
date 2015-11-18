@@ -456,11 +456,87 @@ function onItemClick2(e){
 	}
 	else if (e.bindId == 'accept')
 	{
-		alert('You clicked on Accept!');
+		//Add this profile to my contacts 
+		var request1 = Ti.Network.createHTTPClient({ 	
+		onerror: function(e){ 
+			Ti.API.debug(e.error); 
+			alert('There was an error during the connection PROFILE VIEW'); 
+		}, 
+		timeout:1000, 	         
+		});  
+		//Request the data from the web service, Here you have to change it for your local ip 
+	    request1.open("POST","52.32.54.34/php/insert_into_contact.php"); 
+		
+		var params = ({ "USER_ID": 				Alloy.Globals.thisUserID,	
+						"OTHER_USER_ID": 		Alloy.Globals.profileViewID,
+						});
+	
+		request1.send(params);
+		
+		
+		//Add myself to this profile's contacts list
+		var request2 = Ti.Network.createHTTPClient({ 	
+		onerror: function(e){ 
+			Ti.API.debug(e.error); 
+			alert('There was an error during the connection PROFILE VIEW'); 
+		}, 
+		timeout:1000, 	         
+		});  
+		//Request the data from the web service, Here you have to change it for your local ip 
+	    request2.open("POST","52.32.54.34/php/insert_into_contact.php"); 
+		
+		var params = ({ "USER_ID": 				Alloy.Globals.profileViewID,	
+						"OTHER_USER_ID": 		Alloy.Globals.thisUserID,
+						});
+	
+		request2.send(params);
+		
+		
+		//Delete him from my pending list
+		var request3 = Ti.Network.createHTTPClient({ 	
+		onerror: function(e){ 
+			Ti.API.debug(e.error); 
+			alert('There was an error during the connection PROFILE VIEW'); 
+		}, 
+		timeout:1000, 	         
+		});  
+		//Request the data from the web service, Here you have to change it for your local ip 
+	    request3.open("POST","52.32.54.34/php/delete_pending.php"); 
+		
+		var params = ({ "USER_ID": 				Alloy.Globals.thisUserID,	
+						"OTHER_USER_ID": 		Alloy.Globals.profileViewID,
+						});
+	
+		request3.send(params);
+		
+		Titanium.API.log("BEFORE POPULATE!");
+		populateContacts();
+		populatePending();
+		Titanium.API.log("AFTER POPULATE!");
 	}
 	else if (e.bindId == 'decline')
 	{
-		alert('You clicked on decline!');
+		//Delete him from my pending
+		var request = Ti.Network.createHTTPClient({ 	
+		onerror: function(e){ 
+			Ti.API.debug(e.error); 
+			alert('There was an error during the connection PROFILE VIEW'); 
+		}, 
+		timeout:1000, 	         
+		});  
+		//Request the data from the web service, Here you have to change it for your local ip 
+	    request.open("POST","52.32.54.34/php/delete_pending.php"); 
+		
+		var params = ({ "USER_ID": 				Alloy.Globals.thisUserID,	
+						"OTHER_USER_ID": 		Alloy.Globals.profileViewID,
+						});
+	
+		request.send(params);
+		
+		Titanium.API.log("BEFORE POPULATE!");
+		populateContacts();
+		populatePending();
+		Titanium.API.log("AFTER POPULATE!");
 	}
 	else
 	{
