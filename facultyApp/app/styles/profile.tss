@@ -1,9 +1,9 @@
 "#profilePicture": {
 	image:'/images/sample.png',
-	height:'400dp',
-	width:'400dp',
-	align:'center',
-	top:'50dp'
+	height:'30%',
+	width:'30%',
+	align:'center'
+	//top:'50dp'
 }
 
 "#nameView": {

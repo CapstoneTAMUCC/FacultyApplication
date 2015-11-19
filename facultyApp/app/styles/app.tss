@@ -412,13 +412,12 @@ overrode the settings with other TSS, XML, or JS settings:
 	backgroundColor: '#07ce00',
     enabled: 'false',
 	color: '#fff',
-	font:{fontSize: 14},
-	left: 85
+	font:{fontSize: 10, fontWeight:'bold'}
 }
 
 ".sendMessage": {
 	width: 'auto',
-	height: '50dp',
+	height: 'auto',
 	title: 'Message',
 	backgroundColor: '#CCCC00',
 	borderColor: '#666',
@@ -426,12 +425,12 @@ overrode the settings with other TSS, XML, or JS settings:
     borderRadius: 3,
     enabled: 'true',
 	color: '#fff',
-	font:{fontSize: 15}
+	font:{fontSize: 10, fontWeight:'bold'}
 }
 
 ".requestConnection": {
 	width: 'auto', 
-	height: '50dp',
+	height: 'auto',
 	title: 'Connect',
 	backgroundColor: '#1E90FF',
 	borderColor: '#666',
@@ -439,12 +438,12 @@ overrode the settings with other TSS, XML, or JS settings:
     borderRadius: 3,
     enabled: 'true',
 	color: '#fff',
-	font:{fontSize: 15}
+	font:{fontSize: 10, fontWeight:'bold'}
 }
 
 ".pending": {
 	width: 'auto', 
-	height: '50dp',
+	height: 'auto',
 	title: 'Pending',
 	backgroundColor: '#696969',
 	borderColor: '#666',
@@ -452,12 +451,12 @@ overrode the settings with other TSS, XML, or JS settings:
     borderRadius: 3,
     enabled: 'true',
 	color: '#fff',
-	font:{fontSize: 15}
+	font:{fontSize: 10, fontWeight:'bold'}
 }
 
 ".accept": {
 	width: 'auto', 
-	height: '50dp',
+	height: 'auto',
 	title: 'Accept',
 	backgroundColor: '#07ce00',
 	borderColor: '#666',
@@ -465,12 +464,12 @@ overrode the settings with other TSS, XML, or JS settings:
     borderRadius: 3,
     enabled: 'true',
 	color: '#fff',
-	font:{fontSize: 15}
+	font:{fontSize: 10, fontWeight:'bold'}
 }
 
 ".decline": {
 	width: 'auto', 
-	height: '50dp',
+	height: 'auto',
 	title: 'Decline',
 	backgroundColor: '#FF0000',
 	borderColor: '#666',
@@ -478,5 +477,5 @@ overrode the settings with other TSS, XML, or JS settings:
     borderRadius: 3,
     enabled: 'true',
 	color: '#fff',
-	font:{fontSize: 15}
+	font:{fontSize: 15, fontWeight:'bold'}
 }
