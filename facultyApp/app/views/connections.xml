@@ -68,14 +68,15 @@
 								<View platform="android" class="smoothAvatarBorderRadius"/>
 								<View class="vgroup left size">
 									<Label id="userName" bindId="userName" class="title" />
+									<Button id="button1" bindId="button1" class="greenCheckmark top-buffer" visible="false"></Button>
 									<Label id="userEmail" bindId="userEmail" class="subtitle" />
 									<Label id="userCompany" bindId="userCompany" class="subtitle" />
 								</View>
 								
 								<View class="hgroup right size">					
-									<Button id="acceptButton" bindId="accept" class="accept left-buffer right-buffer"></Button> 
-									<Button id="declineButton" bindId="decline" class="decline left-buffer right-buffer" visible="true"></Button> 
-									<Button id="sendMessage" bindId="sendMessage" class="sendMessage left-buffer right-buffer"></Button> 				
+									<Button id="acceptButton" bindId="accept" class="accept right-buffer"></Button> 
+									<Button id="declineButton" bindId="decline" class="decline right-buffer" visible="true"></Button> 
+									<Button id="sendMessage" bindId="sendMessage" class="sendMessage right-buffer"></Button> 				
 								</View>
 								<View class="gray-line bottom"/>
 							</View>

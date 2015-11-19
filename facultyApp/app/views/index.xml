@@ -1,11 +1,11 @@
 <Alloy>
 	<Window id="index">
 		<Button id="profileBar" class="mainMenuOption"></Button>
-		<Button id="profileButton" class="mainMenuOption">Profile</Button>
-		<Button id="messagesButton" class="mainMenuOption">Messages</Button>
-		<Button id="searchButton" class="mainMenuOption">Search</Button>
-		<Button id="matchesButton" class="mainMenuOption">Matches</Button>
-		<Button id="connectionsButton" class="mainMenuOption">Connections</Button>
-		<Button id="viewedMeButton" class="mainMenuOption">Viewed Me</Button>
+		<Button id="profileButton" backgroundImage="/images/connection_icon.png" class="mainMenuOption">Profile</Button>
+		<Button id="messagesButton" backgroundImage="/images/connection_icon.png" class="mainMenuOption">Messages</Button>
+		<Button id="searchButton" backgroundImage="/images/connection_icon.png" class="mainMenuOption">Search</Button>
+		<Button id="matchesButton" backgroundImage="/images/connection_icon.png" class="mainMenuOption">Matches</Button>
+		<Button id="connectionsButton" backgroundImage="/images/connection_icon.png" class="mainMenuOption">Connections</Button>
+		<Button id="viewedMeButton" backgroundImage="/images/connection_icon.png" class="mainMenuOption">Viewed Me</Button>
 	</Window>
 </Alloy>

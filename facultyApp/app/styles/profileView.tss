@@ -1,13 +1,13 @@
 "#profilePicture": {
 	image:'/images/sample.png',
-	height:'400dp',
-	width:'400dp',
-	align:'center',
-	top:'50dp'
+	height:'20%',
+	width:'20%',
+	align:'center'
+	//top:'50dp'
 }
 
 ".leftClass": {
-	left: 350
+	left: '40%'
 }
 
 "#nameView": {

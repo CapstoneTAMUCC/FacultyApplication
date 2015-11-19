@@ -1,9 +1,9 @@
 "#profilePicture": {
 	image:'/images/sample.png',
-	height:'400dp',
-	width:'400dp',
-	align:'center',
-	top:'50dp'
+	height:'30%',
+	width:'30%',
+	align:'center'
+	//top:'50dp'
 }
 
 "#nameView": {
@@ -89,11 +89,11 @@
 }
 
 "#saveButton1": {
-	left: '250dp'
+	left: '10%'
 }
 
 "#editButton1": {
-	right: '250dp',
+	right: '10%',
 	value: false	//means that textfields are NOT editable
 }
 
@@ -122,11 +122,11 @@
 }
 
 "#saveButton2": {
-	left: '250dp'
+	left: '10%'
 }
 
 "#editButton2": {
-	right: '250dp',
+	right: '10%',
 	value: false	//means that textfields are NOT editable
 }
 
