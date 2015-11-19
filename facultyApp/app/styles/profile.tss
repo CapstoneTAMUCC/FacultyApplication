@@ -1,6 +1,6 @@
 "#profilePicture": {
 	image:'/images/sample.png',
-	height:'10%',
+	height:'20%',
 	width:'50%',
 	align:'center'
 	//top:'50dp'
@@ -21,7 +21,7 @@
 	height:'auto',
 	width:'100%',
 	textAlign:'center',
-	top:'5dp',
+	top:'10dp',
 	align:'center',
 	enabled: 'false',
 	hintText: 'Enter Your Name',

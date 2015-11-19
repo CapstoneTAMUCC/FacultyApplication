@@ -301,9 +301,9 @@ function populateMatches()
 					  */
 					 var sectionLabel = Ti.UI.createLabel({
 					 	text: 'Matches listed based on your areas of research',
-					 	left: 20,
+					 	left: 10,
 					 	font:{
-					 		fontSize: 20
+					 		fontSize: 12
 					 	},
 					 	color: "#666"
 					 });
