@@ -19,7 +19,7 @@
 "#messageText": { 
 	bottom: 7,
 	left: 15,
-	width: '85%',
+	width: '73%',
 	hintText: 'Reply', 
 	hintTextColor: 'black',
 	color: 'black',

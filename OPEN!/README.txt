@@ -31,19 +31,17 @@ There are two sections below: Insert & Read
 	- “INSERT INTO FacAppDB.MESSAGE(CONVERSATION_ID, USER_ID,".
         "BODY) VALUES ('$CONVERSATION_ID','$USER_ID', '$BODY')";
 
-- 
-
 
 /***************************************************************************************
  * 
  * These are the php files that read from the database for the application:
  * 
  ***************************************************************************************/
- - Read into user table: http://52.32.54.34/php/read_user_list.php
+ - Read from user table: http://52.32.54.34/php/read_user_list.php
 	- "SELECT USER_ID, FIRST_NAME, LAST_NAME, PHONE, EDUCATION, CURRENT_PROJ, AREA_EXPERTISE, 		   COMMITTEES, OTHER_INTRESTS, O_CONTACT_INFO, FUNDING, EXPAND FROM USER"
 
-- 
-
+- Read from message table: http://52.32.54.34/php/read_message_list.php
+	- "SELECT CONVERSATION_ID, USER_ID, BODY FROM MESSAGE"
 
 
 
