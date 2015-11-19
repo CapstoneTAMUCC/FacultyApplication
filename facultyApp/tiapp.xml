@@ -4,14 +4,14 @@
     <name>TAMUS Faculty</name>
     <version>1.0</version>
     <publisher>tamucc</publisher>
-    <url>http://</url>
+    <url>http://www.appcelerator.com</url>
     <description>undefined</description>
     <copyright>2015 by TAMUCC</copyright>
     <icon>appicon.png</icon>
     <fullscreen>true</fullscreen>
     <navbar-hidden>false</navbar-hidden>
     <analytics>true</analytics>
-    <guid>fdfb9366-f545-4fa4-9777-3b3c84d37c0f</guid>
+    <guid>6185133a-086c-4f82-9555-0224cfbf92b8</guid>
     <property name="ti.ui.defaultunit" type="string">dp</property>
     <ios>
         <plist>
