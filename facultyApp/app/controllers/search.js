@@ -24,6 +24,9 @@
  * Please see the LICENSE included with this distribution for details.
  */
 
+var dataArray = [];
+var namesJson = [];
+
 /**
  * Instantiate the local variables for this controller
  */
@@ -33,6 +36,134 @@ var _args = arguments[0] || {}, // Any passed in arguments will fall into this p
 	users = null,  // Array placeholder for all users
 	indexes = [];  // Array placeholder for the ListView Index (used by iOS only);
 	
+var makeJsonConversationString = function (dataArray, index, otherID) {
+	var result = "{\"messages\":[";
+	var titleName = getOtherName(namesJson, otherID);
+	if (index >= 0) {
+    		for (var j = 0; j < dataArray[index].length; j++) {
+    			var otherUserID = dataArray[index][j].TO_ID == Alloy.Globals.
+	    		thisUserID ? dataArray[index][j].FROM_ID : dataArray[index][j].TO_ID;
+				var otherUserName = getOtherName(namesJson, otherUserID);
+	    		result += "{";	
+	    		result +="\"MESSAGE_ID\":" + "\"" + dataArray[index][j].MESSAGE_ID + "\",";
+	    		result +="\"TO_ID\":" + "\"" + dataArray[index][j].TO_ID + "\",";
+	    		result +="\"FROM_ID\":" + "\"" + dataArray[index][j].FROM_ID + "\",";
+	    		result +="\"OTHER_ID\":" + "\"" + otherUserID + "\",";
+	    		result +="\"OTHER_NAME\":" + "\"" + otherUserName + "\",";
+	    		result +="\"BODY\":" + "\"" + dataArray[index][j].BODY + "\",";
+	    		result +="\"STATUS\":" + "" + dataArray[index][j].STATUS + ",";
+	    		result +="\"DATE\":" + "\"" + dataArray[index][j].DATE + "\"";
+	    		result += "}";
+	    		if (j != dataArray [index].length - 1) {
+	    			result += ",";
+	    		}
+    		}
+    }
+    result += "],";
+    result += "\"name\":" + "\"" + titleName + "\",";
+    result += "\"id\":" + "\"" + otherID + "\"";
+    result += "}";
+    Titanium.API.log("HERETWICE: " + result);
+    return result;
+};
+
+var getOtherName = function (array, otherID) {
+	for(var i=0; i<array.length; i++) {
+		if ( array[i].USER_ID == otherID)
+		{
+			return array[i].NAME;
+		}
+	}
+	return "Not found";
+};
+
+var exists = function(otherUserID) {
+    	for (var i = 0; i < dataArray.length; i++) {
+    		if (dataArray[i][0].TO_ID === otherUserID ||
+    			dataArray[i][0].FROM_ID === otherUserID) {
+    			return i;	
+    		}
+    	}
+    	return -1;
+    }; 
+	
+function popArrays () {
+	//function to use HTTP to connect to a web server and transfer the data. 
+    var connection = Ti.Network.createHTTPClient({ 
+    	onerror: function(e){ 
+        	Ti.API.debug(e.error); 
+            alert('There was an error during the connection'); 
+        },
+        timeout:1000,
+    });                      
+
+    //Here you have to change it for your local ip 
+ //   connection.open('GET', '52.32.54.34/php/read_message_list.php');
+    connection.open('POST', '52.32.54.34/php/conversation_list.php');
+    var params = ({ "USER_ID": '1' });  
+    connection.send(params);
+    //Function to be called upon a successful response 
+    connection.onload = function(){ 
+    	var json = JSON.parse(this.responseText); 
+    	var json = json.MESSAGE_ID;
+    	//if the database is empty show an alert 
+    	if(json.length == 0){
+			Titanium.API.log("CRAP");
+    //    $.tableView.headerTitle = "The database row is empty"; 
+    	}
+    	
+    	//Emptying the data to refresh the view 
+
+   	 	dataArray = new Array (0);                      
+
+    	//Insert the JSON data to the table view 
+
+   		for( var i=0; i<json.length; i++){ 
+        
+        	Titanium.API.log("MESSAGE_ID: " + json[i].MESSAGE_ID);                                          
+     		Titanium.API.log("TO: " + json[i].TO_ID);
+     		Titanium.API.log("FROM: " + json[i].FROM_ID);
+     		Titanium.API.log("BODY: " + json[i].BODY);   
+     		Titanium.API.log("DATE: " + json[i].DATE);   
+     		Titanium.API.log("STATUS: " + json[i].STATUS); 
+     		Titanium.API.log("LENGTH: " + dataArray.length);       
+
+			var otherUserID = json[i].TO_ID == Alloy.Globals.thisUserID ? json[i].FROM_ID : json[i].TO_ID;
+			
+			var index = exists(otherUserID);
+			
+			if(index != -1) {
+				dataArray [index].push(json[i]);
+			}
+			else {
+				var tempArray = new Array(0);
+				tempArray.push(json[i]);
+				dataArray.push(tempArray);
+			}
+			
+	//		orderArray();
+     //		dataArray.push(row);               
+		}
+		//function to use HTTP to connect to a web server and transfer the data. 
+		var conn = Ti.Network.createHTTPClient({ 
+			onerror: function(e){ 	
+					Ti.API.debug(e.error); 	
+					alert('There was an error during the connection'); 
+			
+				}, 	
+			timeout:1000, 
+		});
+		
+		//Here you have to change it for your local ip 
+		conn.open('GET', '52.32.54.34/php/read_user_list.php');  
+		conn.send();
+		
+		conn.onload = function() {
+			namesJson = JSON.parse(this.responseText);
+			namesJson = namesJson.NAME;
+		};  
+	};
+}
 
 /**
  * Appcelerator Analytics Call
@@ -236,7 +367,9 @@ function onItemClick(e){
 
 	if (e.bindId == 'sendMessage')
 	{
-		alert('You clicked on send message!');
+		var newWindow = Alloy.createController('conversation', JSON.parse(makeJsonConversationString(dataArray, exists(Alloy.Globals.profileViewID), Alloy.Globals.profileViewID), Alloy.Globals.profileViewID)).getView();
+		newWindow.open();
+		Titanium.API.log('You clicked on send message!');
 	}
 	else
 	{
@@ -288,3 +421,5 @@ function messageClick(e){
 function requestClick(e){
 	alert('You clicked the request connection button!');
 }
+
+popArrays ();
