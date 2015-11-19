@@ -6,7 +6,7 @@
 		<Menu id="menu" platform="android">
 			<MenuItem showAsAction="Ti.Android.SHOW_AS_ACTION_IF_ROOM" title="Home" icon="homeIcon.png" onClick="homeButtonFunc" />
         </Menu>
-		<View id="headerView">
+		<View id="headerView" class="hgroup" width="100%">
 			<TextField id="searchText"></TextField>
 			<Button id="searchButton"></Button>
 		</View>

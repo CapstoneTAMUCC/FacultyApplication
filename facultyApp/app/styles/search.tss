@@ -133,7 +133,7 @@
 
 "#searchText": { 
 	top: 7,
-	left: 15,
+	//left: 15,
 	width: '85%',
 	hintText: 'Enter Search Phrase', 
 	hintTextColor: 'black',
@@ -145,8 +145,8 @@
 "#searchButton": {
 	top: 5,
 	backgroundImage: '/images/search_button.png',
-	left: 15,
-	height: '55dp',
-	width : '55dp'
+	//left: 15,
+	height: 'auto',
+	width : '15%'
 }
 
