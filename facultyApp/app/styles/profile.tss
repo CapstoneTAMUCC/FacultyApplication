@@ -11,7 +11,7 @@
 	width: '100%',
 	backgroundColor: '#800000',
 	layout: 'horizontal',
-	top: '5dp',
+	top: '0dp',
 	touchEnabled:'false'
 }
 
@@ -21,7 +21,7 @@
 	height:'auto',
 	width:'100%',
 	textAlign:'center',
-	top:'5dp',
+	top:'10dp',
 	align:'center',
 	enabled: 'false',
 	hintText: 'Enter Your Name',
