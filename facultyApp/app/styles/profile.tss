@@ -1,6 +1,6 @@
 "#profilePicture": {
 	image:'/images/sample.png',
-	height:'10%',
+	height:'20%',
 	width:'50%',
 	align:'center'
 	//top:'50dp'
@@ -11,7 +11,7 @@
 	width: '100%',
 	backgroundColor: '#800000',
 	layout: 'horizontal',
-	top: '0dp',
+	top: '5dp',
 	touchEnabled:'false'
 }
 

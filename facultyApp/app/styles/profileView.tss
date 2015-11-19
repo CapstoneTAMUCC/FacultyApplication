@@ -15,7 +15,7 @@
 	width: '100%',
 	backgroundColor: '#800000',
 	layout: 'horizontal',
-	top: '0dp',
+	top: '5dp',
 	touchEnabled:'false'
 }
 
