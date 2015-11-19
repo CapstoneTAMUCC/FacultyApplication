@@ -26,9 +26,12 @@
 					</View>
 					<ImageView id="profilePicture"></ImageView>
 					
+					
 					<Button id="button1" class="requestConnection leftClass top-buffer" onClick="button1Click"></Button> 
 					<Button id="button2" class="decline leftClass top-buffer" visible="false" onClick="button2Click"></Button> 
 					<Button id="button3" class="sendMessage leftClass top-buffer bottom-buffer" onClick="onSendMessage"></Button> 
+					
+					
 					<!--
 					<View class="hgroup">
 							<Button id="connectionButton" class="requestConnection buffer" onClick="connectButton"></Button> 
