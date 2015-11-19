@@ -14,7 +14,7 @@ function init(){
 	
 	//Here you have to change it for your local ip 
 	connection.open('POST', '52.32.54.34/php/read_contact_list.php');
-	var params = ({ "USER_ID": '1' });  
+	var params = ({ "USER_ID": Alloy.Globals.thisUserID });  
 	connection.send(params);
 	//Function to be called upon a successful response 
 	connection.onload = function(){ 

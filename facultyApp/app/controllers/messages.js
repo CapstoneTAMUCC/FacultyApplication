@@ -34,7 +34,7 @@ function init(){
     //Here you have to change it for your local ip 
  //   connection.open('GET', '52.32.54.34/php/read_message_list.php');
     connection.open('POST', '52.32.54.34/php/conversation_list.php');
-    var params = ({ "USER_ID": '1' });  
+    var params = ({ "USER_ID": Alloy.Globals.thisUserID });  
     connection.send(params);
     //Function to be called upon a successful response 
     connection.onload = function(){ 
@@ -380,7 +380,7 @@ function onItemClick(e){
 	Titanium.API.log("WUT2: " + exists(item.properties.user.OTHER_ID));
 	printArray();
 	//Titanium.API.log("HAHA: " + JSON.stringify(item, null, 4));
-	var newWindow = Alloy.createController('conversation', JSON.parse(makeJsonConversationString(exists(item.properties.user.OTHER_ID)), item.properties.user.OTHER_ID)).getView();
+	var newWindow = Alloy.createController('conversation', JSON.parse(makeJsonConversationString(exists(item.properties.user.OTHER_ID), item.properties.user.OTHER_ID))).getView();
 	newWindow.open();
 }
 
