@@ -1,7 +1,7 @@
 "#profilePicture": {
 	image:'/images/sample.png',
-	height:'30%',
-	width:'30%',
+	height:'10%',
+	width:'50%',
 	align:'center'
 	//top:'50dp'
 }
@@ -89,11 +89,11 @@
 }
 
 "#saveButton1": {
-	left: '10%'
+	left: '15%'
 }
 
 "#editButton1": {
-	right: '10%',
+	right: '15%',
 	value: false	//means that textfields are NOT editable
 }
 
@@ -122,11 +122,11 @@
 }
 
 "#saveButton2": {
-	left: '10%'
+	left: '15%'
 }
 
 "#editButton2": {
-	right: '10%',
+	right: '15%',
 	value: false	//means that textfields are NOT editable
 }
 

@@ -425,7 +425,7 @@ overrode the settings with other TSS, XML, or JS settings:
     borderRadius: 3,
     enabled: 'true',
 	color: '#fff',
-	font:{fontSize: 10, fontWeight:'bold'}
+	font:{fontSize: 15, fontWeight:'bold'}
 }
 
 ".requestConnection": {
@@ -438,7 +438,7 @@ overrode the settings with other TSS, XML, or JS settings:
     borderRadius: 3,
     enabled: 'true',
 	color: '#fff',
-	font:{fontSize: 10, fontWeight:'bold'}
+	font:{fontSize: 15, fontWeight:'bold'}
 }
 
 ".pending": {
@@ -451,7 +451,7 @@ overrode the settings with other TSS, XML, or JS settings:
     borderRadius: 3,
     enabled: 'true',
 	color: '#fff',
-	font:{fontSize: 10, fontWeight:'bold'}
+	font:{fontSize: 15, fontWeight:'bold'}
 }
 
 ".accept": {
@@ -464,7 +464,7 @@ overrode the settings with other TSS, XML, or JS settings:
     borderRadius: 3,
     enabled: 'true',
 	color: '#fff',
-	font:{fontSize: 10, fontWeight:'bold'}
+	font:{fontSize: 15, fontWeight:'bold'}
 }
 
 ".decline": {
