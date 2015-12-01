@@ -434,7 +434,7 @@ function readTextfieldData(){
 				$.committeeText.value = json[i].COMMITTEES;
 				$.otherInterestText.value = json[i].OTHER_INTERESTS;
 				$.contactInfoText.value = json[i].O_CONTACT_INFO;
-				$.profilePicture.image = json[i].PHONE;
+				$.profilePicture.image = json[i].PHOTO;
 				
 				Ti.API.log('I am here 3');
 				

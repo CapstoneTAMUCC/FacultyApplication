@@ -352,7 +352,7 @@ var preprocessForListView = function(rawData) {
 			button1: {visible: isConnection(item) ? 'true' : 'false'},	//DOES NOT WORK BECAUSE FUNCTION DOES NOT WAIT FOR ONLOAD TO FINISH BEFORE RETURNING
 			userName: {text: item.NAME},
 			//userCompany: {text: item.company},
-			userPhoto: {image: item.PHONE}
+			userPhoto: {image: item.PHOTO}
 			//userEmail: {text: item.email} 
 		}; 
 	});	

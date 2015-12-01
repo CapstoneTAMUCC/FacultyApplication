@@ -516,7 +516,7 @@ var preprocessForListView = function(rawData) {
 			},
 			userName: {text: item.NAME},
 			//userCompany: {text: item.company},
-			userPhoto: {image: item.PHONE}
+			userPhoto: {image: item.PHOTO}
 			//userEmail: {text: item.email} 
 		};
 	});	
