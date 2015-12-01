@@ -377,9 +377,8 @@ function updateData(){
 	//Request the data from the web service, Here you have to change it for your local ip 
     request.open("POST","52.32.54.34/php/update_user_list.php"); 
 
-	var params = ({ "USER_ID": 				Alloy.Globals.thisUserID,	//USING JUSTIN GUERRA HERE
+	var params = ({ "USER_ID": 				Alloy.Globals.thisUserID,	
 					"NAME": 				$.nameField.value, 
-					"PHONE": 				'715-440-5449', 
 					"EDUCATION": 			$.educationText.value, 
 					"CURRENT_PROJ": 	    $.projectText.value, 
 					"AREA_EXPERTISE":       $.expertiseText.value, 
@@ -388,7 +387,6 @@ function updateData(){
 					"O_CONTACT_INFO": 		$.contactInfoText.value,
 					"FUNDING": 				getCheckboxValue($.question2yes),
 					"EXPAND": 				getCheckboxValue($.question1yes),
-					"AGENCY_ID": 			'22223',	//USING AN EXISTING AGENCY ID
 					"TAMU": 				getCheckboxValue($.tamuCheckbox),
 					"PVAMU": 				getCheckboxValue($.prairieCheckbox),
 					"TSU": 					getCheckboxValue($.tarletonCheckbox),
@@ -406,7 +404,6 @@ function updateData(){
 					"TAMFS": 				getCheckboxValue($.tamfsCheckbox),
 					"TAMTI": 				getCheckboxValue($.tamtiCheckbox),
 					"TAMVMDL": 				getCheckboxValue($.tamvmdlCheckbox),
-					"AREA_OF_RESEARCH_ID": 	'123',
 					"FOOD_SAFETY": 			getCheckboxValue($.foodSafetyCheckbox),
 					"NUTRITION": 			getCheckboxValue($.nutritionCheckbox),
 					"PUBLIC_HEALTH": 		getCheckboxValue($.publicHealthCheckbox),
