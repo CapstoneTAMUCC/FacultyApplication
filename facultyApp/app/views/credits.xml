@@ -1,0 +1,34 @@
+<Alloy>
+	<Window id="credits" title="Credits">
+		<Menu id="menu" platform="android">
+			<MenuItem showAsAction="Ti.Android.SHOW_AS_ACTION_IF_ROOM" title="Home" icon="homeIcon.png" onClick="homeButtonFunc" />
+        </Menu>
+		<TextField id="creditsTitle"></TextField>
+		
+		<View id="developerInfo">
+			<Label text="Developed by:" class="titleClass"></Label>
+			<Label text="* Francesca Picarazzi" class="labelClass"></Label>
+			<Label text="* Justin Guerra" class="labelClass"></Label>
+			<Label text="* Necati Ozturk" class="labelClass"></Label>
+			<Label text="Under the instruction of:" class="titleClass"></Label>
+			<Label text="* Dr. Ahmed Mahdy" class="labelClass"></Label>
+			<Label text="  - Associate Professor" class="labelClass"></Label>
+			<Label text="  - Texas A&M University - Corpus Christi" class="labelClass"></Label>
+			<Label text="  - E-mail: Ahmed.Mahdy@tamucc.edu" class="labelClass" autoLink= "Titanium.UI.AUTOLINK_ALL"></Label>	
+			<Label text="  - Phone: 361-825-2828" class="labelClass" autoLink= "Titanium.UI.AUTOLINK_ALL"></Label>	
+		</View>
+		
+		<View id="contactInfo">
+			<Label text="Contact Information:" class="titleClass"></Label>
+			<Label text="* Misty Vidrine" class="labelClass"></Label>
+			<Label text="  - Program Assistant" class="labelClass"></Label>
+			<Label text="  - Texas A&M AgriLife Research" class="labelClass"></Label>
+			<Label text="  - E-mail: Misty.Vidrine@agnet.tamu.edu" class="labelClass" autoLink= "Titanium.UI.AUTOLINK_ALL"></Label>	
+			<Label text="  - Phone: 979-845-6071" class="labelClass" autoLink= "Titanium.UI.AUTOLINK_ALL"></Label>		
+		</View>
+		
+		<TextField id="finalNotes"></TextField>
+		
+		<TextField id="finalNotes2"></TextField>
+	</Window>
+</Alloy>
