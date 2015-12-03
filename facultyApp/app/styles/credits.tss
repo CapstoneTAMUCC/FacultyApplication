@@ -11,7 +11,8 @@
 	width: '100%',
 	height: '10%',
 	textAlign: 'center',
-	value: 'TAMUS FACULTY APP'
+	value: 'TAMUS FACULTY APP',
+	editable: 'false'
 }
 
 "#developerInfo" : {
@@ -52,7 +53,8 @@
 	width: '100%',
 	height: 'auto',
 	textAlign: 'center', 
-	value: 'This app is developed by TAMU-CC senior students in collaboration with TAMU'
+	value: 'This app is developed by TAMU-CC senior students in collaboration with TAMU',
+	editable: 'false'
 }
 
 "#finalNotes2" : {
@@ -62,7 +64,8 @@
 	height: 'auto',
 	textAlign: 'center', 
 	value: 'Visit www.tamucc.edu or www.tamu.edu',
-	autoLink: Titanium.UI.AUTOLINK_ALL
+	autoLink: Titanium.UI.AUTOLINK_ALL,
+	editable: 'false'
 }
 
 ".labelClass": {

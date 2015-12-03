@@ -21,7 +21,8 @@ function readName(){
 		{
 			if ( json[i].USER_ID == Alloy.Globals.thisUserID) //READING JUSTIN GUERRA
 			{
-				$.profileBar.title = json[i].NAME;			
+				$.profileBar.title = json[i].NAME;		
+				$.profilePicture.image = json[i].PHOTO;	
 			}	
 		}
 	};
@@ -63,6 +64,11 @@ $.viewedMeButton.addEventListener('click', function(e)
 });
 
 $.profileBar.addEventListener('click', function(e)
+{
+	Alloy.Globals.MMNavigate ($, $.index, Alloy.createController('profile').getView());
+});
+
+$.profilePicture.addEventListener('click', function(e)
 {
 	Alloy.Globals.MMNavigate ($, $.index, Alloy.createController('profile').getView());
 });
