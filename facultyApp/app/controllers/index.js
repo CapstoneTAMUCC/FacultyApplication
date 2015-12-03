@@ -67,5 +67,10 @@ $.profileBar.addEventListener('click', function(e)
 	Alloy.Globals.MMNavigate ($, $.index, Alloy.createController('profile').getView());
 });
 
+$.creditsButton.addEventListener('click', function(e)
+{
+	Alloy.Globals.MMNavigate ($, $.index, Alloy.createController('credits').getView());
+});
+
 $.index.open();
 readName();

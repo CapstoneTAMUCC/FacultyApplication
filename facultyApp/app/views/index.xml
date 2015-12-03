@@ -7,5 +7,6 @@
 		<Button id="matchesButton"  class="mainMenuOption">Matches</Button>
 		<Button id="connectionsButton"  class="mainMenuOption">Connections</Button>
 		<Button id="viewedMeButton"  class="mainMenuOption">Viewed Me</Button>
+		<Button id="creditsButton" class="mainMenuOption">Credits</Button>
 	</Window>
 </Alloy>

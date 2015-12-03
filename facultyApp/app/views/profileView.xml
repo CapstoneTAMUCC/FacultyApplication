@@ -26,18 +26,18 @@
 					</View>
 					<ImageView id="profilePicture"></ImageView>
 					
+					<View id="myView" height="100dp" width="100%" layout="horizontal" align="center">
+						<Button id="button1" class="buttonClass" onClick="button1Click"></Button>
+						<Button id="button2" class="buttonClass" onClick="button2Click">Decline</Button>
+						<Button id="button3" class="buttonClass" onClick="onSendMessage">Message</Button>
+					</View>
 					
+					<!--get rid of this
 					<Button id="button1" class="requestConnection leftClass top-buffer" onClick="button1Click"></Button> 
 					<Button id="button2" class="decline leftClass top-buffer" visible="false" onClick="button2Click"></Button> 
 					<Button id="button3" class="sendMessage leftClass top-buffer bottom-buffer" onClick="onSendMessage"></Button> 
-					
-					
-					<!--
-					<View class="hgroup">
-							<Button id="connectionButton" class="requestConnection buffer" onClick="connectButton"></Button> 
-							<Button id="messageButton" class="sendMessage buffer"></Button> 
-					</View>
 					-->
+					
 					<View class="black-line bottom"/>
 					
 					<Label id="educationLabel" class="labelClass">Education Information:</Label>

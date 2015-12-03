@@ -1,13 +1,47 @@
 "#profilePicture": {
 	image:'/images/sample.png',
-	height:'15%',
-	width:'50%',
-	align:'center'
-	//top:'50dp'
+	height:'15%', //15
+	width:'25%', //50
+	align:'center',
+	borderWidth: 2,
+	borderColor: "black",
+	borderRadius: 200
 }
 
 ".leftClass": {
 	left: '40%'
+}
+
+"#button1": {
+	title: 'Connect',
+	backgroundColor: '#1E90FF',
+	left: '8%'
+}
+
+"#button2": {
+	title: 'Decline',
+	backgroundColor: '#FF0000',
+	left: '8%',
+	right: '8%',
+	visible: 'false'
+}
+
+"#button3": {
+	title: 'Message',
+	backgroundColor: '#CCCC00',
+	left: '8%'
+}
+
+".buttonClass": {
+	width: '20%', 
+	height: 'auto',
+	backgroundColor: 'black',
+	borderColor: '#666',
+    borderWidth: 2,
+    borderRadius: 3,
+    enabled: 'true',
+	color: '#fff',
+	font:{fontSize: 15, fontWeight:'bold'}
 }
 
 "#nameView": {

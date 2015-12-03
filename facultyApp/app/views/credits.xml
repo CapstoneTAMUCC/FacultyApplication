@@ -12,10 +12,7 @@
 			<Label text="* Necati Ozturk" class="labelClass"></Label>
 			<Label text="Under the instruction of:" class="titleClass"></Label>
 			<Label text="* Dr. Ahmed Mahdy" class="labelClass"></Label>
-			<Label text="  - Associate Professor" class="labelClass"></Label>
 			<Label text="  - Texas A&M University - Corpus Christi" class="labelClass"></Label>
-			<Label text="  - E-mail: Ahmed.Mahdy@tamucc.edu" class="labelClass" autoLink= "Titanium.UI.AUTOLINK_ALL"></Label>	
-			<Label text="  - Phone: 361-825-2828" class="labelClass" autoLink= "Titanium.UI.AUTOLINK_ALL"></Label>	
 		</View>
 		
 		<View id="contactInfo">
