@@ -7,7 +7,7 @@
 			<MenuItem showAsAction="Ti.Android.SHOW_AS_ACTION_IF_ROOM" title="Home" icon="homeIcon.png" onClick="homeButtonFunc" />
         </Menu>
 		<!--
-			The Directory list. 
+			The Viewed Me list. 
 			This listView leverages two ListItem templates to denote regular contacts and those that are bookmarked.
 		-->
 		<ListView id="listView" defaultItemTemplate="userTemplate" onItemclick="onItemClick">
@@ -17,7 +17,7 @@
 				<ItemTemplate id="userTemplate" name="userTemplate" class="template">
 					<View class="left-buffer">
 						<ImageView id="userPhoto" bindId="userPhoto" class="avatar" />
-						<View platform="android" class="smoothAvatarBorderRadius" onClick="onPhotoClick"/>
+						<View platform="android" class="smoothAvatarBorderRadius"/>
 						<View class="vgroup left size">
 							<Label id="userName" bindId="userName" class="title" />
 							<Button id="button1" bindId="button1" class="greenCheckmark"></Button>
@@ -26,10 +26,6 @@
 						</View>
 						
 						<View class="hgroup right size">	
-							<!--					
-							<Button id="button2" bindId="button2" class="requestConnection left-buffer right-buffer"></Button> 
-							<Button id="button3" bindId="button3" class="decline left-buffer right-buffer" visible="false"></Button> 
-							-->
 							<Button id="sendMessage" bindId="sendMessage" class="sendMessage left-buffer right-buffer"></Button> 				
 						</View>
 						

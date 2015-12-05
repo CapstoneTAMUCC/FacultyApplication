@@ -1,46 +1,15 @@
 /**
- *                              _                _             
- *                             | |              | |            
- *    __ _ _ __  _ __   ___ ___| | ___ _ __ __ _| |_ ___  _ __ 
- *   / _` | '_ \| '_ \ / __/ _ \ |/ _ \ '__/ _` | __/ _ \| '__|
- *  | (_| | |_) | |_) | (_|  __/ |  __/ | | (_| | || (_) | |   
- *   \__,_| .__/| .__/ \___\___|_|\___|_|  \__,_|\__\___/|_|   
- *        | |   | |                                            
- *        |_|   |_|  
- *      
- *      
- * @overview
- * This is the controller file for the Directory View. The directory view loads data from 
- * a flat file, and derives a Sectioned and Indexed (iOS) ListView displaying all contacts.
- * The Directory has two ListView Templates, one for standard contacts, the other to denote
- * that you have a marked the contact as a Bookmark (or Favorite). Also, the Directory View
- * can be filtered so that it only displays bookmarked or favorited contacts.
- *
- * @copyright
- * Copyright (c) 2014 by Appcelerator, Inc. All Rights Reserved.
- *
- * @license
- * Licensed under the terms of the Apache Public License
- * Please see the LICENSE included with this distribution for details.
- */
-
-/**
  * Instantiate the local variables for this controller
  */
 var _args = arguments[0] || {}, // Any passed in arguments will fall into this property
-	App = Alloy.Globals.App, // reference to the APP singleton object
-	$FM = require('favoritesmgr'),  // FavoritesManager object (see lib/utilities.js)
-	users = null,  // Array placeholder for all users
-	indexes = [];  // Array placeholder for the ListView Index (used by iOS only);
+	App = Alloy.Globals.App; // reference to the APP singleton object
 	
-var dataArray = [];
-var namesJson = [];
-/**
- * Appcelerator Analytics Call
- */
-var title = _args.title ? _args.title.toLowerCase() : "directory";
-Ti.Analytics.featureEvent(Ti.Platform.osname+"."+title+".viewed");
+var dataArray = [];	//FRANCESCA
+var namesJson = [];	//FRANCESCA
 
+/**
+ *	FRANCESCA
+ */
 function popArrays () {
 	//function to use HTTP to connect to a web server and transfer the data. 
     var connection = Ti.Network.createHTTPClient({ 
@@ -119,65 +88,78 @@ function popArrays () {
 	};
 }
 
+/**
+ *	Use the androidback event to go back to Main Menu
+ */
 $.viewedMe.addEventListener('androidback' , function (e) {
 	Alloy.Globals.goToHome ($, $.viewedMe);
 });
 
+/**
+ *	Home button function will take you to Main Menu
+ */
 var homeButtonFunc = function () {
 	Alloy.Globals.goToHome ($, $.viewedMe);
 };
 
-function populatePending()
+/**
+ *	NOTE: Some of this function's functionality is gathered from Appcelerator's Example Employee Directory app.
+ *
+ *	This function is used to populate the viewed me list from remote database.
+ */
+function populateViewedMe()
 {
-	var tempArray = null;
-	var viewedMeList = new Array();
+	var tempArray = null;	//a temporary array initialization
+	var viewedMeList = new Array();	//this array will hold the users within the viewedMe list
+	
 	//function to use HTTP to connect to a web server and transfer the data. 
 	var request1 = Ti.Network.createHTTPClient({ 
 	onerror: function(e){ 	
 		Ti.API.debug(e.error); 	
-		alert('There was an error during the connection VIEWED ME'); 	
+		alert('There was an error during the connection'); 	
 	}, 	
 	timeout:1000, 
 	});
 
-	//Here you have to change it for your local ip 
+	//Open your request.
 	request1.open('POST', '52.32.54.34/php/read_viewed_me_list.php');  
-	var params = ({ "USER_ID": Alloy.Globals.thisUserID }); 
-	request1.send(params);
+	var params = ({ "USER_ID": Alloy.Globals.thisUserID }); 	//Sending USER_ID to server
+	request1.send(params);	//send the request to server
 
 	request1.onload = function() {
 		var json = JSON.parse(this.responseText);
-		var json = json.OTHER_USER_ID;
-		tempArray = json; //HOLD USER_ID s of PENDING CONTACTS
+		var json = json.OTHER_USER_ID;	//parse by other user id from database
+		tempArray = json; //HOLD USER_ID s of VIEWED ME Users
 		
 		//function to use HTTP to connect to a web server and transfer the data. 
 		var request2 = Ti.Network.createHTTPClient({ 
 		onerror: function(e){ 	
 			Ti.API.debug(e.error); 	
-			alert('There was an error during the connection VIEWED ME'); 	
+			alert('There was an error during the connection'); 	
 		}, 	
 		timeout:1000, 
 		});
 	
-		//Here you have to change it for your local ip 
+		//Open request
 		request2.open('GET', '52.32.54.34/php/read_user_list.php');  
-		request2.send();
+		request2.send();	//send request
 		
 		request2.onload = function() {
 			var json = JSON.parse(this.responseText);
-			var json = json.NAME;	
+			var json = json.NAME;	//parse by Name
 			
 			for( var i=0; i < json.length; i++) 
 			{
 				for ( var j = 0; j < tempArray.length; j++)
 				{
-					if ( json[i].USER_ID === tempArray[j].OTHER_USER_ID)	//FIND THE PENDING CONTACT IN USER TABLE
-					{//THESE ARE THE USER_ID s that I WANT TO USE FOR PENDING CONTACTS
-						viewedMeList.push(json[i]); //viewedMeList now holds all PENDING CONTACT's rows information
+					if ( json[i].USER_ID === tempArray[j].OTHER_USER_ID)	//FIND THE VIEWEE IN USER TABLE
+					{//THESE ARE THE USER_ID s that WE WANT TO USE FOR VIEWED ME LIST
+						viewedMeList.push(json[i]); //push it to the viewedMeList array
 					}
 				}
 			}
-		
+			
+			//Sort the list by users' names
 			viewedMeList = _.sortBy(viewedMeList, function(user){
 				return user.NAME
 			});
@@ -185,10 +167,9 @@ function populatePending()
 			if (viewedMeList)
 			{
 				/**
-				 * Setup our Indexes and Sections Array for building out the ListView components
+				 * Setup our Sections Array for building out the ListView components
 				 * 
 				 */
-				indexes = [];
 				var sections = [];
 				
 				/**
@@ -206,7 +187,7 @@ function populatePending()
 				{
 					/**
 					 * Take the group data that is passed into the function, and parse/transform
-					 * it for use in the ListView templates as defined in the directory.xml file.
+					 * it for use in the ListView templates as defined in the viewedMe.xml file.
 					 */
 					var dataToAdd = preprocessForListView(group);
 		
@@ -215,22 +196,11 @@ function populatePending()
 					 * if not lets exit
 					 */
 					if(dataToAdd.length < 1) return;
-					
-					
-					/**
-					 * Lets take the first Character of the LastName and push it onto the index
-					 * Array - this will be used to generate the indices for the ListView on IOS
-					 */
-					indexes.push({
-						index: indexes.length,
-						title: group[0].NAME.charAt(0)
-					});
 		
 					/**
 					 * Create the ListViewSection header view
 					 * DOCS: http://docs.appcelerator.com/platform/latest/#!/api/Titanium.UI.ListSection-property-headerView
 					 */
-		
 					 var sectionHeader = Ti.UI.createView({
 					 	backgroundColor: "#ececec",
 					 	width: Ti.UI.FILL,
@@ -279,11 +249,15 @@ function populatePending()
 		
 	};//end of first onload function
 
-}//end of populatePending function
+}//end of populateViewedMe function
 
+/**
+ *	This function checks to see if you are have an established connection with another user.
+ * 
+ * 	@param {Object} the other user we want to check
+ */
 function isConnection(user)
 {	
-
 	var foundUser = false;
 	//CHECK TO SEE IF THE LIST ITEM IS ALREADY A CONTACT OF MINE
 	var request1 = Ti.Network.createHTTPClient({ 
@@ -294,7 +268,7 @@ function isConnection(user)
 	timeout:1000, 
 	});
 
-	//Here you have to change it for your local ip 
+	//Open request
 	request1.open('POST', '52.32.54.34/php/read_contact_list.php');  
 	var params = ({ "USER_ID": Alloy.Globals.thisUserID }); 
 	request1.send(params);
@@ -304,26 +278,21 @@ function isConnection(user)
 		
 		for( var i = 0; i < json.length; i++)
 		{
-			Titanium.API.log("WITHIN THE FOR LOOP!");
 			if (json[i].OTHER_USER_ID == user.USER_ID )	//THIS MEANS HE IS MY CONTACT
 			{
-				Titanium.API.log("FOUND USER !");
 				foundUser = true;
 				break;
 			}
 		}
-		
-		
 	};	//end of onload function
-	
-  
 
-	if (foundUser) { Titanium.API.log("I AM RETURNING TRUE"); return true;} 
-	else { Titanium.API.log("I AM RETURNING FALSE");  return false;} 
-	Titanium.API.log("END OF THIS FUNCTION!");
+	if (foundUser) { return true; } 
+	else { return false;} 
 }
 
 /**
+ *	NOTE: This function is gathered from Appcelerator's Example Employee Directory app. 
+ *
  *	Convert an array of data from a JSON file into a format that can be added to the ListView
  * 
  * 	@param {Object} Raw data elements from the JSON file.
@@ -342,22 +311,18 @@ var preprocessForListView = function(rawData) {
 		return {
 			template: "userTemplate",
 			properties: {
-				searchableText: "",
 				user: item,
-				editActions: [
-					{title: "Does this even matter", color: item.isNew ? "#C41230" : "#038BC8" }
-				],
-				canEdit:true
 			},
-			button1: {visible: isConnection(item) ? 'true' : 'false'},	//DOES NOT WORK BECAUSE FUNCTION DOES NOT WAIT FOR ONLOAD TO FINISH BEFORE RETURNING
-			userName: {text: item.NAME},
-			//userCompany: {text: item.company},
-			userPhoto: {image: item.PHOTO}
-			//userEmail: {text: item.email} 
+			button1: {visible: isConnection(item) ? 'true' : 'false'},	//DOES NOT WORK FOR NOW BECAUSE FUNCTION DOES NOT WAIT FOR ONLOAD TO FINISH BEFORE RETURNING
+			userName: {text: item.NAME},	//get user's name
+			userPhoto: {image: item.PHOTO}	//get user's profile picture
 		}; 
 	});	
 };
 
+/**
+ * FRANCESCA
+ */
 var makeJsonConversationString = function (dataArray, index, otherID) {
 	var result = "{\"messages\":[";
 	var titleName = getOtherName(namesJson, otherID);
@@ -389,6 +354,9 @@ var makeJsonConversationString = function (dataArray, index, otherID) {
     return result;
 };
 
+/**
+ * FRANCESCA
+ */
 var getOtherName = function (array, otherID) {
 	for(var i=0; i<array.length; i++) {
 		if ( array[i].USER_ID == otherID)
@@ -399,6 +367,9 @@ var getOtherName = function (array, otherID) {
 	return "Not found";
 };
 
+/**
+ * FRANCESCA
+ */
 var exists = function(otherUserID) {
     	for (var i = 0; i < dataArray.length; i++) {
     		if (dataArray[i][0].TO_ID === otherUserID ||
@@ -422,25 +393,26 @@ function onItemClick(e){
 	 * Get the Item that was clicked
 	 */
 	var item = $.listView.sections[e.sectionIndex].items[e.itemIndex];
+	
 	Alloy.Globals.profileViewID = item.properties.user.USER_ID;	//set the profile I want to view
 	
-	if (e.bindId == 'sendMessage')
+	if (e.bindId == 'sendMessage')	//clicked on sendMessage button
 	{
+		//Open conversation page with that user
 		var newWindow = Alloy.createController('conversation', JSON.parse(makeJsonConversationString(dataArray, exists(Alloy.Globals.profileViewID), Alloy.Globals.profileViewID), Alloy.Globals.profileViewID)).getView();
 		newWindow.open();
-		Titanium.API.log('You clicked on send message!');
 	}
 	else
 	{
-		//Add my information to the profile's VIEWED ME list as I am going to view it
+		//Add this information to the profile's VIEWED ME list as I am going to view it
 		var request = Ti.Network.createHTTPClient({ 	
 		onerror: function(e){ 
 			Ti.API.debug(e.error); 
-			alert('There was an error during the connection PROFILE VIEW'); 
+			alert('There was an error during the connection'); 
 		}, 
 		timeout:1000, 	         
 		});  
-		//Request the data from the web service, Here you have to change it for your local ip 
+		//Request the data from the web service
 		request.open("POST","52.32.54.34/php/insert_into_viewed_me.php"); 
 		
 		var params = ({ "USER_ID": 				Alloy.Globals.profileViewID,	
@@ -450,20 +422,14 @@ function onItemClick(e){
 		request.send(params);
 		
 		Alloy.Globals.comingFrom = 'viewedMe';	//we are going to open profileView from viewedMe
-		Alloy.Globals.Navigate($, $.viewedMe, Alloy.createController('profileView').getView() );
+		Alloy.Globals.Navigate($, $.viewedMe, Alloy.createController('profileView').getView() );	//open the other user's profile
 	}
 
-}
-
-function onPhotoClick(e){
-	var newWindow = Alloy.createController('profile').getView();
-	Ti.UI.currentWindow.close();
-	newWindow.open();
 }
 
 /**
  * Initialize View
  */
-popArrays ();
-populatePending ();
+popArrays ();	//FRANCESCA
+populateViewedMe ();	//Populate the Viewed Me List
 
