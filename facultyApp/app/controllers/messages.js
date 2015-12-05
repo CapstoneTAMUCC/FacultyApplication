@@ -21,7 +21,6 @@ var dataArray = [];
  * Function to inialize the View, gathers data from the flat file and sets up the ListView
  */
 function init(){
-	
 	//function to use HTTP to connect to a web server and transfer the data. 
     var connection = Ti.Network.createHTTPClient({ 
     	onerror: function(e){ 
@@ -103,6 +102,7 @@ function init(){
 			var json = json.NAME;
 			
 			namesJson = json;
+			Alloy.Globals.thisUserPhoto = getOtherPhoto (Alloy.Globals.thisUserID);
 			
 			/**
 		 	* Populate the users variable from the file this call returns an array
@@ -236,6 +236,7 @@ function init(){
     			result +="\"FROM_ID\":" + "\"" + dataArray[i][j].FROM_ID + "\",";
     			result +="\"OTHER_ID\":" + "\"" + otherUserID + "\",";
     			result +="\"OTHER_NAME\":" + "\"" + getOtherName(otherUserID) + "\",";
+    			result +="\"PHOTO\":" + "\"" + getOtherPhoto(otherUserID) + "\",";
     			result +="\"BODY\":" + "\"" + dataArray[i][j].BODY + "\",";
     			result +="\"STATUS\":" + "" + dataArray[i][j].STATUS + ",";
     			result +="\"DATE\":" + "\"" + dataArray[i][j].DATE + "\"";
@@ -249,6 +250,7 @@ function init(){
     	Titanium.API.log("HERE: " + result);
     	return result;
     };
+    $.messages.open ();
 };
 
 var getOtherName = function (otherID) {
@@ -256,6 +258,17 @@ var getOtherName = function (otherID) {
 		if ( namesJson[i].USER_ID == otherID)
 		{
 			return namesJson[i].NAME;
+		}
+	}
+	return "Not found";
+};
+
+var getOtherPhoto = function (id) {
+	for( var i=0; i<namesJson.length; i++) {
+		if ( namesJson[i].USER_ID == id)
+		{
+			Titanium.API.log("PHIOTO: " + namesJson[i].PHOTO);
+			return namesJson[i].PHOTO;
 		}
 	}
 	return "Not found";
@@ -315,6 +328,7 @@ var preprocessForListView = function(rawData) {
 				canEdit:true
 			},
 			userName: {text: item.OTHER_NAME},
+			userPhoto: {image: item.PHOTO},
 			userEmail: {text: ""},
 			messageBody: {text: item.BODY},
 			lastUpdated: {text: makeReadable(item.DATE)}
@@ -413,6 +427,7 @@ var makeJsonConversationString = function (index, otherID) {
     		result +="\"FROM_ID\":" + "\"" + dataArray[index][j].FROM_ID + "\",";
     		result +="\"OTHER_ID\":" + "\"" + otherUserID + "\",";
     		result +="\"OTHER_NAME\":" + "\"" + otherUserName + "\",";
+    		result +="\"PHOTO\":" + "\"" + getOtherPhoto(dataArray[index][j].FROM_ID) + "\",";
     		result +="\"BODY\":" + "\"" + dataArray[index][j].BODY + "\",";
     		result +="\"STATUS\":" + "" + dataArray[index][j].STATUS + ",";
     		result +="\"DATE\":" + "\"" + dataArray[index][j].DATE + "\"";
@@ -428,14 +443,7 @@ var makeJsonConversationString = function (index, otherID) {
     	return result;
 };
 
-var onDelete = function onDelete(e){
-	/*
-	var newWindow = Alloy.createController('conversation').getView();
-	newWindow.open();
-	*/
-};
-
-var onCompose = function onCompose(e){
+var onCompose = function onCompose(e) {
 	Titanium.API.log("ONCOMPOSE");
 	for (var i = 0; i < dataArray.length; i++) {
    		Titanium.API.log("ID: " + dataArray[i][0].TO_ID + " " + dataArray[i][0].FROM_ID);

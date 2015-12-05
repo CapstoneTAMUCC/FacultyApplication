@@ -68,7 +68,7 @@
 
 ".title":{
 	font:{
-		fontSize: 21
+		fontSize: 14
 	},
 	left: 85,
 	color: "#000"
@@ -76,7 +76,7 @@
 
 ".subtitle":{
 	font:{
-		fontSize: 18
+		fontSize: 10
 	},
 	left: 85,
 	color: "#000"

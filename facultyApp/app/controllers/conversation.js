@@ -152,6 +152,7 @@ var preprocessForListView = function(rawData) {
 			},
 			userName: {text: item.FROM_ID == thisUserID ? "Me" : item.OTHER_NAME},
 			userEmail: {text: ""},
+			userPhoto: {image: item.PHOTO},
 			messageBody: {text: item.BODY},
 			lastUpdated: {text: makeReadable(item.DATE)}
 		};
@@ -203,7 +204,8 @@ $.replyButton.addEventListener('click', function(e)
 		//Request the data from the web service, Here you have to change it for your local ip 
         request.open("POST","52.32.54.34/php/insert_into_message.php");
         var newMessage = ({"FROM_ID": Alloy.Globals.thisUserID,
-          	               "TO_ID": args.id, 
+          	               "TO_ID": args.id,
+          	               "PHOTO": Alloy.Globals.thisUserPhoto,
              	           "DATE": makeDate (new Date()), 
                            "BODY": $.messageText.value, 
                    	       "STATUS": 1, 

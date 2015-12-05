@@ -37,6 +37,7 @@ Alloy.Globals.goToHome = function goToHome(v, fromView){
 };
 
 Alloy.Collections.user = Alloy.createCollection('user'); 
-Alloy.Globals.thisUserID = 2; 
+Alloy.Globals.thisUserID = 1; 
+Alloy.Globals.thisUserPhoto = 'http://api.randomuser.me/portraits/men/1.jpg'; 
 Alloy.Globals.profileViewID = 1;
 Alloy.Globals.comingFrom = 'nowhere';
