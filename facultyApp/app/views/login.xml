@@ -1,5 +1,0 @@
-<Alloy>
-	<Window id="index">
-		<Button id="login_button" onClick="openSSO">Log In</Button>
-	</Window>
-</Alloy>

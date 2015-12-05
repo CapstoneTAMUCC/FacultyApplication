@@ -1,0 +1,13 @@
+<Alloy>
+	<Window id="mainMenu">
+		<ImageView id="profilePicture"></ImageView>
+		<Button id="profileBar" class="mainMenuOption"></Button>
+		<Button id="profileButton"  class="mainMenuOption" backgroundImage="/images/profile.png"></Button>
+		<Button id="messagesButton"  class="mainMenuOption" backgroundImage="/images/messages.png"></Button>
+		<Button id="searchButton"  class="mainMenuOption" backgroundImage="/images/search.png"></Button>
+		<Button id="matchesButton"  class="mainMenuOption" backgroundImage="/images/matches.png"></Button>
+		<Button id="connectionsButton"  class="mainMenuOption" backgroundImage="/images/connections.png"></Button>
+		<Button id="viewedMeButton"  class="mainMenuOption" backgroundImage="/images/viewedMe.png"></Button>
+		<Button id="creditsButton" class="mainMenuOption">Credits</Button>
+	</Window>
+</Alloy>

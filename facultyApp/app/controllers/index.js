@@ -1,82 +1,41 @@
-//Reads the name of the client from database
-function readName(){
+/**
+ *  This function searches the database to find the userID and then opens the profile
+ */
+function openProfile(){
+	
 	//function to use HTTP to connect to a web server and transfer the data. 
-	var sendit = Ti.Network.createHTTPClient({ 
+	var SSO = Ti.Network.createHTTPClient({ 
 	onerror: function(e){ 	
 		Ti.API.debug(e.error); 	
-		alert('There was an error during the connection Main Menu'); 	
-	}, 	
+		alert('There was an error during the connection'); 	
+	},
 	timeout:1000, 
 	});
-
-	//Here you have to change it for your local ip 
-	sendit.open('GET', '52.32.54.34/php/read_user_list.php');  
-	sendit.send();
-
-	sendit.onload = function() {
+	
+	SSO.open('GET', '52.32.54.34/php/read_user_list.php');  
+	SSO.send();
+	
+	SSO.onload = function() {
 		var json = JSON.parse(this.responseText);
 		var json = json.NAME;
-
+		var found = false;
+		
+		//Find our user based on input
 		for( var i=0; i<json.length; i++) 
 		{
-			if ( json[i].USER_ID == Alloy.Globals.thisUserID) //READING JUSTIN GUERRA
+			if (json[i].USER_ID === $.userIDText.value)
 			{
-				$.profileBar.title = json[i].NAME;		
-				$.profilePicture.image = json[i].PHOTO;	
-			}	
+				Alloy.Globals.thisUserID = json[i].USER_ID;	//this is the userID that will be used throughout the program
+				Alloy.Globals.MMNavigate ($, $.index, Alloy.createController('mainMenu').getView());	//open main menu
+				found = true;
+				break;
+			}
+		}
+		
+		if(!found)
+		{
+			alert("User Not found!");
 		}
 	};
-}
-
-// Here your window's event listener for android back button
-$.index.addEventListener('androidback' , function(e){
-    Titanium.API.log("Can't go back on Main Menu");
-});
-
-$.profileButton.addEventListener('click', function(e)
-{
-	Alloy.Globals.MMNavigate ($, $.index, Alloy.createController('profile').getView());
-});
-
-$.messagesButton.addEventListener('click', function(e)
-{
-	Alloy.Globals.MMNavigate ($, $.index, Alloy.createController('messages').getView());
-});
-
-$.searchButton.addEventListener('click', function(e)
-{
-	Alloy.Globals.MMNavigate ($, $.index, Alloy.createController('search').getView());
-});
-
-$.matchesButton.addEventListener('click', function(e)
-{
-	Alloy.Globals.MMNavigate ($, $.index, Alloy.createController('matches').getView());
-});
-
-$.connectionsButton.addEventListener('click', function(e)
-{
-	Alloy.Globals.MMNavigate ($, $.index, Alloy.createController('connections').getView());
-});
-
-$.viewedMeButton.addEventListener('click', function(e)
-{
-	Alloy.Globals.MMNavigate ($, $.index, Alloy.createController('viewedMe').getView());
-});
-
-$.profileBar.addEventListener('click', function(e)
-{
-	Alloy.Globals.MMNavigate ($, $.index, Alloy.createController('profile').getView());
-});
-
-$.profilePicture.addEventListener('click', function(e)
-{
-	Alloy.Globals.MMNavigate ($, $.index, Alloy.createController('profile').getView());
-});
-
-$.creditsButton.addEventListener('click', function(e)
-{
-	Alloy.Globals.MMNavigate ($, $.index, Alloy.createController('credits').getView());
-});
-
-$.index.open();
-readName();
+};
+$.index.open();	//open the Login screen

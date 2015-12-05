@@ -33,7 +33,7 @@ Alloy.Globals.MMNavigate = function MMNavigate(v, fromView, toView) {
 };
 
 Alloy.Globals.goToHome = function goToHome(v, fromView){
-	Alloy.Globals.Navigate(v, fromView, Alloy.createController('index').getView());
+	Alloy.Globals.Navigate(v, fromView, Alloy.createController('mainMenu').getView());
 };
 
 Alloy.Collections.user = Alloy.createCollection('user'); 

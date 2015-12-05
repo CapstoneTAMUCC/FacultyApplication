@@ -1,39 +1,43 @@
 "#index": {
 	layout: "horizontal",
-	horizontalWrap: true
+	horizontalWrap: true,
+	backgroundColor: '#800000'
 }
 
-".mainMenuOption": {
-	font:{fontSize:25,fontFamily:'Times New Roman'},
-	backgroundColor:'#800000',
-	backgroundSelectedColor:'white',
-    enabled:'true',
-    color:'white',	
-	textAlign:'center',
-	width: "50%",
-	height: "22%",
+"#tamuLogo": {
+	image:'/images/tamuLogo.png',
+	height:'auto',
+	width:'80%',
+	align:'center'
 }
 
-"#creditsButton": {
-	width: '100%',
-	height: '12%',
-	font:{fontSize:15,fontFamily:'Times New Roman'}
+".view":{
+	width:"100%",
+	height:"auto",
+	textAlign: 'center',
+	top: '15%',
+	align: 'center',
 }
 
-"#profileBar": {
-	width: "75%"
+"#loginLabel":{
+	shadowColor:"#aaa",
+	color:"white",
+	font:{fontSize: 20, fontFamily:'Times New Roman', fontWeight:'bold'},
 }
 
-"#profilePicture": {
-	height:'22%', //15
-	width:'25%', //50
-	/*
-	top: '1%',
-	bottom: '1%',
-	left: '2%',
-	borderWidth: 2,
-	borderColor: "black",
-	borderRadius: 100,
-	backgroundImage: 'NONE',
-	backgroundColor: '#800000'*/
+"#userIDText":{
+	backgroundColor: 'white',
+	color: "black",
+	hintText: 'Enter Your User ID',
+	hintTextColor: '#800000',
+	width:"75%",
+	editable: 'true'
+}
+
+"#loginButton":{
+	width:"25%",
+	backgroundColor: 'white',
+	backgroundSelectedColor: 'black',
+	color: '#800000',
+	font:{fontSize: 20, fontFamily:'Times New Roman', fontWeight:'bold'}
 }
