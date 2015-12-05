@@ -1,41 +1,15 @@
 /**
- *                              _                _             
- *                             | |              | |            
- *    __ _ _ __  _ __   ___ ___| | ___ _ __ __ _| |_ ___  _ __ 
- *   / _` | '_ \| '_ \ / __/ _ \ |/ _ \ '__/ _` | __/ _ \| '__|
- *  | (_| | |_) | |_) | (_|  __/ |  __/ | | (_| | || (_) | |   
- *   \__,_| .__/| .__/ \___\___|_|\___|_|  \__,_|\__\___/|_|   
- *        | |   | |                                            
- *        |_|   |_|  
- *      
- *      
- * @overview
- * This is the controller file for the Directory View. The directory view loads data from 
- * a flat file, and derives a Sectioned and Indexed (iOS) ListView displaying all contacts.
- * The Directory has two ListView Templates, one for standard contacts, the other to denote
- * that you have a marked the contact as a Bookmark (or Favorite). Also, the Directory View
- * can be filtered so that it only displays bookmarked or favorited contacts.
- *
- * @copyright
- * Copyright (c) 2014 by Appcelerator, Inc. All Rights Reserved.
- *
- * @license
- * Licensed under the terms of the Apache Public License
- * Please see the LICENSE included with this distribution for details.
- */
-
-var dataArray = [];
-var namesJson = [];
-
-/**
  * Instantiate the local variables for this controller
  */
 var _args = arguments[0] || {}, // Any passed in arguments will fall into this property
-	App = Alloy.Globals.App, // reference to the APP singleton object
-	$FM = require('favoritesmgr'),  // FavoritesManager object (see lib/utilities.js)
-	users = null,  // Array placeholder for all users
-	indexes = [];  // Array placeholder for the ListView Index (used by iOS only);
+	App = Alloy.Globals.App; // reference to the APP singleton object
 	
+var dataArray = [];	//FRANCESCA
+var namesJson = [];	//FRANCESCA
+
+/**
+ *	FRANCESCA
+ */	
 var makeJsonConversationString = function (dataArray, index, otherID) {
 	var result = "{\"messages\":[";
 	var titleName = getOtherName(namesJson, otherID);
@@ -67,6 +41,9 @@ var makeJsonConversationString = function (dataArray, index, otherID) {
     return result;
 };
 
+/**
+ *	FRANCESCA
+ */
 var getOtherName = function (array, otherID) {
 	for(var i=0; i<array.length; i++) {
 		if ( array[i].USER_ID == otherID)
@@ -77,6 +54,9 @@ var getOtherName = function (array, otherID) {
 	return "Not found";
 };
 
+/**
+ *	FRANCESCA
+ */
 var exists = function(otherUserID) {
     	for (var i = 0; i < dataArray.length; i++) {
     		if (dataArray[i][0].TO_ID === otherUserID ||
@@ -86,7 +66,10 @@ var exists = function(otherUserID) {
     	}
     	return -1;
     }; 	
-	
+
+/**
+ *	FRANCESCA
+ */
 function popArrays () {
 	//function to use HTTP to connect to a web server and transfer the data. 
     var connection = Ti.Network.createHTTPClient({ 
@@ -166,23 +149,28 @@ function popArrays () {
 }
 
 /**
- * Appcelerator Analytics Call
+ *	Use the androidback event to go back to Main Menu
  */
-var title = _args.title ? _args.title.toLowerCase() : "directory";
-Ti.Analytics.featureEvent(Ti.Platform.osname+"."+title+".viewed");
-
 $.connections.addEventListener('androidback' , function (e) {
 	Alloy.Globals.goToHome ($, $.connections);
 });
 
+/**
+ *	Home button function will take you to Main Menu
+ */
 var homeButtonFunc = function () {
 	Alloy.Globals.goToHome ($, $.connections);
 };
 
+/**
+ *	NOTE: Some of this function's functionality is gathered from Appcelerator's Example Employee Directory app.
+ *
+ *	This function is used to populate the Contacts list from remote database.
+ */
 function populateContacts()
 {
-	var tempArray = null;
-	var contactList = new Array();
+	var tempArray = null;	//a temporary array 
+	var contactList = new Array();	//an array that will hold our contacts
 	//function to use HTTP to connect to a web server and transfer the data. 
 	var request1 = Ti.Network.createHTTPClient({ 
 	onerror: function(e){ 	
@@ -229,7 +217,8 @@ function populateContacts()
 					}
 				}
 			}
-		
+			
+			//Sort by users' names
 			contactList = _.sortBy(contactList, function(user){
 				return user.NAME
 			});
@@ -237,10 +226,9 @@ function populateContacts()
 			if (contactList)
 			{
 				/**
-				 * Setup our Indexes and Sections Array for building out the ListView components
+				 * Setup our Sections Array for building out the ListView components
 				 * 
 				 */
-				indexes = [];
 				var sections = [];
 				
 				/**
@@ -267,22 +255,11 @@ function populateContacts()
 					 * if not lets exit
 					 */
 					if(dataToAdd.length < 1) return;
-					
-					
-					/**
-					 * Lets take the first Character of the LastName and push it onto the index
-					 * Array - this will be used to generate the indices for the ListView on IOS
-					 */
-					indexes.push({
-						index: indexes.length,
-						title: group[0].NAME.charAt(0)
-					});
 		
 					/**
 					 * Create the ListViewSection header view
 					 * DOCS: http://docs.appcelerator.com/platform/latest/#!/api/Titanium.UI.ListSection-property-headerView
 					 */
-		
 					 var sectionHeader = Ti.UI.createView({
 					 	backgroundColor: "#ececec",
 					 	width: Ti.UI.FILL,
@@ -333,11 +310,15 @@ function populateContacts()
 
 }//end of populateContacts function
 
-
+/**
+ *	NOTE: Some of this function's functionality is gathered from Appcelerator's Example Employee Directory app.
+ *
+ *	This function is used to populate the Pending Contacts list from remote database.
+ */
 function populatePending()
 {
-	var tempArray = null;
-	var pendingList = new Array();
+	var tempArray = null;	//a temporary array
+	var pendingList = new Array();	//an array that will hold our pending contacts
 	//function to use HTTP to connect to a web server and transfer the data. 
 	var request1 = Ti.Network.createHTTPClient({ 
 	onerror: function(e){ 	
@@ -384,7 +365,8 @@ function populatePending()
 					}
 				}
 			}
-		
+			
+			//Sort by users' names
 			pendingList = _.sortBy(pendingList, function(user){
 				return user.NAME
 			});
@@ -392,10 +374,9 @@ function populatePending()
 			if (pendingList)
 			{
 				/**
-				 * Setup our Indexes and Sections Array for building out the ListView components
+				 * Setup our Sections Array for building out the ListView components
 				 * 
 				 */
-				indexes = [];
 				var sections = [];
 				
 				/**
@@ -422,22 +403,11 @@ function populatePending()
 					 * if not lets exit
 					 */
 					if(dataToAdd.length < 1) return;
-					
-					
-					/**
-					 * Lets take the first Character of the LastName and push it onto the index
-					 * Array - this will be used to generate the indices for the ListView on IOS
-					 */
-					indexes.push({
-						index: indexes.length,
-						title: group[0].NAME.charAt(0)
-					});
 		
 					/**
 					 * Create the ListViewSection header view
 					 * DOCS: http://docs.appcelerator.com/platform/latest/#!/api/Titanium.UI.ListSection-property-headerView
 					 */
-		
 					 var sectionHeader = Ti.UI.createView({
 					 	backgroundColor: "#ececec",
 					 	width: Ti.UI.FILL,
@@ -489,6 +459,8 @@ function populatePending()
 }//end of populatePending function
 
 /**
+ *	NOTE: This function is gathered from Appcelerator's Example Employee Directory app. 
+ *
  *	Convert an array of data from a JSON file into a format that can be added to the ListView
  * 
  * 	@param {Object} Raw data elements from the JSON file.
@@ -507,17 +479,10 @@ var preprocessForListView = function(rawData) {
 		return {
 			template: "userTemplate",
 			properties: {
-				searchableText: "",
 				user: item,
-				editActions: [
-					{title: "Does this even matter", color: item.isNew ? "#C41230" : "#038BC8" }
-				],
-				canEdit:true
 			},
-			userName: {text: item.NAME},
-			//userCompany: {text: item.company},
-			userPhoto: {image: item.PHOTO}
-			//userEmail: {text: item.email} 
+			userName: {text: item.NAME},	//get user's name'
+			userPhoto: {image: item.PHOTO}	//get user's profile picture
 		};
 	});	
 };
@@ -537,19 +502,18 @@ function onItemClick(e){
 	var item = $.listView.sections[e.sectionIndex].items[e.itemIndex];
 	Alloy.Globals.profileViewID = item.properties.user.USER_ID;	//set the profile I want to view
 	
-	if (e.bindId == 'sendMessage')
+	if (e.bindId == 'sendMessage')	//clicked on message button
 	{
 		var newWindow = Alloy.createController('conversation', JSON.parse(makeJsonConversationString(dataArray, exists(Alloy.Globals.profileViewID), Alloy.Globals.profileViewID), Alloy.Globals.profileViewID)).getView();
 		newWindow.open();
-		Titanium.API.log('You clicked on send message!');
 	}
-	else
+	else	//open profile view
 	{
 		//Add my information to the profile's VIEWED ME list as I am going to view it
 		var request = Ti.Network.createHTTPClient({ 	
 		onerror: function(e){ 
 			Ti.API.debug(e.error); 
-			alert('There was an error during the connection PROFILE VIEW'); 
+			alert('There was an error during the connection'); 
 		}, 
 		timeout:1000, 	         
 		});  
@@ -644,10 +608,8 @@ function onItemClick2(e){
 	
 		request3.send(params);
 		
-		Titanium.API.log("BEFORE POPULATE!");
-		populateContacts();
-		populatePending();
-		Titanium.API.log("AFTER POPULATE!");
+		populateContacts();	//refresh contacts
+		populatePending();	//refresh pending
 	}
 	else if (e.bindId == 'decline')
 	{
@@ -668,14 +630,12 @@ function onItemClick2(e){
 	
 		request.send(params);
 		
-		Titanium.API.log("BEFORE POPULATE!");
-		populateContacts();
-		populatePending();
-		Titanium.API.log("AFTER POPULATE!");
+		populateContacts();	//refresh contacts
+		populatePending();	//refresh pending
 	}
 	else
 	{
-		//Add my information to the profile's VIEWED ME list as I am going to view it
+		//Add my information to the profile's Viewed Me list as I am going to view it
 		var request = Ti.Network.createHTTPClient({ 	
 		onerror: function(e){ 
 			Ti.API.debug(e.error); 
@@ -701,7 +661,7 @@ function onItemClick2(e){
 /**
  * Initialize View
  */
-popArrays ();
-populateContacts();
-populatePending();
+popArrays ();	//Francesca
+populateContacts();	//Populate contacts list
+populatePending();	//Populate pending contacts list
 

@@ -11,8 +11,7 @@
 			<Button id="searchButton"></Button>
 		</View>
 		<!--
-			The Directory list. 
-			This listView leverages two ListItem templates to denote regular contacts and those that are bookmarked.
+			The Search list. 
 		-->
 		<ListView id="listView" defaultItemTemplate="userTemplate" onItemclick="onItemClick">
 			<Templates>
@@ -20,20 +19,14 @@
 				<!-- UserTemplate - this is the default ListItem template -->
 				<ItemTemplate id="userTemplate" name="userTemplate" class="template">
 					<View class="left-buffer">
-						<ImageView id="userPhoto" bindId="userPhoto" class="avatar" onClick="onPhotoClick" />
-						<View platform="android" class="smoothAvatarBorderRadius" onClick="onPhotoClick" />
+						<ImageView id="userPhoto" bindId="userPhoto" class="avatar" />
+						<View platform="android" class="smoothAvatarBorderRadius" />
 						<View class="vgroup left size">
 							<Label id="userName" bindId="userName" class="title" />
 							<Button id="button1" bindId="button1" class="greenCheckmark" visible="false"></Button>
-							<Label id="userEmail" bindId="userEmail" class="subtitle" />
-							<Label id="userCompany" bindId="userCompany" class="subtitle" />
 						</View>
 						
 						<View class="hgroup right size">	
-							<!--					
-							<Button id="button2" bindId="button2" class="requestConnection left-buffer right-buffer"></Button> 
-							<Button id="button3" bindId="button3" class="decline left-buffer right-buffer" visible="false"></Button> 
-							-->
 							<Button id="sendMessage" bindId="sendMessage" class="sendMessage left-buffer right-buffer"></Button> 				
 						</View>
 						<View class="gray-line bottom"/>

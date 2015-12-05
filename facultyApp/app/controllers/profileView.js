@@ -1,8 +1,14 @@
-var dataArray = [];
-var namesJson = [];
-
+/**
+ * Instantiate the local variables for this controller
+ */
 var _args = arguments[0] || {};
 
+var dataArray = [];	//FRANCESCA
+var namesJson = [];	//FRANCESCA
+
+/**
+ *	FRANCESCA
+ */
 var makeJsonConversationString = function (dataArray, index, otherID) {
 	var result = "{\"messages\":[";
 	var titleName = getOtherName(namesJson, otherID);
@@ -34,6 +40,9 @@ var makeJsonConversationString = function (dataArray, index, otherID) {
     return result;
 };
 
+/**
+ *	FRANCESCA
+ */
 var getOtherName = function (array, otherID) {
 	for(var i=0; i<array.length; i++) {
 		if ( array[i].USER_ID == otherID)
@@ -44,6 +53,9 @@ var getOtherName = function (array, otherID) {
 	return "Not found";
 };
 
+/**
+ *	FRANCESCA
+ */
 var exists = function(otherUserID) {
     	for (var i = 0; i < dataArray.length; i++) {
     		if (dataArray[i][0].TO_ID === otherUserID ||
@@ -54,6 +66,9 @@ var exists = function(otherUserID) {
     	return -1;
     }; 
 
+/**
+ *	FRANCESCA
+ */
 function popArrays () {
 	//function to use HTTP to connect to a web server and transfer the data. 
     var connection = Ti.Network.createHTTPClient({ 
@@ -132,12 +147,20 @@ function popArrays () {
 	};
 }
 
+/**
+ *	FRANCESCA
+ */
 var onSendMessage = function(e){
 	var newWindow = Alloy.createController('conversation', JSON.parse(makeJsonConversationString(dataArray, exists(Alloy.Globals.profileViewID), Alloy.Globals.profileViewID), Alloy.Globals.profileViewID)).getView();
 		newWindow.open();
 		Titanium.API.log('You clicked on send message!');
 };
 
+/**
+ *	This function is used to convert regular buttons to checkboxes
+ * 
+ * 	@param {Object} the button
+ */
 function checkboxFunction(e)
 {
 	if(false == e.source.value) {
@@ -151,6 +174,9 @@ function checkboxFunction(e)
     }
 }
 
+/**
+ *	This function sets the Connect button's status based on user's relationship with the profile he/she is viewing
+ */
 function setConnectButtonStatus()
 {
 	var statusFound = false;	//if set to true, means that we know the button's status
@@ -159,12 +185,12 @@ function setConnectButtonStatus()
 	var request1 = Ti.Network.createHTTPClient({ 
 	onerror: function(e){ 	
 		Ti.API.debug(e.error); 	
-		alert('There was an error during the connection PENDING'); 	
+		alert('There was an error during the connection'); 	
 	}, 	
 	timeout:1000, 
 	});
 
-	//Here you have to change it for your local ip 
+	//open request
 	request1.open('POST', '52.32.54.34/php/read_contact_list.php');  
 	var params = ({ "USER_ID": Alloy.Globals.thisUserID }); 
 	request1.send(params);
@@ -176,7 +202,6 @@ function setConnectButtonStatus()
 		{
 			if (json[i].OTHER_USER_ID == Alloy.Globals.profileViewID )	//THIS MEANS HE IS MY CONTACT
 			{
-				Titanium.API.log("I am within if statement 1");
 				$.button1.title = '\u2713 Friends';
 				$.button1.backgroundColor = '#07ce00';
 				$.button2.visible = 'false';	//DECLINE BUTTON
@@ -188,12 +213,11 @@ function setConnectButtonStatus()
 	
 	if (statusFound == false)
 	{
-		Titanium.API.log("2nd status check");
 		//SECOND CHECK --> CHECK TO SEE IF I ALREADY SENT A REQUEST TO THE PROFILE I AM VIEWING
 		var request2 = Ti.Network.createHTTPClient({ 
 		onerror: function(e){ 	
 			Ti.API.debug(e.error); 	
-			alert('There was an error during the connection PENDING'); 	
+			alert('There was an error during the connection'); 	
 		}, 	
 		timeout:1000, 
 		});
@@ -223,12 +247,11 @@ function setConnectButtonStatus()
 	
 	if (statusFound == false)
 	{
-		Titanium.API.log("3rd status check");
 		//THIRD CHECK --> CHECK TO SEE IF THE PROFILE I AM VIEWING SENT ME A REQUEST
 		var request3 = Ti.Network.createHTTPClient({ 
 		onerror: function(e){ 	
 			Ti.API.debug(e.error); 	
-			alert('There was an error during the connection PENDING'); 	
+			alert('There was an error during the connection'); 	
 		}, 	
 		timeout:1000, 
 		});
@@ -257,6 +280,11 @@ function setConnectButtonStatus()
 	}
 }
 
+/**
+ *	This is for providing click functionality to first button (Connect or Pending or Accept)
+ * 
+ * 	@param {Object} the button information
+ */
 function button1Click(e)
 {
 	if (e.source.title == 'Connect')
@@ -343,7 +371,11 @@ function button1Click(e)
 	}
 }
 
-//Decline the request
+/**
+ *	This is for providing click functionality to DECLINE BUTTON
+ * 
+ * 	@param {Object} the button information
+ */
 function button2Click(e)
 {
 	//Delete him from my pending
@@ -366,37 +398,41 @@ function button2Click(e)
 	e.source.visible = 'false';	//Decline button disappears once again
 }
 
+/**
+ *	Use the androidback event to go back to Main Menu
+ */
 $.profileView.addEventListener('androidback' , function (e) {
-	Titanium.API.log("I AM USING ANDROID BACK IN PROFILEVIEW!");
+	//Use the appropriate Navigate paramaters based on where we came from
 	if (Alloy.Globals.comingFrom == 'connections')
 	{
-		Titanium.API.log("COMING FROM CONNECTIONS!");
 		Alloy.Globals.Navigate ($, $.profileView, Alloy.createController('connections').getView());	
 	}
 	else if (Alloy.Globals.comingFrom == 'matches')
-	{
-		Titanium.API.log("COMING FROM MATCHES!");
+	{;
 		Alloy.Globals.Navigate ($, $.profileView, Alloy.createController('matches').getView());	
 	}
 	else if (Alloy.Globals.comingFrom == 'search')
 	{
-		Titanium.API.log("COMING FROM SEARCH!");
 		Alloy.Globals.Navigate ($, $.profileView, Alloy.createController('search').getView());	
 	}
 	else if (Alloy.Globals.comingFrom == 'viewedMe')
 	{
-		Titanium.API.log("COMING FROM VIEWED ME!");
 		Alloy.Globals.Navigate ($, $.profileView, Alloy.createController('viewedMe').getView());	
-	}
-	
-	//$.profileView.close();	//might be a better option for speed?
+	}	
 });
 
-var homeButtonFunc = function () {	//might be problematic 
-	Titanium.API.log("I AM USING HOME IN PROFILEVIEW!");
+/**
+ *	Home button function will take you to Main Menu
+ */
+var homeButtonFunc = function () {	;
 	Alloy.Globals.goToHome ($, $.profileView);
 };
 
+/**
+ *	This function is used to set checkboxes to true(checked)
+ * 
+ * 	@param {Object} the button(checkbox)
+ */
 function setCheckboxTrue(e)	//marks the checkbox (for READ function)
 {
 	e.value = true;
@@ -404,6 +440,9 @@ function setCheckboxTrue(e)	//marks the checkbox (for READ function)
 	e.title = '\u2713';
 }
 
+/**
+ *	This function reads the 6 main information on About tab
+ */
 function readTextfieldData(){
 	//function to use HTTP to connect to a web server and transfer the data. 
 	var sendit = Ti.Network.createHTTPClient({ 
@@ -425,8 +464,9 @@ function readTextfieldData(){
 
 		for( var i=0; i<json.length; i++) 
 		{
-			if ( json[i].USER_ID == Alloy.Globals.profileViewID) //used to be 1234 only without quotations READING JUSTIN GUERRA
+			if ( json[i].USER_ID == Alloy.Globals.profileViewID) //find the profile we are viewing
 			{
+				//set the text fields based on the information gathered from the database
 				$.nameField.value = json[i].NAME;
 				$.educationText.value = json[i].EDUCATION;
 				$.projectText.value = json[i].CURRENT_PROJ;
@@ -436,21 +476,21 @@ function readTextfieldData(){
 				$.contactInfoText.value = json[i].O_CONTACT_INFO;
 				$.profilePicture.image = json[i].PHOTO;
 				
-				Ti.API.log('I am here 3');
-				
+				//Set the first question on questionnaire tab
 				if (json[i].EXPAND == 1) { setCheckboxTrue($.question1yes); }
 				else { setCheckboxTrue($.question1no); }
 				
+				//Set the second question on questionnaire tab
 				if (json[i].FUNDING == 1) { setCheckboxTrue($.question2yes); }
-				else { setCheckboxTrue($.question2no); }
-				
+				else { setCheckboxTrue($.question2no); }	
 			}	
 		}
 	};
-	
-	Ti.API.log('end of readData function!');
 }
 
+/**
+ *	This function reads/populates Agency information for profile
+ */
 function readAgencyData(){
 	//function to use HTTP to connect to a web server and transfer the data. 
 	var sendit = Ti.Network.createHTTPClient({ 
@@ -471,8 +511,9 @@ function readAgencyData(){
 
 		for( var i=0; i<json.length; i++) 
 		{
-			if ( json[i].USER_ID == Alloy.Globals.profileViewID) //READING JUSTIN GUERRA
-			{				
+			if ( json[i].USER_ID == Alloy.Globals.profileViewID) 
+			{		
+				//find the user and populate checkboxes accordingly		
 				if (json[i].TAMU == 1) { setCheckboxTrue($.tamuCheckbox); }		
 				if (json[i].PVAMU == 1) { setCheckboxTrue($.prairieCheckbox); }
 				if (json[i].TSU == 1) { setCheckboxTrue($.tarletonCheckbox); }		
@@ -493,10 +534,11 @@ function readAgencyData(){
 			}	
 		}
 	};
-	
-	Ti.API.log('end of readData function!');
 }
 
+/**
+ *	This function reads/populates Areas of Research information for profile
+ */
 function readResearchData(){
 	//function to use HTTP to connect to a web server and transfer the data. 
 	var sendit = Ti.Network.createHTTPClient({ 
@@ -517,8 +559,9 @@ function readResearchData(){
 
 		for( var i=0; i<json.length; i++) 
 		{
-			if ( json[i].USER_ID == Alloy.Globals.profileViewID) //READING JUSTIN GUERRA
-			{				
+			if ( json[i].USER_ID == Alloy.Globals.profileViewID) 
+			{		
+				//find the user and set the checkboxes accordingly		
 				if (json[i].FOOD_SAFETY == 1) { setCheckboxTrue($.foodSafetyCheckbox); }
 				if (json[i].NUTRITION == 1) { setCheckboxTrue($.nutritionCheckbox); }	
 				if (json[i].PUBLIC_HEALTH == 1) { setCheckboxTrue($.publicHealthCheckbox); }	
@@ -532,14 +575,11 @@ function readResearchData(){
 			}	
 		}
 	};
-	
-	Ti.API.log('end of readData function!');
 }
 
-popArrays ();
-$.profileView.open();
-setConnectButtonStatus();
-readTextfieldData();
-readAgencyData();
-readResearchData();
-Titanium.API.log("Alloy.Globals.profileViewID is -->", Alloy.Globals.profileViewID);
+popArrays ();	//FRANCESCA
+$.profileView.open();	//OPEN PROFILE VIEW WINDOW
+setConnectButtonStatus();	//SET THE FIRST BUTTON
+readTextfieldData();	//GET 6 MAIN INFORMATION ON ABOUT TAB
+readAgencyData();		//GET AGENCY INFORMATION ON QUESTIONNAIRE TAB
+readResearchData();		//GET AREAS OF RESEARCH INFORMATION ON QUESTIONNAIRE TAB

@@ -1,41 +1,15 @@
 /**
- *                              _                _             
- *                             | |              | |            
- *    __ _ _ __  _ __   ___ ___| | ___ _ __ __ _| |_ ___  _ __ 
- *   / _` | '_ \| '_ \ / __/ _ \ |/ _ \ '__/ _` | __/ _ \| '__|
- *  | (_| | |_) | |_) | (_|  __/ |  __/ | | (_| | || (_) | |   
- *   \__,_| .__/| .__/ \___\___|_|\___|_|  \__,_|\__\___/|_|   
- *        | |   | |                                            
- *        |_|   |_|  
- *      
- *      
- * @overview
- * This is the controller file for the Directory View. The directory view loads data from 
- * a flat file, and derives a Sectioned and Indexed (iOS) ListView displaying all contacts.
- * The Directory has two ListView Templates, one for standard contacts, the other to denote
- * that you have a marked the contact as a Bookmark (or Favorite). Also, the Directory View
- * can be filtered so that it only displays bookmarked or favorited contacts.
- *
- * @copyright
- * Copyright (c) 2014 by Appcelerator, Inc. All Rights Reserved.
- *
- * @license
- * Licensed under the terms of the Apache Public License
- * Please see the LICENSE included with this distribution for details.
- */
-
-var dataArray = [];
-var namesJson = [];
-
-/**
  * Instantiate the local variables for this controller
  */
 var _args = arguments[0] || {}, // Any passed in arguments will fall into this property
-	App = Alloy.Globals.App, // reference to the APP singleton object
-	$FM = require('favoritesmgr'),  // FavoritesManager object (see lib/utilities.js)
-	users = null,  // Array placeholder for all users
-	indexes = [];  // Array placeholder for the ListView Index (used by iOS only);
-	
+	App = Alloy.Globals.App; // reference to the APP singleton object
+
+var dataArray = [];	//FRANCESCA
+var namesJson = [];	//FRANCESCA
+
+/**
+ *	FRANCESCA
+ */	
 var makeJsonConversationString = function (dataArray, index, otherID) {
 	var result = "{\"messages\":[";
 	var titleName = getOtherName(namesJson, otherID);
@@ -67,6 +41,9 @@ var makeJsonConversationString = function (dataArray, index, otherID) {
     return result;
 };
 
+/**
+ *	FRANCESCA
+ */
 var getOtherName = function (array, otherID) {
 	for(var i=0; i<array.length; i++) {
 		if ( array[i].USER_ID == otherID)
@@ -77,6 +54,9 @@ var getOtherName = function (array, otherID) {
 	return "Not found";
 };
 
+/**
+ *	FRANCESCA
+ */
 var exists = function(otherUserID) {
     	for (var i = 0; i < dataArray.length; i++) {
     		if (dataArray[i][0].TO_ID === otherUserID ||
@@ -86,7 +66,10 @@ var exists = function(otherUserID) {
     	}
     	return -1;
     }; 
-	
+
+/**
+ *	FRANCESCA
+ */	
 function popArrays () {
 	//function to use HTTP to connect to a web server and transfer the data. 
     var connection = Ti.Network.createHTTPClient({ 
@@ -166,23 +149,28 @@ function popArrays () {
 }
 
 /**
- * Appcelerator Analytics Call
+ *	Use the androidback event to go back to Main Menu
  */
-var title = _args.title ? _args.title.toLowerCase() : "directory";
-Ti.Analytics.featureEvent(Ti.Platform.osname+"."+title+".viewed");
-
 $.search.addEventListener('androidback' , function (e) {
 	Alloy.Globals.goToHome ($, $.search);
 });
 
+/**
+ *	Home button function will take you to Main Menu
+ */
 var homeButtonFunc = function () {
 	Alloy.Globals.goToHome ($, $.search);
 };
 
+/**
+ *	NOTE: Some of this function's functionality is gathered from Appcelerator's Example Employee Directory app.
+ *
+ *	This function is used to populate the search results from remote database.
+ */
 function populateSearchResults()
 {
-	var searchResults = new Array();
-	var tempString = " ";
+	var searchResults = new Array();	//holds the search results
+	var tempString = " ";	//an empty temporary string
 	//function to use HTTP to connect to a web server and transfer the data. 
 	var request1 = Ti.Network.createHTTPClient({ 
 	onerror: function(e){ 	
@@ -192,27 +180,27 @@ function populateSearchResults()
 	timeout:1000, 
 	});
 
-	//Here you have to change it for your local ip 
+	//Open your request.
 	request1.open('GET', '52.32.54.34/php/read_user_list.php');  
 	request1.send();
 	
 	request1.onload = function() {
 		var json = JSON.parse(this.responseText);
-		var json = json.NAME;
+		var json = json.NAME;	//parse by NAME
 		
 		for ( var i = 0; i < json.length; i++ )
 		{
-			if ( json[i].USER_ID != Alloy.Globals.thisUserID)
+			if ( json[i].USER_ID != Alloy.Globals.thisUserID)	//find our user from USER table
 			{
 				tempString = json[i].NAME + '' + 
 							json[i].EDUCATION + '' +  
 							json[i].CURRENT_PROJ + '' +
 							json[i].AREA_EXPERTISE + '' +
 							json[i].COMMITTEES + '' +
-							json[i].OTHER_INTERESTS;
+							json[i].OTHER_INTERESTS;	//temp string will hold all searchable information
 
 				if ( tempString.indexOf( $.searchText.value ) != -1 )
-				{
+				{	//if search phrase matches tempString, add it to our search result list
 					searchResults.push(json[i]);
 				}
 
@@ -225,6 +213,7 @@ function populateSearchResults()
 		}
 		else
 		{
+			//Search users by their names
 			searchResults = _.sortBy(searchResults, function(user){
 				return user.NAME
 			});
@@ -232,7 +221,7 @@ function populateSearchResults()
 			if (searchResults)
 			{
 				/**
-				 * Setup our Indexes and Sections Array for building out the ListView components
+				 * Setup our Sections Array for building out the ListView components
 				 * 
 				 */
 				var sections = [];
@@ -252,7 +241,7 @@ function populateSearchResults()
 				{
 					/**
 					 * Take the group data that is passed into the function, and parse/transform
-					 * it for use in the ListView templates as defined in the directory.xml file.
+					 * it for use in the ListView templates as defined in the search.xml file.
 					 */
 					var dataToAdd = preprocessForListView(group);
 					/**
@@ -265,7 +254,6 @@ function populateSearchResults()
 					 * Create the ListViewSection header view
 					 * DOCS: http://docs.appcelerator.com/platform/latest/#!/api/Titanium.UI.ListSection-property-headerView
 					 */
-		
 					 var sectionHeader = Ti.UI.createView({
 					 	backgroundColor: "#ececec",
 					 	width: Ti.UI.FILL,
@@ -317,6 +305,8 @@ function populateSearchResults()
 }//end of populateSearchResults function
 
 /**
+ *	NOTE: This function is gathered from Appcelerator's Example Employee Directory app. 
+ *
  *	Convert an array of data from a JSON file into a format that can be added to the ListView
  * 
  * 	@param {Object} Raw data elements from the JSON file.
@@ -335,17 +325,10 @@ var preprocessForListView = function(rawData) {
 		return {
 			template: "userTemplate",
 			properties: {
-				searchableText: "",
 				user: item,
-				editActions: [
-					{title: "Does this even matter", color: item.isNew ? "#C41230" : "#038BC8" }
-				],
-				canEdit:true
 			},
-			userName: {text: item.NAME},
-			//userCompany: {text: item.company},
-			userPhoto: {image: item.PHOTO}
-			//userEmail: {text: item.email} 
+			userName: {text: item.NAME},	//get user's name'
+			userPhoto: {image: item.PHOTO}	//get user's profile picture
 		};
 	});	
 };
@@ -365,11 +348,10 @@ function onItemClick(e){
 	var item = $.listView.sections[e.sectionIndex].items[e.itemIndex];
 	Alloy.Globals.profileViewID = item.properties.user.USER_ID;	//set the profile I want to view
 
-	if (e.bindId == 'sendMessage')
+	if (e.bindId == 'sendMessage')	//if Message button is clicked open conversation page
 	{
 		var newWindow = Alloy.createController('conversation', JSON.parse(makeJsonConversationString(dataArray, exists(Alloy.Globals.profileViewID), Alloy.Globals.profileViewID), Alloy.Globals.profileViewID)).getView();
 		newWindow.open();
-		Titanium.API.log('You clicked on send message!');
 	}
 	else
 	{
@@ -391,11 +373,14 @@ function onItemClick(e){
 		request.send(params);
 		
 		Alloy.Globals.comingFrom = 'search';	//we are going to open profileView from search
-		Alloy.Globals.Navigate($, $.search, Alloy.createController('profileView').getView() );
+		Alloy.Globals.Navigate($, $.search, Alloy.createController('profileView').getView() );	//open the profile to view
 	}
 
 }
 
+/**
+ * Checks for empty search phrase entries. Prevent searching by empty search phrase
+ */
 $.searchButton.addEventListener('click', function(e)
 {
 	if ($.searchText.value == '' || $.searchText.value == ' ' )
@@ -404,22 +389,8 @@ $.searchButton.addEventListener('click', function(e)
 	}
 	else
 	{
-		populateSearchResults();
+		populateSearchResults();	//display the search results
 	}
 });
 
-function onPhotoClick(e){
-	var newWindow = Alloy.createController('profile').getView();
-	Ti.UI.currentWindow.close();
-	newWindow.open();
-}
-
-function messageClick(e){
-	alert('You clicked the message button!');
-}
-
-function requestClick(e){
-	alert('You clicked the request connection button!');
-}
-
-popArrays ();
+popArrays ();	//FRANCESCA

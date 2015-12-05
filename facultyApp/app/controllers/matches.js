@@ -1,41 +1,15 @@
 /**
- *                              _                _             
- *                             | |              | |            
- *    __ _ _ __  _ __   ___ ___| | ___ _ __ __ _| |_ ___  _ __ 
- *   / _` | '_ \| '_ \ / __/ _ \ |/ _ \ '__/ _` | __/ _ \| '__|
- *  | (_| | |_) | |_) | (_|  __/ |  __/ | | (_| | || (_) | |   
- *   \__,_| .__/| .__/ \___\___|_|\___|_|  \__,_|\__\___/|_|   
- *        | |   | |                                            
- *        |_|   |_|  
- *      
- *      
- * @overview
- * This is the controller file for the Directory View. The directory view loads data from 
- * a flat file, and derives a Sectioned and Indexed (iOS) ListView displaying all contacts.
- * The Directory has two ListView Templates, one for standard contacts, the other to denote
- * that you have a marked the contact as a Bookmark (or Favorite). Also, the Directory View
- * can be filtered so that it only displays bookmarked or favorited contacts.
- *
- * @copyright
- * Copyright (c) 2014 by Appcelerator, Inc. All Rights Reserved.
- *
- * @license
- * Licensed under the terms of the Apache Public License
- * Please see the LICENSE included with this distribution for details.
- */
-
-var dataArray = [];
-var namesJson = [];
-
-/**
  * Instantiate the local variables for this controller
  */
 var _args = arguments[0] || {}, // Any passed in arguments will fall into this property
-	App = Alloy.Globals.App, // reference to the APP singleton object
-	$FM = require('favoritesmgr'),  // FavoritesManager object (see lib/utilities.js)
-	users = null,  // Array placeholder for all users
-	indexes = [];  // Array placeholder for the ListView Index (used by iOS only);
+	App = Alloy.Globals.App; // reference to the APP singleton object
 	
+var dataArray = [];	//FRANCESCA
+var namesJson = [];	//FRANCESCA
+
+/**
+ *	FRANCESCA
+ */	
 var makeJsonConversationString = function (dataArray, index, otherID) {
 	var result = "{\"messages\":[";
 	var titleName = getOtherName(namesJson, otherID);
@@ -67,6 +41,9 @@ var makeJsonConversationString = function (dataArray, index, otherID) {
     return result;
 };
 
+/**
+ *	FRANCESCA
+ */
 var getOtherName = function (array, otherID) {
 	for(var i=0; i<array.length; i++) {
 		if ( array[i].USER_ID == otherID)
@@ -77,6 +54,9 @@ var getOtherName = function (array, otherID) {
 	return "Not found";
 };
 
+/**
+ *	FRANCESCA
+ */
 var exists = function(otherUserID) {
     	for (var i = 0; i < dataArray.length; i++) {
     		if (dataArray[i][0].TO_ID === otherUserID ||
@@ -86,7 +66,10 @@ var exists = function(otherUserID) {
     	}
     	return -1;
     }; 
-	
+
+/**
+ *	FRANCESCA
+ */
 function popArrays () {
 	//function to use HTTP to connect to a web server and transfer the data. 
     var connection = Ti.Network.createHTTPClient({ 
@@ -166,26 +149,31 @@ function popArrays () {
 }
 
 /**
- * Appcelerator Analytics Call
+ *	Use the androidback event to go back to Main Menu
  */
-var title = _args.title ? _args.title.toLowerCase() : "directory";
-Ti.Analytics.featureEvent(Ti.Platform.osname+"."+title+".viewed");
-
 $.matches.addEventListener('androidback' , function (e) {
 	Alloy.Globals.goToHome ($, $.matches);
 });
 
+/**
+ *	Home button function will take you to Main Menu
+ */
 var homeButtonFunc = function () {
 	Alloy.Globals.goToHome ($, $.matches);
 };
 
+/**
+ *	NOTE: Some of this function's functionality is gathered from Appcelerator's Example Employee Directory app.
+ *
+ *	This function is used to populate the Matches list from remote database.
+ */
 function populateMatches()
 {
-	var matchResults = new Array();
+	var matchResults = new Array();	//an array that holds matches
 	var myUser = new Array();	//holds the client's area of research information
 	var matchIds = new Array();	//holds the ID's of matches
 	var matchIdsAndRanks = new Array();	//holds IDs and ranking numbers
-	var matchRank = 0;
+	var matchRank = 0;	//holds the matches rank information
 	
 	//function to use HTTP to connect to a web server and transfer the data. 
 	var request1 = Ti.Network.createHTTPClient({ 
@@ -233,10 +221,12 @@ function populateMatches()
 			matchRank = 0;	//set it back to 0 for a health loop iteration
 		}
 		
+		//Sort by matching rank
 		matchIdsAndRanks = _.sortBy(matchIdsAndRanks, function(match){	//sort the matchIdsAndRanks by the last character (the match rank)
 			return match.charAt(match.length - 1)
 		});
 		
+		//Copy everything to matchIds
 		for ( var i = 0; i < matchIdsAndRanks.length; i++) //Now that matctIdsAndRanks is sorted, copy it all into matchIds in the same exact order
 		{
 			matchIds[i] = matchIdsAndRanks[i].slice( 0, (matchIdsAndRanks[i].length - 1) );
@@ -281,7 +271,7 @@ function populateMatches()
 				if (matchResults)
 				{
 					/**
-					 * Setup our Indexes and Sections Array for building out the ListView components
+					 * Setup our Sections Array for building out the ListView components
 					 * 
 					 */
 					var sections = [];
@@ -289,7 +279,6 @@ function populateMatches()
 					 * Create the ListViewSection header view
 					 * DOCS: http://docs.appcelerator.com/platform/latest/#!/api/Titanium.UI.ListSection-property-headerView
 					 */
-		
 					 var sectionHeader = Ti.UI.createView({
 					 	backgroundColor: "#ececec",
 					 	width: Ti.UI.FILL,
@@ -355,6 +344,8 @@ function populateMatches()
 }//end of populatematchResults function
 
 /**
+ *	NOTE: This function is gathered from Appcelerator's Example Employee Directory app. 
+ *
  *	Convert an array of data from a JSON file into a format that can be added to the ListView
  * 
  * 	@param {Object} Raw data elements from the JSON file.
@@ -373,17 +364,10 @@ var preprocessForListView = function(rawData) {
 		return {
 			template: "userTemplate",
 			properties: {
-				searchableText: "",
 				user: item,
-				editActions: [
-					{title: "Does this even matter", color: item.isNew ? "#C41230" : "#038BC8" }
-				],
-				canEdit:true
 			},
-			userName: {text: item.NAME},
-			//userCompany: {text: item.company},
-			userPhoto: {image: item.PHOTO}
-			//userEmail: {text: item.email} 
+			userName: {text: item.NAME},	//get user's name'
+			userPhoto: {image: item.PHOTO}	//get user's profile picture
 		};
 	});	
 };
@@ -403,7 +387,7 @@ function onItemClick(e){
 	var item = $.listView.sections[e.sectionIndex].items[e.itemIndex];
 	Alloy.Globals.profileViewID = item.properties.user.USER_ID;	//set the profile I want to view
 	
-	if (e.bindId == 'sendMessage')
+	if (e.bindId == 'sendMessage')	//clicked on Message button open a conversation page
 	{
 		var newWindow = Alloy.createController('conversation', JSON.parse(makeJsonConversationString(dataArray, exists(Alloy.Globals.profileViewID), Alloy.Globals.profileViewID), Alloy.Globals.profileViewID)).getView();
 		newWindow.open();
@@ -434,16 +418,8 @@ function onItemClick(e){
 
 }
 
-
-function onPhotoClick(e){
-	var newWindow = Alloy.createController('profile').getView();
-	Ti.UI.currentWindow.close();
-	newWindow.open();
-}
-
 /**
  * Initialize View
  */
-popArrays ();
-populateMatches();
-
+popArrays ();	//FRANCESCA
+populateMatches();	//populate matches list
