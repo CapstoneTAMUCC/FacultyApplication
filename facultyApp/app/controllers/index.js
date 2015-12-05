@@ -4,7 +4,7 @@
 function openProfile(){
 	
 	//function to use HTTP to connect to a web server and transfer the data. 
-	var SSO = Ti.Network.createHTTPClient({ 
+	var request = Ti.Network.createHTTPClient({ 
 	onerror: function(e){ 	
 		Ti.API.debug(e.error); 	
 		alert('There was an error during the connection'); 	
@@ -12,10 +12,10 @@ function openProfile(){
 	timeout:1000, 
 	});
 	
-	SSO.open('GET', '52.32.54.34/php/read_user_list.php');  
-	SSO.send();
+	request.open('GET', '52.32.54.34/php/read_user_list.php');  
+	request.send();
 	
-	SSO.onload = function() {
+	request.onload = function() {
 		var json = JSON.parse(this.responseText);
 		var json = json.NAME;
 		var found = false;
@@ -35,6 +35,10 @@ function openProfile(){
 		if(!found)
 		{
 			alert("User Not found!");
+			$.profileBar.title = json[i].NAME;		
+			$.profilePicture.image = json[i].PHOTO;	
+			Alloy.Globals.thisUserPhoto = json[i].PHOTO;
+			
 		}
 	};
 };

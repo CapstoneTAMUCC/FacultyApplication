@@ -102,7 +102,7 @@ function init(){
 			var json = json.NAME;
 			
 			namesJson = json;
-			Alloy.Globals.thisUserPhoto = getOtherPhoto (Alloy.Globals.thisUserID);
+		//	Alloy.Globals.thisUserPhoto = getOtherPhoto (Alloy.Globals.thisUserID);
 			
 			/**
 		 	* Populate the users variable from the file this call returns an array
