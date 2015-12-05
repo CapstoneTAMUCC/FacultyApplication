@@ -8,13 +8,9 @@
 			<!--
 				This view wraps all of the child views/lists etc. Creates a base layout, vertically aligned.
 			-->
-			<Window id="wrapper" class="vgroup" title="Contacts"> 
-				
-				
-		        
+			<Window id="wrapper" class="vgroup" title="Contacts">         
 				<!--
-					The Directory list. 
-					This listView leverages two ListItem templates to denote regular contacts and those that are bookmarked.
+					The Contacts list. 
 				-->
 				<ListView id="listView" defaultItemTemplate="userTemplate" onItemclick="onItemClick">
 					<Templates>
@@ -27,15 +23,9 @@
 								<View class="vgroup left size">
 									<Label id="userName" bindId="userName" class="title top-buffer" />
 									<Button id="button1" bindId="button1" class="greenCheckmark top-buffer" visible="true"></Button>
-									<Label id="userEmail" bindId="userEmail" class="subtitle" />
-									<Label id="userCompany" bindId="userCompany" class="subtitle" />
 								</View>
 								
 								<View class="hgroup right size">	
-									<!--					
-									<Button id="button2" bindId="button2" class="requestConnection left-buffer right-buffer"></Button> 
-									<Button id="button3" bindId="button3" class="decline left-buffer right-buffer" visible="false"></Button> 
-									-->
 									<Button id="sendMessage" bindId="sendMessage" class="sendMessage left-buffer right-buffer"></Button> 				
 								</View>
 								<View class="gray-line bottom"/>
@@ -55,8 +45,7 @@
 			<Window id="wrapper2" class="vgroup" title="Pending"> 
 							
 				<!--
-					The Directory list. 
-					This listView leverages two ListItem templates to denote regular contacts and those that are bookmarked.
+					The Pending Contacts list. 
 				-->
 				<ListView id="listView2" defaultItemTemplate="userTemplate" onItemclick="onItemClick2">
 					<Templates>
@@ -69,8 +58,6 @@
 								<View class="vgroup left size">
 									<Label id="userName" bindId="userName" class="title" />
 									<Button id="button1" bindId="button1" class="greenCheckmark top-buffer" visible="false"></Button>
-									<Label id="userEmail" bindId="userEmail" class="subtitle" />
-									<Label id="userCompany" bindId="userCompany" class="subtitle" />
 								</View>
 								
 								<View class="hgroup right size">					
