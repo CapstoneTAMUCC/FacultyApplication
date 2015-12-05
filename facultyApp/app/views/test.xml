@@ -1,8 +1,0 @@
-<Alloy>  
-    <Window>  
-        <Label id="title" onClick="addTestUser">User</Label>  
-        <TableView dataCollection="user" id="table" onClick="showId">
-            <Require src="row">  
-        </Require></TableView>  
-    </Window>  
-</Alloy>

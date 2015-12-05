@@ -7,20 +7,7 @@
 		<Tab title="About" icon="KS_nav_ui.png">
 			
 			<Window title="About">
-				<!--
-				<View id="nameView">
-					<TextField id="nameField">Firstname Lastname</TextField>
-				</View>
-				<ImageView id="profilePicture"></ImageView>
-				-->
 				<ScrollView id="aboutScrollView" class="vgroup">
-					<!--
-					<View class="black-line bottom"/>
-					
-					<TextField id="additionalText1" class="aboutTextfield" hintText="Example: Program Assistant"></TextField>
-					<TextField id="additionalText2" class="aboutTextfield" hintText="Example: Texas A&M AgriLife Research"></TextField>
-					<TextField id="additionalText3" class="aboutTextfield" hintText="Example: Corporate Relations"></TextField>
-					-->
 					<View id="nameView">
 						<TextField id="nameField">Firstname Lastname</TextField>
 					</View>

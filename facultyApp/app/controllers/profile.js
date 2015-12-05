@@ -1,3 +1,8 @@
+/**
+ *	This function is used to convert regular buttons to checkboxes
+ * 
+ * 	@param {Object} the button
+ */
 function checkboxFunction(e)
 {
 	if(false == e.source.value) {
@@ -11,23 +16,29 @@ function checkboxFunction(e)
     }
 }
 
+/**
+ *	Use the androidback event to go back to Main Menu
+ */
 $.profile.addEventListener('androidback' , function (e) {
 	Alloy.Globals.goToHome ($, $.profile);
 });
 
+/**
+ *	Home button function will take you to Main Menu
+ */
 var homeButtonFunc = function () {
 	Alloy.Globals.goToHome ($, $.profile);
 };
 
+/**
+ *	Edit button enables editing all fields on click
+ */
 $.editButton1.addEventListener('click', function(e)
 {
 	if (false == e.source.value) {
 		e.source.value = true;
 		e.source.title = 'DONE';
 		e.source.backgroundColor = 'black';
-		//$.additionalText1.enabled = 'true';
-		//$.additionalText2.enabled = 'true';
-		//$.additionalText3.enabled = 'true';
 		$.nameField.enabled = 'true';
 		$.nameField.backgroundColor = 'black';
 		$.educationText.enabled = 'true';
@@ -41,9 +52,6 @@ $.editButton1.addEventListener('click', function(e)
 		e.source.value = false;
 		e.source.title = 'EDIT';
 		e.source.backgroundColor = '#800000';
-		//$.additionalText1.enabled = 'false';
-		//$.additionalText2.enabled = 'false';
-		//$.additionalText3.enabled = 'false';
 		$.nameField.enabled = 'false';
 		$.nameField.backgroundColor = '#800000';
 		$.educationText.enabled = 'false';
@@ -55,6 +63,9 @@ $.editButton1.addEventListener('click', function(e)
 	}
 });
 
+/**
+ *	Edit button enables editing all fields on click (this is the one on Questionnaire tab)
+ */
 $.editButton2.addEventListener('click', function(e)
 {
 	if (false == e.source.value) {
@@ -131,6 +142,9 @@ $.editButton2.addEventListener('click', function(e)
 	}
 });
 
+/**
+ *	Click functionality to first checkbox of first question on questionnaire tab
+ */
 $.question1yes.addEventListener('click', function(e)
 {
 	if(false == e.source.value) {
@@ -152,6 +166,9 @@ $.question1yes.addEventListener('click', function(e)
     }
 });
 
+/**
+ *	Click functionality to second checkbox of first question on questionnaire tab
+ */
 $.question1no.addEventListener('click', function(e)
 {
 	if(false == e.source.value) {
@@ -173,6 +190,9 @@ $.question1no.addEventListener('click', function(e)
     }
 });
 
+/**
+ *	Click functionality to first checkbox of second question on questionnaire tab
+ */
 $.question2yes.addEventListener('click', function(e)
 {
 	if(false == e.source.value) {
@@ -194,6 +214,9 @@ $.question2yes.addEventListener('click', function(e)
     }
 });
 
+/**
+ *	Click functionality to second checkbox of second question on questionnaire tab
+ */
 $.question2no.addEventListener('click', function(e)
 {
 	if(false == e.source.value) {
@@ -215,6 +238,11 @@ $.question2no.addEventListener('click', function(e)
     }
 });
 
+/**
+ *	This function is used to get checkbox value 1 if true 2 if false
+ * 
+ * 	@param {Object} the button(checkbox)
+ */
 function getCheckboxValue(e)	//will be used in insertData
 {
 	if (e.value == true)
@@ -227,13 +255,21 @@ function getCheckboxValue(e)	//will be used in insertData
 	}
 }
 
-function setCheckboxTrue(e)	//marks the checkbox (for READ function)
+/**
+ *	This function is used to set checkboxes to true(checked)
+ * 
+ * 	@param {Object} the button(checkbox)
+ */
+function setCheckboxTrue(e)
 {
 	e.value = true;
 	e.backgroundColor = '#007690';
 	e.title = '\u2713';
 }
 
+/**
+ *	This function reads the 6 main information on About tab
+ */
 function readTextfieldData(){
 	//function to use HTTP to connect to a web server and transfer the data. 
 	var sendit = Ti.Network.createHTTPClient({ 
@@ -281,6 +317,9 @@ function readTextfieldData(){
 	Ti.API.log('end of readData function!');
 }
 
+/**
+ *	This function reads/populates Agency information for profile
+ */
 function readAgencyData(){
 	//function to use HTTP to connect to a web server and transfer the data. 
 	var sendit = Ti.Network.createHTTPClient({ 
@@ -323,10 +362,11 @@ function readAgencyData(){
 			}	
 		}
 	};
-	
-	Ti.API.log('end of readData function!');
 }
 
+/**
+ *	This function reads/populates Areas of Research information for profile
+ */
 function readResearchData(){
 	//function to use HTTP to connect to a web server and transfer the data. 
 	var sendit = Ti.Network.createHTTPClient({ 
@@ -366,6 +406,9 @@ function readResearchData(){
 	Ti.API.log('end of readData function!');
 }
 
+/**
+ *	This function updates Profile's information (Used by SAVE button)
+ */
 function updateData(){
 	var request = Ti.Network.createHTTPClient({ 	
 		onerror: function(e){ 
@@ -420,64 +463,7 @@ function updateData(){
 	alert('Saved successfully!');
 }
 
-function insertData(){ 
-	var request = Ti.Network.createHTTPClient({ 	
-		onerror: function(e){ 
-			Ti.API.debug(e.error); 
-			alert('There was an error during the connection'); 
-		}, 
-		timeout:1000, 	         
-	});  
-	//Request the data from the web service, Here you have to change it for your local ip 
-    request.open("POST","52.32.54.34/php/insert_into_user_research_agency.php"); 
-
-	var params = ({ "USER_ID": 				'74111',	//USING RANDOM HERE
-					"NAME": 				$.nameField.value, 
-					"PHONE": 				'888-888-8888', 
-					"EDUCATION": 			$.educationText.value, 
-					"CURRENT_PROJ": 	    $.projectText.value, 
-					"AREA_EXPERTISE":       $.expertiseText.value, 
-					"COMMITTEES" : 			$.committeeText.value, 
-					"OTHER_INTERESTS": 		$.otherInterestText.value,  
-					"O_CONTACT_INFO": 		$.contactInfoText.value,
-					"FUNDING": 				getCheckboxValue($.question2yes),
-					"EXPAND": 				getCheckboxValue($.question1yes),
-					"AGENCY_ID": 			'888888',	//USING AN EXISTING AGENCY ID
-					"TAMU": 				getCheckboxValue($.tamuCheckbox),
-					"PVAMU": 				getCheckboxValue($.prairieCheckbox),
-					"TSU": 					getCheckboxValue($.tarletonCheckbox),
-					"TAMUCC": 				getCheckboxValue($.tamuccCheckbox),
-					"TAMUK": 				getCheckboxValue($.tamukCheckbox),
-					"WTAMU": 				getCheckboxValue($.westamCheckbox),
-					"TAMUC": 				getCheckboxValue($.tamucCheckbox),
-					"TAMUT": 				getCheckboxValue($.tamutCheckbox),
-					"TAMUCT": 				getCheckboxValue($.tamuctCheckbox),
-					"TAMUSA": 				getCheckboxValue($.tamusaCheckbox),
-					"TAMHSC": 				getCheckboxValue($.tamhscCheckbox),
-					"TAMAR": 				getCheckboxValue($.tamarCheckbox),
-					"TAMEEPS": 				getCheckboxValue($.tameesCheckbox),
-					"TAMAEXS": 				getCheckboxValue($.tamaesCheckbox),
-					"TAMFS": 				getCheckboxValue($.tamfsCheckbox),
-					"TAMTI": 				getCheckboxValue($.tamtiCheckbox),
-					"TAMVMDL": 				getCheckboxValue($.tamvmdlCheckbox),
-					"AREA_OF_RESEARCH_ID":  '123455',
-					"FOOD_SAFETY": 			getCheckboxValue($.foodSafetyCheckbox),
-					"NUTRITION": 			getCheckboxValue($.nutritionCheckbox),
-					"PUBLIC_HEALTH": 		getCheckboxValue($.publicHealthCheckbox),
-					"PRODUCTION_ECON": 		getCheckboxValue($.productionEconCheckbox),
-					"TRADE": 				getCheckboxValue($.tradeCheckbox),
-					"PUBLIC_POLICY": 		getCheckboxValue($.publicPolicyCheckbox),
-					"ANIMAL_HEALTH": 		getCheckboxValue($.animalHealthCheckbox),
-					"FISH": 				getCheckboxValue($.fishCheckbox),
-					"BIO_ENERGY": 			getCheckboxValue($.bioenergyCheckbox),
-					"WILDLIFE": 			getCheckboxValue($.wildlifeCheckbox),
-					});
-
-	request.send(params);
-	alert('Saved successfully!');
-};
-
-$.profile.open();
-readTextfieldData();
-readAgencyData();
-readResearchData();
+$.profile.open();	//OPEN PROFILE WINDOW
+readTextfieldData();	//GET 6 MAIN INFORMATION ON ABOUT TAB
+readAgencyData();		//GET AGENCY INFORMATION ON QUESTIONNAIRE TAB
+readResearchData();		//GET AREAS OF RESEARCH INFORMATION ON QUESTIONNAIRE TAB

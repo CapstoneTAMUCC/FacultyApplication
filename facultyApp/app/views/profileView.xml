@@ -7,20 +7,7 @@
 		<Tab title="About" icon="KS_nav_ui.png">
 			
 			<Window title="About">
-				<!--
-				<View id="nameView">
-					<TextField id="nameField">Firstname Lastname</TextField>
-				</View>
-				<ImageView id="profilePicture"></ImageView>
-				-->
 				<ScrollView id="aboutScrollView" class="vgroup">
-					<!--
-					<View class="black-line bottom"/>
-					
-					<TextField id="additionalText1" class="aboutTextfield" hintText="Example: Program Assistant"></TextField>
-					<TextField id="additionalText2" class="aboutTextfield" hintText="Example: Texas A&M AgriLife Research"></TextField>
-					<TextField id="additionalText3" class="aboutTextfield" hintText="Example: Corporate Relations"></TextField>
-					-->
 					<View id="nameView">
 						<TextField id="nameField">Firstname Lastname</TextField>
 					</View>
@@ -31,12 +18,6 @@
 						<Button id="button2" class="buttonClass" onClick="button2Click">Decline</Button>
 						<Button id="button3" class="buttonClass" onClick="onSendMessage">Message</Button>
 					</View>
-					
-					<!--get rid of this
-					<Button id="button1" class="requestConnection leftClass top-buffer" onClick="button1Click"></Button> 
-					<Button id="button2" class="decline leftClass top-buffer" visible="false" onClick="button2Click"></Button> 
-					<Button id="button3" class="sendMessage leftClass top-buffer bottom-buffer" onClick="onSendMessage"></Button> 
-					-->
 					
 					<View class="black-line bottom"/>
 					
