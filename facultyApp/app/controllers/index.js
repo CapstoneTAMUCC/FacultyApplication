@@ -23,6 +23,7 @@ function readName(){
 			{
 				$.profileBar.title = json[i].NAME;		
 				$.profilePicture.image = json[i].PHOTO;	
+				Alloy.Globals.thisUserPhoto = json[i].PHOTO;
 			}	
 		}
 	};

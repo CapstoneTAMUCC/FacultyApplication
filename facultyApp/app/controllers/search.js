@@ -7,6 +7,17 @@ var _args = arguments[0] || {}, // Any passed in arguments will fall into this p
 var dataArray = [];	//FRANCESCA
 var namesJson = [];	//FRANCESCA
 
+var getOtherPhoto = function (id) {
+	for( var i=0; i<namesJson.length; i++) {
+		if ( namesJson[i].USER_ID == id)
+		{
+			Titanium.API.log("PHIOTO: " + namesJson[i].PHOTO);
+			return namesJson[i].PHOTO;
+		}
+	}
+	return "Not found";
+};
+
 /**
  *	FRANCESCA
  */	
@@ -24,6 +35,7 @@ var makeJsonConversationString = function (dataArray, index, otherID) {
 	    		result +="\"FROM_ID\":" + "\"" + dataArray[index][j].FROM_ID + "\",";
 	    		result +="\"OTHER_ID\":" + "\"" + otherUserID + "\",";
 	    		result +="\"OTHER_NAME\":" + "\"" + otherUserName + "\",";
+	    		result +="\"PHOTO\":" + "\"" + getOtherPhoto(dataArray[index][j].FROM_ID) + "\",";
 	    		result +="\"BODY\":" + "\"" + dataArray[index][j].BODY + "\",";
 	    		result +="\"STATUS\":" + "" + dataArray[index][j].STATUS + ",";
 	    		result +="\"DATE\":" + "\"" + dataArray[index][j].DATE + "\"";
