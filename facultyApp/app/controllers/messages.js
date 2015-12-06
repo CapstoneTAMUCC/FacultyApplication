@@ -1,12 +1,18 @@
+/*
+ * Controller for Messages section
+ * Purpose: Provide functionality for the user's Inbox/Messages section
+ */
+
 /**
  * Instantiate the local variables for this controller
  */
 var _args = arguments[0] || {}, // Any passed in arguments will fall into this property
-	App = Alloy.Globals.App, // reference to the APP singleton object
-	$FM = require('newsmgr'),  // newsManager object (see lib/utilities.js)
+	App = Alloy.Globals.App, // Reference to the APP singleton object
+	$FM = require('newsmgr'),  // NewsManager object (see lib/utilities.js)
 	users = null,  // Array placeholder for all users
 	indexes = [];  // Array placeholder for the ListView Index (used by iOS only);
 	
+// Array to hold user information
 var namesJson;
 
 /**
@@ -15,13 +21,15 @@ var namesJson;
 var title = _args.title ? _args.title.toLowerCase() : "directory";
 Ti.Analytics.featureEvent(Ti.Platform.osname+"."+title+".viewed");  
 
+// Array to hold data received from server
 var dataArray = []; 
 
 /**
- * Function to inialize the View, gathers data from the flat file and sets up the ListView
+ * Function to inialize the View, gathers data from server and sets up the ListView
  */
 function init(){
-	//function to use HTTP to connect to a web server and transfer the data. 
+	
+	// Function to use HTTP to connect to a web server and transfer the data. 
     var connection = Ti.Network.createHTTPClient({ 
     	onerror: function(e){ 
         	Ti.API.debug(e.error); 
@@ -30,29 +38,26 @@ function init(){
         timeout:1000,
     });                      
 
-    //Here you have to change it for your local ip 
- //   connection.open('GET', '52.32.54.34/php/read_message_list.php');
+    // Here you have to change it for your local ip 
     connection.open('POST', '52.32.54.34/php/conversation_list.php');
     var params = ({ "USER_ID": Alloy.Globals.thisUserID });  
     connection.send(params);
-    //Function to be called upon a successful response 
+    
+    // Function to be called upon a successful response 
     connection.onload = function(){ 
     	var json = JSON.parse(this.responseText); 
     	var json = json.MESSAGE_ID;
-    	//if the database is empty show an alert 
+    	
+    	// If the database is empty, log it 
     	if(json.length == 0){
-			Titanium.API.log("CRAP");
-    //    $.tableView.headerTitle = "The database row is empty"; 
+			Titanium.API.log("Empty list");
     	}
     	
-    	//Emptying the data to refresh the view 
-
+    	// Emptying the data to refresh the view 
    	 	dataArray = new Array (0);                      
 
-    	//Insert the JSON data to the table view 
-
-   		for( var i=0; i<json.length; i++){ 
-        
+    	// Insert the JSON data to the table view 
+   		for( var i=0; i<json.length; i++) { 
         	Titanium.API.log("MESSAGE_ID: " + json[i].MESSAGE_ID);                                          
      		Titanium.API.log("TO: " + json[i].TO_ID);
      		Titanium.API.log("FROM: " + json[i].FROM_ID);
@@ -74,8 +79,7 @@ function init(){
 				dataArray.push(tempArray);
 			}
 			
-			orderArray();
-     //		dataArray.push(row);               
+			orderArray();             
 		};  
 		/**
 	 	* Access the FileSystem Object to read in the information from a flat file (lib/userData/messageData.js)
@@ -83,7 +87,7 @@ function init(){
 	 	*/
 		var file = Ti.Filesystem.getFile(Ti.Filesystem.resourcesDirectory + "userData/messageData.json"); 
 	
-		//function to use HTTP to connect to a web server and transfer the data. 
+		// Function to use HTTP to connect to a web server and transfer the data. 
 		var sendit = Ti.Network.createHTTPClient({ 
 		onerror: function(e){ 	
 				Ti.API.debug(e.error); 	
@@ -93,16 +97,16 @@ function init(){
 			timeout:1000, 
 		});
 		
-		//Here you have to change it for your local ip 
+		// Here you have to change it for your local ip 
 		sendit.open('GET', '52.32.54.34/php/read_user_list.php');  
 		sendit.send();
 		
+		// Called on load of connection
 		sendit.onload = function() {
 			var json = JSON.parse(this.responseText);
 			var json = json.NAME;
 			
 			namesJson = json;
-		//	Alloy.Globals.thisUserPhoto = getOtherPhoto (Alloy.Globals.thisUserID);
 			
 			/**
 		 	* Populate the users variable from the file this call returns an array
@@ -116,7 +120,6 @@ function init(){
 			
 				/**
 			 	* Setup our Indexes and Sections Array for building out the ListView components
-			 	* 
 			 	*/
 				indexes = [];
 				var sections = [];
@@ -207,24 +210,29 @@ function init(){
 		};		
     };              
     
+    // Order conversations and messages in conversations
     var orderArray = function () {
+    	// First sort each conversation by date messages are sent
     	for (var i = 0; i < dataArray.length; i++) {
     		dataArray[i] = _.sortBy(dataArray[i], function(message){
 				return message.DATE;
 			});
     	}
     	
+    	// Log array
     	printArray ();
     	
+    	// Then sort conversation list by date of last message
     	dataArray = _.sortBy(dataArray, function(conversation) {
     			return conversation[conversation.length - 1].DATE;
     	});
-    	
     	dataArray.reverse();
     	
+    	// Log array
     	printArray ();
     };             
     
+    // Make string to be converted to JSON and passed to conversation controller
     var makeJsonInboxString = function (otherUserName) {
     	var result = "{\"conversations\":[";
     	for (var i = 0; i < dataArray.length; i++) {
@@ -250,9 +258,12 @@ function init(){
     	Titanium.API.log("HERE: " + result);
     	return result;
     };
+    
+    // Open Messages view
     $.messages.open ();
 };
 
+// Get name of user in conversation who is not client
 var getOtherName = function (otherID) {
 	for( var i=0; i<namesJson.length; i++) {
 		if ( namesJson[i].USER_ID == otherID)
@@ -263,6 +274,7 @@ var getOtherName = function (otherID) {
 	return "Not found";
 };
 
+// Get photo of user in conversation who is not client
 var getOtherPhoto = function (id) {
 	for( var i=0; i<namesJson.length; i++) {
 		if ( namesJson[i].USER_ID == id)
@@ -274,6 +286,7 @@ var getOtherPhoto = function (id) {
 	return "Not found";
 };
 
+// Print dataArray to console
 var printArray = function () {
     for (var i = 0; i < dataArray.length; i++) {
     	for (var j = 0; j < dataArray[i].length; j++) {
@@ -282,15 +295,17 @@ var printArray = function () {
 	}
 };
 
-var exists = function(otherUserID) {
-    	for (var i = 0; i < dataArray.length; i++) {
-    		if (dataArray[i][0].TO_ID === otherUserID ||
-    			dataArray[i][0].FROM_ID === otherUserID) {
-    			return i;	
-    		}
-    	}
-    	return -1;
-    }; 
+// Determine if otherUserID exists in dataArray
+// If it does, return  the index
+var exists = function (otherUserID) {
+   	for (var i = 0; i < dataArray.length; i++) {
+   		if (dataArray[i][0].TO_ID === otherUserID ||
+   			dataArray[i][0].FROM_ID === otherUserID) {
+   			return i;	
+   		}
+   	}
+   	return -1;
+}; 
 
 /**
  *	Convert an array of data from a JSON file into a format that can be added to the ListView
@@ -336,10 +351,8 @@ var preprocessForListView = function(rawData) {
 	});	
 };
 
-var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-var days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-
-// yyyy-mm-dd hh:mm:ss to month/day hh:mm am 
+// Convert raw date to displayable date
+// Format: yyyy-mm-dd hh:mm:ss to month/day hh:mm am 
 var makeReadable = function (date) {
 	var result = "";
 	date = date.substring (5, 16);
@@ -360,6 +373,7 @@ var makeReadable = function (date) {
 		hour = hour - 12;
 	}
 	
+	// Remove leading zeros
 	month = month.length == 1 ? month.substring (1, 2) : month;
 	day = day.length == 1 ? day.substring (1, 2) : day;
 	hour = hour.length == 1 ? hour.substring (1, 2) : hour;
@@ -398,23 +412,27 @@ function onItemClick(e){
 	newWindow.open();
 }
 
+// Overwrite Android back functionality
 $.messages.addEventListener('androidback' , function (e) {
 	Alloy.Globals.goToHome ($, $.messages);
 });
 
+// Function called on click of home button
 var homeButtonFunc = function () {
 	Alloy.Globals.goToHome ($, $.messages);
 };
 
+// return string to be converted to title name JSON object
 var makeTitleNameString = function (name) {
-    	var result = "{\"name\":[";
-    		result += "{";
-    		result +="\"USER_NAME\":" + "\"" + name + "\"";
-    		result += "}";
-    	result += "]}";
-    	return result;
+  	var result = "{\"name\":[";
+   		result += "{";
+   		result +="\"USER_NAME\":" + "\"" + name + "\"";
+   		result += "}";
+   	result += "]}";
+   	return result;
 };
 
+// Return string to be converted to JSON object and passed to Conversation page
 var makeJsonConversationString = function (index, otherID) {
     	var result = "{\"messages\":[";
     	for (var j = 0; j < dataArray[index].length; j++) {
@@ -443,6 +461,8 @@ var makeJsonConversationString = function (index, otherID) {
     	return result;
 };
 
+// Function to navigate to New Message view
+// Called on click of compose button
 var onCompose = function onCompose(e) {
 	Titanium.API.log("ONCOMPOSE");
 	for (var i = 0; i < dataArray.length; i++) {
@@ -459,7 +479,6 @@ var onCompose = function onCompose(e) {
 Ti.App.addEventListener("refresh-data", function(e){
 	init();
 });
-
 
 /**
  * Initialize View

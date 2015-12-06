@@ -1,17 +1,25 @@
+/*
+ * Controller for Viewed Me section
+ * Purpose: Provide functionality for the client's Viewed Me section
+ */
+
 /**
  * Instantiate the local variables for this controller
  */
 var _args = arguments[0] || {}, // Any passed in arguments will fall into this property
-	App = Alloy.Globals.App; // reference to the APP singleton object
-	
-var dataArray = [];	//FRANCESCA
-var namesJson = [];	//FRANCESCA
+	App = Alloy.Globals.App; // Reference to the APP singleton object
+
+// Arrays to store data retreived from server
+var dataArray = [];	
+var namesJson = [];	
 
 /**
- *	FRANCESCA
+ *	Populate arrays by making calls to server
+ *  Called by init function
  */
 function popArrays () {
-	//function to use HTTP to connect to a web server and transfer the data. 
+	
+	// Function to use HTTP to connect to a web server and transfer the data. 
     var connection = Ti.Network.createHTTPClient({ 
     	onerror: function(e){ 
         	Ti.API.debug(e.error); 
@@ -20,27 +28,25 @@ function popArrays () {
         timeout:1000,
     });                      
 
-    //Here you have to change it for your local ip 
- //   connection.open('GET', '52.32.54.34/php/read_message_list.php');
+    // Here you have to change it for your local ip 
     connection.open('POST', '52.32.54.34/php/conversation_list.php');
     var params = ({ "USER_ID": Alloy.Globals.thisUserID });  
     connection.send(params);
-    //Function to be called upon a successful response 
+    
+    // Function to be called upon a successful response 
     connection.onload = function(){ 
     	var json = JSON.parse(this.responseText); 
     	var json = json.MESSAGE_ID;
+    	
     	//if the database is empty show an alert 
     	if(json.length == 0){
-			Titanium.API.log("CRAP");
-    //    $.tableView.headerTitle = "The database row is empty"; 
+			Titanium.API.log("Empty list");
     	}
     	
-    	//Emptying the data to refresh the view 
-
+    	// Emptying the data to refresh the view 
    	 	dataArray = new Array (0);                      
 
-    	//Insert the JSON data to the table view 
-
+    	// Insert the JSON data to the table view 
    		for( var i=0; i<json.length; i++){ 
         
         	Titanium.API.log("MESSAGE_ID: " + json[i].MESSAGE_ID);                                          
@@ -62,25 +68,23 @@ function popArrays () {
 				var tempArray = new Array(0);
 				tempArray.push(json[i]);
 				dataArray.push(tempArray);
-			}
-			
-	//		orderArray();
-     //		dataArray.push(row);               
+			}              
 		}
-		//function to use HTTP to connect to a web server and transfer the data. 
+		
+		// Function to use HTTP to connect to a web server and transfer the data. 
 		var conn = Ti.Network.createHTTPClient({ 
 			onerror: function(e){ 	
 					Ti.API.debug(e.error); 	
 					alert('There was an error during the connection'); 
-			
 				}, 	
 			timeout:1000, 
 		});
 		
-		//Here you have to change it for your local ip 
+		// Here you have to change it for your local ip 
 		conn.open('GET', '52.32.54.34/php/read_user_list.php');  
 		conn.send();
 		
+		// Function to call on load of connection
 		conn.onload = function() {
 			namesJson = JSON.parse(this.responseText);
 			namesJson = namesJson.NAME;
@@ -104,46 +108,47 @@ var homeButtonFunc = function () {
 
 /**
  *	NOTE: Some of this function's functionality is gathered from Appcelerator's Example Employee Directory app.
- *
  *	This function is used to populate the viewed me list from remote database.
  */
 function populateViewedMe()
 {
-	var tempArray = null;	//a temporary array initialization
-	var viewedMeList = new Array();	//this array will hold the users within the viewedMe list
+	var tempArray = null;	        // Temporary array initialization
+	var viewedMeList = new Array();	// This array will hold the users within the viewedMe list
 	
-	//function to use HTTP to connect to a web server and transfer the data. 
+	// Function to use HTTP to connect to a web server and transfer the data. 
 	var request1 = Ti.Network.createHTTPClient({ 
-	onerror: function(e){ 	
-		Ti.API.debug(e.error); 	
-		alert('There was an error during the connection'); 	
-	}, 	
-	timeout:1000, 
-	});
-
-	//Open your request.
-	request1.open('POST', '52.32.54.34/php/read_viewed_me_list.php');  
-	var params = ({ "USER_ID": Alloy.Globals.thisUserID }); 	//Sending USER_ID to server
-	request1.send(params);	//send the request to server
-
-	request1.onload = function() {
-		var json = JSON.parse(this.responseText);
-		var json = json.OTHER_USER_ID;	//parse by other user id from database
-		tempArray = json; //HOLD USER_ID s of VIEWED ME Users
-		
-		//function to use HTTP to connect to a web server and transfer the data. 
-		var request2 = Ti.Network.createHTTPClient({ 
 		onerror: function(e){ 	
 			Ti.API.debug(e.error); 	
 			alert('There was an error during the connection'); 	
 		}, 	
 		timeout:1000, 
+	});
+
+	// Open your request.
+	request1.open('POST', '52.32.54.34/php/read_viewed_me_list.php');  
+	var params = ({ "USER_ID": Alloy.Globals.thisUserID }); 	// Sending USER_ID to server
+	request1.send(params);	// Send the request to server
+	
+	// Function to call on load of connection
+	request1.onload = function() {
+		var json = JSON.parse(this.responseText);
+		var json = json.OTHER_USER_ID;	// Parse by other user id from database
+		tempArray = json; // HOLD USER_ID s of VIEWED ME Users
+		
+		// Function to use HTTP to connect to a web server and transfer the data. 
+		var request2 = Ti.Network.createHTTPClient({ 
+			onerror: function(e){ 	
+				Ti.API.debug(e.error); 	
+				alert('There was an error during the connection'); 	
+			}, 	
+			timeout:1000, 
 		});
 	
-		//Open request
+		// Open request
 		request2.open('GET', '52.32.54.34/php/read_user_list.php');  
-		request2.send();	//send request
+		request2.send();	// Send request
 		
+		// Function to call on load of connection
 		request2.onload = function() {
 			var json = JSON.parse(this.responseText);
 			var json = json.NAME;	//parse by Name
@@ -152,23 +157,24 @@ function populateViewedMe()
 			{
 				for ( var j = 0; j < tempArray.length; j++)
 				{
-					if ( json[i].USER_ID === tempArray[j].OTHER_USER_ID)	//FIND THE VIEWEE IN USER TABLE
-					{//THESE ARE THE USER_ID s that WE WANT TO USE FOR VIEWED ME LIST
-						viewedMeList.push(json[i]); //push it to the viewedMeList array
+					if ( json[i].USER_ID === tempArray[j].OTHER_USER_ID)	// FIND THE VIEWEE IN USER TABLE
+					{
+						// THESE ARE THE USER_ID s that WE WANT TO USE FOR VIEWED ME LIST
+						viewedMeList.push(json[i]); // Push it to the viewedMeList array
 					}
 				}
 			}
 			
-			//Sort the list by users' names
+			// Sort the list by users' names
 			viewedMeList = _.sortBy(viewedMeList, function(user){
 				return user.NAME
 			});
 
+			// If list is not empty
 			if (viewedMeList)
 			{
 				/**
 				 * Setup our Sections Array for building out the ListView components
-				 * 
 				 */
 				var sections = [];
 				
@@ -179,6 +185,7 @@ function populateViewedMe()
 				var userGroups  = _.groupBy(viewedMeList, function(item){
 				 	return item.NAME.charAt(0);
 				});
+				
 		        /**
 		         * Iterate through each group created, and prepare the data for the ListView
 		         * (Leverages the UnderscoreJS _.each function)
@@ -237,19 +244,19 @@ function populateViewedMe()
 					 * the ListView 
 					 */
 					sections.push(section);
-				});	//end of each function
+				});	// End of each function
 				
 				/**
 				 * Add the ListViewSections and data elements created above to the ListView
 				 */
 				$.listView.sections = sections;
-			}// end of if statement
+			} // End of if statement
 			
-		};	//end of second onload function
+		}; // End of second onload function
 		
-	};//end of first onload function
+	}; // End of first onload function
 
-}//end of populateViewedMe function
+} //End of populateViewedMe function
 
 /**
  *	This function checks to see if you are have an established connection with another user.
@@ -259,19 +266,22 @@ function populateViewedMe()
 function isConnection(user)
 {	
 	var foundUser = false;
-	//CHECK TO SEE IF THE LIST ITEM IS ALREADY A CONTACT OF MINE
+	
+	// CHECK TO SEE IF THE LIST ITEM IS ALREADY A CONTACT OF MINE
 	var request1 = Ti.Network.createHTTPClient({ 
-	onerror: function(e){ 	
-		Ti.API.debug(e.error); 	
-		alert('There was an error during the connection PENDING'); 	
-	}, 	
-	timeout:1000, 
+		onerror: function(e){ 	
+			Ti.API.debug(e.error); 	
+			alert('There was an error during the connection PENDING'); 	
+		}, 	
+		timeout:1000, 
 	});
 
-	//Open request
+	// Open request
 	request1.open('POST', '52.32.54.34/php/read_contact_list.php');  
 	var params = ({ "USER_ID": Alloy.Globals.thisUserID }); 
 	request1.send(params);
+	
+	// Call on load of connection
 	request1.onload = function() {
 		var json = JSON.parse(this.responseText);
 		var json = json.OTHER_USER_ID;
@@ -284,7 +294,7 @@ function isConnection(user)
 				break;
 			}
 		}
-	};	//end of onload function
+	};	// End of onload function
 
 	if (foundUser) { return true; } 
 	else { return false;} 
@@ -313,15 +323,17 @@ var preprocessForListView = function(rawData) {
 			properties: {
 				user: item,
 			},
-			button1: {visible: isConnection(item) ? 'true' : 'false'},	//DOES NOT WORK FOR NOW BECAUSE FUNCTION DOES NOT WAIT FOR ONLOAD TO FINISH BEFORE RETURNING
-			userName: {text: item.NAME},	//get user's name
-			userPhoto: {image: item.PHOTO}	//get user's profile picture
+			
+			//DOES NOT WORK FOR NOW BECAUSE FUNCTION DOES NOT WAIT FOR ONLOAD TO FINISH BEFORE RETURNING
+			button1: {visible: isConnection(item) ? 'true' : 'false'},	
+			userName: {text: item.NAME},	// Get user's name
+			userPhoto: {image: item.PHOTO}	// Get user's profile picture
 		}; 
 	});	
 };
 
 /**
- * FRANCESCA
+ * Create conversation string to be converted to JSON object and passed to Conversation view 
  */
 var makeJsonConversationString = function (dataArray, index, otherID) {
 	var result = "{\"messages\":[";
@@ -355,6 +367,9 @@ var makeJsonConversationString = function (dataArray, index, otherID) {
     return result;
 };
 
+/**
+ * Return photo of user in conversation who is not the client
+ */
 var getOtherPhoto = function (id) {
 	for( var i=0; i<namesJson.length; i++) {
 		if ( namesJson[i].USER_ID == id)
@@ -367,7 +382,7 @@ var getOtherPhoto = function (id) {
 };
 
 /**
- * FRANCESCA
+ * Return name of user in conversation who is not the client
  */
 var getOtherName = function (array, otherID) {
 	for(var i=0; i<array.length; i++) {
@@ -380,7 +395,8 @@ var getOtherName = function (array, otherID) {
 };
 
 /**
- * FRANCESCA
+ * Determine if otherUserID exists in dataArray
+ * If it does, return index
  */
 var exists = function(otherUserID) {
     	for (var i = 0; i < dataArray.length; i++) {
@@ -408,40 +424,44 @@ function onItemClick(e){
 	
 	Alloy.Globals.profileViewID = item.properties.user.USER_ID;	//set the profile I want to view
 	
-	if (e.bindId == 'sendMessage')	//clicked on sendMessage button
+	if (e.bindId == 'sendMessage')	// Clicked on sendMessage button, navigate to view
 	{
-		//Open conversation page with that user
-		var newWindow = Alloy.createController('conversation', JSON.parse(makeJsonConversationString(dataArray, exists(Alloy.Globals.profileViewID), Alloy.Globals.profileViewID), Alloy.Globals.profileViewID)).getView();
+		// Open conversation page with that user
+		var newWindow = Alloy.createController('conversation',
+			JSON.parse(makeJsonConversationString(dataArray, exists(Alloy.Globals.profileViewID),
+				Alloy.Globals.profileViewID), Alloy.Globals.profileViewID)).getView();
 		newWindow.open();
 	}
 	else
 	{
-		//Add this information to the profile's VIEWED ME list as I am going to view it
+		// Add this information to the profile's VIEWED ME list as I am going to view it
 		var request = Ti.Network.createHTTPClient({ 	
 		onerror: function(e){ 
 			Ti.API.debug(e.error); 
 			alert('There was an error during the connection'); 
 		}, 
 		timeout:1000, 	         
-		});  
-		//Request the data from the web service
+		});
+		  
+		// Request the data from the web service
 		request.open("POST","52.32.54.34/php/insert_into_viewed_me.php"); 
-		
 		var params = ({ "USER_ID": 				Alloy.Globals.profileViewID,	
 						"OTHER_USER_ID": 		Alloy.Globals.thisUserID,
 						});
 		
 		request.send(params);
 		
-		Alloy.Globals.comingFrom = 'viewedMe';	//we are going to open profileView from viewedMe
-		Alloy.Globals.Navigate($, $.viewedMe, Alloy.createController('profileView').getView() );	//open the other user's profile
+		Alloy.Globals.comingFrom = 'viewedMe';	// We are going to open profileView from viewedMe
+	
+		// Open the other user's profile
+		Alloy.Globals.Navigate($, $.viewedMe, Alloy.createController('profileView').getView());	
 	}
 
 }
 
 /**
- * Initialize View
+ * Initialize View by populating arrays
  */
-popArrays ();	//FRANCESCA
-populateViewedMe ();	//Populate the Viewed Me List
+popArrays ();			// Populate arrays
+populateViewedMe ();	// Populate the Viewed Me list
 

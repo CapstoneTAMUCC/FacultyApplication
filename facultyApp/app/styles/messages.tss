@@ -1,7 +1,12 @@
+/*
+ * Styles for Messages View
+ */
+
 ".template":{
 	height: 100,
 	width: Ti.UI.FILL
 },
+
 ".messages": {
 	backgroundColor:"#fff",
 	orientationModes: [Ti.UI.PORTRAIT,Ti.UI.LANDSCAPE_LEFT,Ti.UI.LANDSCAPE_RIGHT,Ti.UI.UPSIDE_PORTRAIT],
@@ -21,7 +26,7 @@
 }
 
 ".logo":{
-	text: "\ue601",		// Unicode for Appcelerator Logo icon font
+	text: "\ue601",	// Unicode for Appcelerator Logo icon font
 	color: "#C41230",
 	font:{
 		fontFamily:"icomoon",
@@ -91,7 +96,7 @@
 		fontFamily:"icomoon",
 		fontSize:24,
 	},
-	text: "\uf002",		//Unicode for Search icon font
+	text: "\uf002",	// Unicode for Search icon font
 	color: "#999",
 	width:"7%",
 },
@@ -101,7 +106,7 @@
 		fontFamily:"icomoon",
 		fontSize:24,
 	},
-	text: "\uf057",		// Unicode for close icon font
+	text: "\uf057",	// Unicode for close icon font
 	color: "#999",
 	height: 40,
 	width:"7%",

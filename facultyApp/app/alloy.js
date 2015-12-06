@@ -1,23 +1,12 @@
-// The contents of this file will be executed before any of
-// your view controllers are ever executed, including the index.
-// You have access to all functionality on the `Alloy` namespace.
-//
-// This is a great place to do any initialization for your app
-// or create any global variables/functions that you'd like to
-// make available throughout your app. You can easily make things
-// accessible globally by attaching them to the `Alloy.Globals`
-// object. For example:
-//
-// Alloy.Globals.someGlobalFunction = function(){};
+/*
+ * Global variable definitions
+ * The contents of this file are executed before any of
+ * the view controllers are ever executed, including index
+ */
 
-// Here your window's event listener for android back button
+// Window's event listener for android back button
 Alloy.Globals.Navigate = function Navigate(v, fromView, toView) {
 	Titanium.API.log("Back button pressed, global function called, " + fromView.children.length + " items to remove");
-    /*
-    _.each(fromView.children, function(view) {
-        fromView.remove(view);
- 	});
- 	*/
  	var newWindow = toView;
 	newWindow.open();
  	fromView.close();

@@ -1,9 +1,12 @@
+/*
+ * Styles for Profile View
+ */
+
 "#profilePicture": {
 	image:'/images/sample.png',
 	height:'20%',
 	width:'50%',
 	align:'center'
-	//top:'50dp'
 }
 
 "#nameView": {
@@ -92,7 +95,7 @@
 
 "#editButton1": {
 	right: '15%',
-	value: false	//means that textfields are NOT editable
+	value: false // Means that textfields are NOT editable
 }
 
 //END OF ABOUT TSS
@@ -125,7 +128,7 @@
 
 "#editButton2": {
 	right: '15%',
-	value: false	//means that textfields are NOT editable
+	value: false // Means that textfields are NOT editable
 }
 
 ".checkbox": {
@@ -141,7 +144,7 @@
     color: '#fff',
     font:{fontSize: 20},
     enabled: 'false',
-    value: false //value is a custom property in this casehere.
+    value: false // Value is a custom property in this casehere.
 }
 
 ".checkboxLabel": {

@@ -1,3 +1,7 @@
+/*
+ * Styles for Main Menu View
+ */
+
 "#mainMenu": {
 	layout: "horizontal",
 	horizontalWrap: true
@@ -25,15 +29,6 @@
 }
 
 "#profilePicture": {
-	height:'22%', //15
-	width:'25%', //50
-	/*
-	top: '1%',
-	bottom: '1%',
-	left: '2%',
-	borderWidth: 2,
-	borderColor: "black",
-	borderRadius: 100,
-	backgroundImage: 'NONE',
-	backgroundColor: '#800000'*/
+	height:'22%',
+	width:'25%'
 }

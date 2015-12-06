@@ -1,3 +1,6 @@
+/*
+ * Styles for Credits View
+ */
 
 "#credits" : {
   	layout: "vertical",

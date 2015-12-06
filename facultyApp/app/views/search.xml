@@ -1,3 +1,6 @@
+<!--
+	Search view 
+-->
 <Alloy>
 	<!--
 		This view wraps all of the child views/lists etc. Creates a base layout, vertically aligned.
@@ -15,7 +18,6 @@
 		-->
 		<ListView id="listView" defaultItemTemplate="userTemplate" onItemclick="onItemClick">
 			<Templates>
-				
 				<!-- UserTemplate - this is the default ListItem template -->
 				<ItemTemplate id="userTemplate" name="userTemplate" class="template">
 					<View class="left-buffer">
@@ -25,16 +27,13 @@
 							<Label id="userName" bindId="userName" class="title" />
 							<Button id="button1" bindId="button1" class="greenCheckmark" visible="false"></Button>
 						</View>
-						
 						<View class="hgroup right size">	
 							<Button id="sendMessage" bindId="sendMessage" class="sendMessage left-buffer right-buffer"></Button> 				
 						</View>
 						<View class="gray-line bottom"/>
 					</View>
 				</ItemTemplate>
-				
 			</Templates>
-			
 		</ListView>
 	</Window>
 </Alloy>

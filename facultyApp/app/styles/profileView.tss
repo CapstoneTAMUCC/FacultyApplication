@@ -1,7 +1,11 @@
+/*
+ * Styles for ProfileView View
+ */
+
 "#profilePicture": {
 	image:'/images/sample.png',
-	height:'15%', //15
-	width:'25%', //50
+	height:'15%',
+	width:'25%', 
 	align:'center',
 	borderWidth: 2,
 	borderColor: "black",
@@ -56,10 +60,8 @@
 "#nameField": {
 	color:'white',
 	font:{fontSize:25,fontFamily:'Times New Roman', fontWeight:'bold'},
-	//height:'auto',
 	width:'100%',
 	textAlign:'center',
-	//top:'5dp',
 	align:'center',
 	enabled: 'false',
 	hintText: 'Enter Your Name',
@@ -151,7 +153,7 @@
     color: '#fff',
     font:{fontSize: 20},
     enabled: 'false',
-    value: false //value is a custom property in this casehere.
+    value: false // Value is a custom property in this casehere.
 }
 
 ".checkboxLabel": {

@@ -1,12 +1,21 @@
+/*
+ * Controller for Search section
+ * Purpose: Provide functionality for the client's Search section
+ */
+
 /**
  * Instantiate the local variables for this controller
  */
 var _args = arguments[0] || {}, // Any passed in arguments will fall into this property
-	App = Alloy.Globals.App; // reference to the APP singleton object
+	App = Alloy.Globals.App;    // Reference to the APP singleton object
 
-var dataArray = [];	//FRANCESCA
-var namesJson = [];	//FRANCESCA
+// Arrays to store data retreived from server
+var dataArray = [];	
+var namesJson = [];	
 
+/**
+ * Return photo of user in conversation who is not the client
+ */
 var getOtherPhoto = function (id) {
 	for( var i=0; i<namesJson.length; i++) {
 		if ( namesJson[i].USER_ID == id)
@@ -19,8 +28,8 @@ var getOtherPhoto = function (id) {
 };
 
 /**
- *	FRANCESCA
- */	
+ * Create conversation string to be converted to JSON object and passed to Conversation view 
+ */
 var makeJsonConversationString = function (dataArray, index, otherID) {
 	var result = "{\"messages\":[";
 	var titleName = getOtherName(namesJson, otherID);
@@ -54,7 +63,7 @@ var makeJsonConversationString = function (dataArray, index, otherID) {
 };
 
 /**
- *	FRANCESCA
+ * Return name of user in conversation who is not the client
  */
 var getOtherName = function (array, otherID) {
 	for(var i=0; i<array.length; i++) {
@@ -67,7 +76,8 @@ var getOtherName = function (array, otherID) {
 };
 
 /**
- *	FRANCESCA
+ * Determine if otherUserID exists in dataArray
+ * If it does, return index
  */
 var exists = function(otherUserID) {
     	for (var i = 0; i < dataArray.length; i++) {
@@ -80,10 +90,11 @@ var exists = function(otherUserID) {
     }; 
 
 /**
- *	FRANCESCA
- */	
+ *	Populate arrays by making calls to server
+ *  Called by init function
+ */
 function popArrays () {
-	//function to use HTTP to connect to a web server and transfer the data. 
+	// Function to use HTTP to connect to a web server and transfer the data. 
     var connection = Ti.Network.createHTTPClient({ 
     	onerror: function(e){ 
         	Ti.API.debug(e.error); 
@@ -92,29 +103,26 @@ function popArrays () {
         timeout:1000,
     });                      
 
-    //Here you have to change it for your local ip 
- //   connection.open('GET', '52.32.54.34/php/read_message_list.php');
+    // Here you have to change it for your local ip 
     connection.open('POST', '52.32.54.34/php/conversation_list.php');
     var params = ({ "USER_ID": Alloy.Globals.thisUserID });  
     connection.send(params);
-    //Function to be called upon a successful response 
+    
+    // Function to be called upon a successful response 
     connection.onload = function(){ 
     	var json = JSON.parse(this.responseText); 
     	var json = json.MESSAGE_ID;
-    	//if the database is empty show an alert 
+    	
+    	// If the database is empty show an alert 
     	if(json.length == 0){
-			Titanium.API.log("CRAP");
-    //    $.tableView.headerTitle = "The database row is empty"; 
+			Titanium.API.log("List empty");
     	}
     	
-    	//Emptying the data to refresh the view 
-
+    	// Emptying the data to refresh the view 
    	 	dataArray = new Array (0);                      
 
-    	//Insert the JSON data to the table view 
-
+    	// Insert the JSON data to the table view 
    		for( var i=0; i<json.length; i++){ 
-        
         	Titanium.API.log("MESSAGE_ID: " + json[i].MESSAGE_ID);                                          
      		Titanium.API.log("TO: " + json[i].TO_ID);
      		Titanium.API.log("FROM: " + json[i].FROM_ID);
@@ -134,12 +142,10 @@ function popArrays () {
 				var tempArray = new Array(0);
 				tempArray.push(json[i]);
 				dataArray.push(tempArray);
-			}
-			
-	//		orderArray();
-     //		dataArray.push(row);               
+			}             
 		}
-		//function to use HTTP to connect to a web server and transfer the data. 
+		
+		// Function to use HTTP to connect to a web server and transfer the data. 
 		var conn = Ti.Network.createHTTPClient({ 
 			onerror: function(e){ 	
 					Ti.API.debug(e.error); 	
@@ -149,10 +155,11 @@ function popArrays () {
 			timeout:1000, 
 		});
 		
-		//Here you have to change it for your local ip 
+		// Here you have to change it for your local ip 
 		conn.open('GET', '52.32.54.34/php/read_user_list.php');  
 		conn.send();
 		
+		// Called on load of connection
 		conn.onload = function() {
 			namesJson = JSON.parse(this.responseText);
 			namesJson = namesJson.NAME;
@@ -181,18 +188,20 @@ var homeButtonFunc = function () {
  */
 function populateSearchResults()
 {
-	var searchResults = new Array();	//holds the search results
+	// Holds the search results
+	var searchResults = new Array();	
 	var tempString = " ";	//an empty temporary string
-	//function to use HTTP to connect to a web server and transfer the data. 
+	
+	// Function to use HTTP to connect to a web server and transfer the data. 
 	var request1 = Ti.Network.createHTTPClient({ 
-	onerror: function(e){ 	
-		Ti.API.debug(e.error); 	
-		alert('There was an error during the connection SEARCH'); 	
-	}, 	
-	timeout:1000, 
+		onerror: function(e){ 	
+			Ti.API.debug(e.error); 	
+			alert('There was an error during the connection SEARCH'); 	
+		}, 	
+		timeout:1000, 
 	});
 
-	//Open your request.
+	// Open your request.
 	request1.open('GET', '52.32.54.34/php/read_user_list.php');  
 	request1.send();
 	
@@ -200,32 +209,36 @@ function populateSearchResults()
 		var json = JSON.parse(this.responseText);
 		var json = json.NAME;	//parse by NAME
 		
+		// Find our user from USER table
 		for ( var i = 0; i < json.length; i++ )
 		{
-			if ( json[i].USER_ID != Alloy.Globals.thisUserID)	//find our user from USER table
+			if ( json[i].USER_ID != Alloy.Globals.thisUserID)	
 			{
+				// Temp string will hold all searchable information
 				tempString = json[i].NAME + '' + 
-							json[i].EDUCATION + '' +  
-							json[i].CURRENT_PROJ + '' +
-							json[i].AREA_EXPERTISE + '' +
-							json[i].COMMITTEES + '' +
-							json[i].OTHER_INTERESTS;	//temp string will hold all searchable information
+			 				 json[i].EDUCATION + '' +  
+			 				 json[i].CURRENT_PROJ + '' +
+							 json[i].AREA_EXPERTISE + '' +
+							 json[i].COMMITTEES + '' +
+							 json[i].OTHER_INTERESTS;	
 
 				if ( tempString.indexOf( $.searchText.value ) != -1 )
-				{	//if search phrase matches tempString, add it to our search result list
+				{	
+					// If search phrase matches tempString, add it to our search result list
 					searchResults.push(json[i]);
 				}
 
 			}
 		}
 		
-		if (searchResults.length < 1)	//if there are no search results display a warning
+		// If there are no search results display a warning
+		if (searchResults.length < 1)	
 		{
 			alert('No results found!');
 		}
 		else
 		{
-			//Search users by their names
+			// Search users by their names
 			searchResults = _.sortBy(searchResults, function(user){
 				return user.NAME
 			});
@@ -233,8 +246,7 @@ function populateSearchResults()
 			if (searchResults)
 			{
 				/**
-				 * Setup our Sections Array for building out the ListView components
-				 * 
+				 * Setup our Sections Array for building out the ListView components 
 				 */
 				var sections = [];
 				
@@ -245,6 +257,7 @@ function populateSearchResults()
 				var userGroups  = _.groupBy(searchResults, function(item){
 				 	return item.NAME.charAt(0);
 				});
+				
 		        /**
 		         * Iterate through each group created, and prepare the data for the ListView
 		         * (Leverages the UnderscoreJS _.each function)
@@ -256,6 +269,7 @@ function populateSearchResults()
 					 * it for use in the ListView templates as defined in the search.xml file.
 					 */
 					var dataToAdd = preprocessForListView(group);
+				
 					/**
 					 * Check to make sure that there is data to add to the table,
 					 * if not lets exit
@@ -266,29 +280,29 @@ function populateSearchResults()
 					 * Create the ListViewSection header view
 					 * DOCS: http://docs.appcelerator.com/platform/latest/#!/api/Titanium.UI.ListSection-property-headerView
 					 */
-					 var sectionHeader = Ti.UI.createView({
-					 	backgroundColor: "#ececec",
+					var sectionHeader = Ti.UI.createView({
+						backgroundColor: "#ececec",
 					 	width: Ti.UI.FILL,
 					 	height: 30
-					 });
+					});
 		
-					 /**
-					  * Create and Add the Label to the ListView Section header view
-					  */
-					 var sectionLabel = Ti.UI.createLabel({
+					/**
+					 * Create and Add the Label to the ListView Section header view
+					 */
+					var sectionLabel = Ti.UI.createLabel({
 					 	text: group[0].NAME.charAt(0),
 					 	left: 20,
 					 	font:{
 					 		fontSize: 20
 					 	},
 					 	color: "#666"
-					 });
-					 sectionHeader.add(sectionLabel);
+					});
+					sectionHeader.add(sectionLabel);
 		
 					/**
 					 * Create a new ListViewSection, and ADD the header view created above to it.
 					 */
-					 var section = Ti.UI.createListSection({
+					var section = Ti.UI.createListSection({
 						headerView: sectionHeader
 					});
 		
@@ -302,19 +316,19 @@ function populateSearchResults()
 					 * the ListView 
 					 */
 					sections.push(section);
-				});	//end of each function
+				});	// End of each function
 				
 				/**
 				 * Add the ListViewSections and data elements created above to the ListView
 				 */
 				$.listView.sections = sections;
-			}// end of if statement if (searchResults)
+			} // End of if statement if (searchResults)
 			
-		}//end of else 
+		} // End of else 
 		
-	};//end of onload function
+	}; // End of onload function
 
-}//end of populateSearchResults function
+} // End of populateSearchResults function
 
 /**
  *	NOTE: This function is gathered from Appcelerator's Example Employee Directory app. 
@@ -324,7 +338,6 @@ function populateSearchResults()
  * 	@param {Object} Raw data elements from the JSON file.
  */
 var preprocessForListView = function(rawData) {
-	 
 	/**
 	 * Using the rawData collection, we map data properties of the users in this array to an array that maps an array to properly
 	 * display the data in the ListView based on the templates defined in directory.xml (levearges the _.map Function of UnderscoreJS)
@@ -358,24 +371,29 @@ function onItemClick(e){
 	 * Get the Item that was clicked
 	 */
 	var item = $.listView.sections[e.sectionIndex].items[e.itemIndex];
-	Alloy.Globals.profileViewID = item.properties.user.USER_ID;	//set the profile I want to view
+	
+	// Set the profile I want to view
+	Alloy.Globals.profileViewID = item.properties.user.USER_ID;	
 
-	if (e.bindId == 'sendMessage')	//if Message button is clicked open conversation page
+	// If Message button is clicked open conversation page
+	if (e.bindId == 'sendMessage')	
 	{
-		var newWindow = Alloy.createController('conversation', JSON.parse(makeJsonConversationString(dataArray, exists(Alloy.Globals.profileViewID), Alloy.Globals.profileViewID), Alloy.Globals.profileViewID)).getView();
+		var newWindow = Alloy.createController('conversation', JSON.parse(makeJsonConversationString(dataArray,
+			exists(Alloy.Globals.profileViewID), Alloy.Globals.profileViewID), Alloy.Globals.profileViewID)).getView();
 		newWindow.open();
 	}
 	else
 	{
-		//Add my information to the profile's VIEWED ME list as I am going to view it
+		// Add my information to the profile's VIEWED ME list as I am going to view it
 		var request = Ti.Network.createHTTPClient({ 	
-		onerror: function(e){ 
-			Ti.API.debug(e.error); 
-			alert('There was an error during the connection PROFILE VIEW'); 
-		}, 
-		timeout:1000, 	         
+			onerror: function(e){ 
+				Ti.API.debug(e.error); 
+				alert('There was an error during the connection PROFILE VIEW'); 
+			}, 
+			timeout:1000, 	         
 		});  
-		//Request the data from the web service, Here you have to change it for your local ip 
+		
+		// Request the data from the web service, Here you have to change it for your local ip 
 		request.open("POST","52.32.54.34/php/insert_into_viewed_me.php"); 
 		
 		var params = ({ "USER_ID": 				Alloy.Globals.profileViewID,	
@@ -384,8 +402,11 @@ function onItemClick(e){
 		
 		request.send(params);
 		
-		Alloy.Globals.comingFrom = 'search';	//we are going to open profileView from search
-		Alloy.Globals.Navigate($, $.search, Alloy.createController('profileView').getView() );	//open the profile to view
+		// We are going to open profileView from search
+		Alloy.Globals.comingFrom = 'search';	
+		
+		// Open the profile to view
+		Alloy.Globals.Navigate($, $.search, Alloy.createController('profileView').getView() );	
 	}
 
 }
@@ -401,8 +422,10 @@ $.searchButton.addEventListener('click', function(e)
 	}
 	else
 	{
-		populateSearchResults();	//display the search results
+		// Display the search results
+		populateSearchResults();	
 	}
 });
 
-popArrays ();	//FRANCESCA
+// Populate arrays
+popArrays ();	

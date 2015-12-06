@@ -1,3 +1,7 @@
+<!--
+	Messages view
+	Inbox 
+-->
 <Alloy>
 	<Window id="messages" class="vgroup" title="Inbox">
 		<Menu id="menu" platform="android">

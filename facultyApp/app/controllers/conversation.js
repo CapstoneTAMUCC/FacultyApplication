@@ -1,118 +1,117 @@
+/*
+ * Controller for Conversation page
+ * Purpose: Provide functionality for conversation pages, which are navigated to when
+ * 			the client wishes to view a conversation or send a message to a user; 
+ * 			a conversation page can be navigated to from sections including Messages,
+ * 			Connections, Matches, newMessage, Profile View, Search and Viewed Me
+ */
+
+// Retreive arguments received by controller
 var args = arguments[0] || {};
-var thisUserID = Alloy.Globals.thisUserID;
 var json = args.messages; 
 
+// Assign client ID
+var thisUserID = Alloy.Globals.thisUserID;
+
 /**
- * Function to inialize the View, gathers data from the flat file and sets up the ListView
+ * Function to inialize the View, gathers data from server and sets up the ListView
  */
-function init(){
-		$.conversation.title = args.name;
-    	//Emptying the data to refresh the view                  
+function init() {
+	// Change title of view
+	$.conversation.title = args.name;              
 
-    	//Insert the JSON data to the table view 
-
-   		for( var i=0; i<json.length; i++){ 
-        	var row = Ti.UI.createTableViewRow({ 
-        		title: json[i].BODY, 
-            	hasChild : true, 
-     		});
+   	//Insert the JSON data to the table view 
+	for( var i=0; i<json.length; i++){ 
+       	var row = Ti.UI.createTableViewRow({ 
+       		title: json[i].BODY, 
+           	hasChild : true, 
+   		});
         
-        	Titanium.API.log("OTHER_ID: " + json[i].OTHER_ID);                                        
-     		Titanium.API.log("TO: " + json[i].TO_ID);
-     		Titanium.API.log("FROM: " + json[i].FROM_ID);
-     		Titanium.API.log("BODY: " + json[i].BODY);   
-     		Titanium.API.log("DATE: " + json[i].DATE);   
-     		Titanium.API.log("STATUS: " + json[i].STATUS);       
-     		Titanium.API.log();                     
-		};  
-		
-		conversations = json;
-		
+       	Titanium.API.log("OTHER_ID: " + json[i].OTHER_ID);                                        
+   		Titanium.API.log("TO: " + json[i].TO_ID);
+   		Titanium.API.log("FROM: " + json[i].FROM_ID);
+   		Titanium.API.log("BODY: " + json[i].BODY);   
+   		Titanium.API.log("DATE: " + json[i].DATE);   
+   		Titanium.API.log("STATUS: " + json[i].STATUS);       
+   		Titanium.API.log();                     
+	};  
+	
+	conversations = json;
+
+	/**
+ 	* Setup our Indexes and Sections Array for building out the ListView components
+ 	* 
+ 	*/
+	indexes = [];
+	var sections = [];
+	var conversationGroups  = _.groupBy(conversations, function(item){
+ 		return item.DATE;
+	});
+      
+   	/**
+   	* Iterate through each group created, and prepare the data for the ListView
+   	* (Leverages the UnderscoreJS _.each function)
+   	*/
+	_.each(conversationGroups, function(group){
+
 		/**
-	 	* IF the users array exists
+	 	* Take the group data that is passed into the function, and parse/transform
+	 	* it for use in the ListView templates as defined in the directory.xml file.
 	 	*/
-	 	/*
-	 	if (!conversations) {
-	 		
-	 	}
-		else { */
+		var dataToAdd = preprocessForListView(group);
+
+		/**
+	 	* Check to make sure that there is data to add to the table,
+	 	* if not lets exit
+	 	*/
+		if(dataToAdd.length < 1) return;			
+			
+		/**
+	 	* Lets take the first Character of the LastName and push it onto the index
+	 	* Array - this will be used to generate the indices for the ListView on IOS
+	 	*/
+	
+		indexes.push({
+			index: indexes.length,
+			title: "what is this"
+		});
+
+		/**
+	 	* Create a new ListViewSection, and ADD the header view created above to it.
+	 	*/
+	 	var section = Ti.UI.createListSection({});
+
+		/**
+	 	* Add Data to the ListViewSection
+	 	*/
+		section.items = dataToAdd;
+			
+		/**
+	 	* Push the newly created ListViewSection onto the `sections` array. This will be used to populate
+	 	* the ListView 
+	 	*/
+		sections.push(section);
+	});
+
+	/**
+ 	* Add the ListViewSections and data elements created above to the ListView
+ 	*/
+	$.listView.sections = sections;
 		
-			/**
-		 	* Setup our Indexes and Sections Array for building out the ListView components
-		 	* 
-		 	*/
-			indexes = [];
-			var sections = [];
-			var conversationGroups  = _.groupBy(conversations, function(item){
-		 		return item.DATE;
-			});
-        
-        	/**
-         	* Iterate through each group created, and prepare the data for the ListView
-         	* (Leverages the UnderscoreJS _.each function)
-         	*/
-			_.each(conversationGroups, function(group){
-
-				/**
-			 	* Take the group data that is passed into the function, and parse/transform
-			 	* it for use in the ListView templates as defined in the directory.xml file.
-			 	*/
-				var dataToAdd = preprocessForListView(group);
-
-				/**
-			 	* Check to make sure that there is data to add to the table,
-			 	* if not lets exit
-			 	*/
-				if(dataToAdd.length < 1) return;
-			
-			
-				/**
-			 	* Lets take the first Character of the LastName and push it onto the index
-			 	* Array - this will be used to generate the indices for the ListView on IOS
-			 	*/
-			
-				indexes.push({
-					index: indexes.length,
-					title: "what is this"
-				});
-
-				/**
-			 	* Create a new ListViewSection, and ADD the header view created above to it.
-			 	*/
-			 	var section = Ti.UI.createListSection({});
-
-				/**
-			 	* Add Data to the ListViewSection
-			 	*/
-				section.items = dataToAdd;
-			
-				/**
-			 	* Push the newly created ListViewSection onto the `sections` array. This will be used to populate
-			 	* the ListView 
-			 	*/
-				sections.push(section);
-			});
-
-			/**
-		 	* Add the ListViewSections and data elements created above to the ListView
-		 	*/
-			$.listView.sections = sections;
-		
-			/**
-		 	* For iOS, we add an event listener on the swipe of the ListView to display the index of the ListView we 
-		 	* created above. The `sectionIndexTitles` property is only valid on iOS, so we put these handlers in the iOS block.
-		 	*/
-			if(OS_IOS) {
-				$.messages.addEventListener("swipe", function(e){
-					if(e.direction === "left"){
-						$.listView.sectionIndexTitles = indexes;
-					}
-					if(e.direction === "right"){
-						$.listView.sectionIndexTitles = null;
-					}
-				});
+	/**
+ 	* For iOS, we add an event listener on the swipe of the ListView to display the index of the ListView we 
+ 	* created above. The `sectionIndexTitles` property is only valid on iOS, so we put these handlers in the iOS block.
+ 	*/
+	if(OS_IOS) {
+		$.messages.addEventListener("swipe", function(e){
+			if(e.direction === "left"){
+				$.listView.sectionIndexTitles = indexes;
 			}
-	//	}
+			if(e.direction === "right"){
+				$.listView.sectionIndexTitles = null;
+			}
+		});
+	}
 };        
 
 /**
@@ -123,7 +122,6 @@ function init(){
  * @param {Object} Event data passed to the function
  */
 function onItemClick(e){
-	
 }	
 		
 /**
@@ -159,9 +157,7 @@ var preprocessForListView = function(rawData) {
 	});	
 };
 
-var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-var days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-
+// Transform raw time stamp to displayable format
 // yyyy-mm-dd hh:mm:ss to month/day hh:mm am 
 var makeReadable = function (date) {
 	var result = "";
@@ -183,6 +179,7 @@ var makeReadable = function (date) {
 		hour = hour - 12;
 	}
 	
+	// Remove leading zeroes
 	month = month.length == 1 ? month.substring (1, 2) : month;
 	day = day.length == 1 ? day.substring (1, 2) : day;
 	hour = hour.length == 1 ? hour.substring (1, 2) : hour;
@@ -190,6 +187,8 @@ var makeReadable = function (date) {
 	return month + "/" + day + " " + hour + ":" + min + " " + ampm;
 };
 
+// Function called on click of reply button
+// Sends input message to other user in conversation
 $.replyButton.addEventListener('click', function(e)
 {
 	var request = Ti.Network.createHTTPClient({  
@@ -200,8 +199,7 @@ $.replyButton.addEventListener('click', function(e)
        		timeout:1000, 
     	}); 
     	 
-    //	Titanium.API.log("Am I getting this correctly? " + messageBox.value);
-		//Request the data from the web service, Here you have to change it for your local ip 
+		// Request the data from the web service, Here you have to change it for your local ip 
         request.open("POST","52.32.54.34/php/insert_into_message.php");
         var newMessage = ({"FROM_ID": Alloy.Globals.thisUserID,
           	               "TO_ID": args.id,
@@ -216,16 +214,12 @@ $.replyButton.addEventListener('click', function(e)
         init(); 
 }); 
 
-/*
-$.conversation.addEventListener('androidback' , function (e) {
-	Alloy.Globals.Navigate ($, $.conversation, Alloy.createController('messages').getView());
-});
-*/
-
+// Function called on click of home button, navigate home
 var homeButtonFunc = function () {
 	Alloy.Globals.goToHome ($, $.conversation);
 };
 
+// Get timestamp for now
 var makeDate = function (date) {
 	var day = date.getDate();
 	var hour = date.getHours();

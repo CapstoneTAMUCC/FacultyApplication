@@ -1,3 +1,7 @@
+<!--
+	Index view
+	Login Page 
+-->
 <Alloy>
 	<Window id="index" >
 		<View class="view vgroup">

@@ -1,3 +1,6 @@
+<!--
+	Main Menu view 
+-->
 <Alloy>
 	<Window id="mainMenu">
 		<Menu id="menu" platform="android">

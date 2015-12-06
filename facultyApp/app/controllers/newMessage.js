@@ -1,9 +1,20 @@
+/*
+ * Controller for New Message page
+ * Purpose: Provide functionality for allowing the client to compose new messages
+ * 			to users who are established contacts
+ */
+
+// Arrays to store data retreived from server
 var data = [];
 var namesJson = [];
-var dataArray = arguments[0] || {};// Any passed in arguments will fall into this property
 
-function init(){
-	//function to use HTTP to connect to a web server and transfer the data.
+// Any passed in arguments will fall into this property
+var dataArray = arguments[0] || {}; 
+
+// Create picker and other constructs for initialized view
+function init() {
+	
+	// Function to use HTTP to connect to a web server and transfer the data.
 	var connection = Ti.Network.createHTTPClient({ 
 	  	onerror: function(e){ 
 			Ti.API.debug(e.error); 
@@ -12,20 +23,22 @@ function init(){
 	    timeout:1000,
 	});                  
 	
-	//Here you have to change it for your local ip 
+	// Here you have to change it for your local ip 
 	connection.open('POST', '52.32.54.34/php/read_contact_list.php');
 	var params = ({ "USER_ID": Alloy.Globals.thisUserID });  
 	connection.send(params);
-	//Function to be called upon a successful response 
+	
+	// Function to be called upon a successful response 
 	connection.onload = function(){ 
 	    var json = JSON.parse(this.responseText); 
 	    var json = json.OTHER_USER_ID;
-	    //if the database is empty show an alert 
+	    
+	    // If the database is empty show an alert 
 	    if(json.length == 0){
 			Titanium.API.log("CRAP");
 	    }
 	    
-	    //function to use HTTP to connect to a web server and transfer the data. 
+	    // Function to use HTTP to connect to a web server and transfer the data. 
 		var conn = Ti.Network.createHTTPClient({ 
 			onerror: function(e){ 	
 					Ti.API.debug(e.error); 	
@@ -35,15 +48,16 @@ function init(){
 			timeout:1000, 
 		});
 		
-		//Here you have to change it for your local ip 
+		// Here you have to change it for your local ip 
 		conn.open('GET', '52.32.54.34/php/read_user_list.php');  
 		conn.send();
 		
+		// Called on load of connection
 		conn.onload = function() {
 			namesJson = JSON.parse(this.responseText);
 			namesJson = namesJson.NAME;
 		  	                  
-			//Insert the JSON data to the table view 
+			// Insert the JSON data to the table view 
 			for( var i=0; i<json.length; i++){ 
 		      	
 		      	Titanium.API.log("OTHER_USER_ID: " + json[i].OTHER_USER_ID);          
@@ -64,6 +78,7 @@ function init(){
 			              
 			}
 		
+			// Add picker options and automatically select first contact
 			$.picker.add(data);
 			$.picker.setSelectedRow(0, 0, false);
 			
@@ -71,16 +86,25 @@ function init(){
 			$.picker.addEventListener('change',function(e){
 		   		Titanium.API.log('change: '+ $.picker.getSelectedRow(0).title);
 			});
-			//	$.column1.add(data);
 		};
 	};
 };
 
+/*
+ * Called when select button is pressed
+ * Navigates to conversation view for selected user and client
+ */
 function onSelectButton (e) {
-	var newWindow = Alloy.createController('conversation', JSON.parse(makeJsonConversationString(dataArray, exists(dataArray, $.picker.getSelectedRow(0).id), $.picker.getSelectedRow(0).id))).getView();
+	var newWindow = Alloy.createController('conversation', 
+		JSON.parse(makeJsonConversationString(dataArray, exists(dataArray, $.picker.getSelectedRow(0).id), 
+			$.picker.getSelectedRow(0).id))).getView();
 	newWindow.open ();
 }
 
+/**
+ * Determine if otherUserID exists in dataArray
+ * If it does, return index
+ */
 var exists = function(array, otherUserID) {
    	for (var i = 0; i < array.length; i++) {
    		Titanium.API.log("ID: " + array[i][0].TO_ID + " " + array[i][0].FROM_ID);
@@ -93,10 +117,16 @@ var exists = function(array, otherUserID) {
   	return -1;
 }; 
 
+/**
+ *	Home button function will take you to Main Menu
+ */
 var homeButtonFunc = function () {
 	Alloy.Globals.goToHome ($, $.conversation);
 };
 		
+/**
+ * Create conversation string to be converted to JSON object and passed to Conversation view 
+ */
 var makeJsonConversationString = function (dataArray, index, otherID) {
 	var result = "{\"messages\":[";
 	var titleName = getOtherName(namesJson, otherID);
@@ -127,7 +157,10 @@ var makeJsonConversationString = function (dataArray, index, otherID) {
     Titanium.API.log("HERETWICE: " + result);
     return result;
 };
-		
+	
+/**
+ * Return name of user in conversation who is not the client
+ */	
 var getOtherName = function (array, otherID) {
 	for(var i=0; i<array.length; i++) {
 		if ( array[i].USER_ID == otherID)
@@ -138,32 +171,18 @@ var getOtherName = function (array, otherID) {
 	return "Not found";
 };
 
+// Called when Home button is clicked, navigates home
 var homeButtonFunc = function () {
 	Alloy.Globals.goToHome ($, $.newMessage);
 };
 
+// Override Android back functionality to return to Main Menu
 $.newMessage.addEventListener('androidback' , function (e) {
 	Alloy.Globals.Navigate ($, $.newMessage, Alloy.createController('messages').getView());
 });
 
-/*
-var c = Titanium.Network.createHTTPClient();
-    c.onload = function()
-        {
-            var xml=this.responseXML.documentElement;
-            doc=xml.getElementsByTagName("PLANT");
-            for(var a=0;a<doc.length;a++)
-            {
-                data.push(Ti.UI.createPickerRow({title:doc.item(a).getElementsByTagName("COMMON").item(0).text}));
-            }
-            $.picker.add(data);
-        };
-    c.onerror = function(e)
-        {
-            Ti.API.info('XHR Error ' + e.error);
-        };
-    c.open('GET', 'http://www.w3schools.com/xml/plant_catalog.xml');
-    c.send();
-    */
+// Initialize view
 init ();
+
+// Open view
 $.newMessage.open();

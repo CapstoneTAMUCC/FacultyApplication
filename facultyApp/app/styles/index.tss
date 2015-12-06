@@ -1,3 +1,7 @@
+/*
+ * Styles for Main Menu/Login Page View
+ */
+
 "#index": {
 	layout: "horizontal",
 	horizontalWrap: true,

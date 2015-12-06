@@ -1,3 +1,6 @@
+<!--
+	Viewed Me view 
+-->
 <Alloy>
 	<!--
 		This view wraps all of the child views/lists etc. Creates a base layout, vertically aligned.
@@ -11,8 +14,7 @@
 			This listView leverages two ListItem templates to denote regular contacts and those that are bookmarked.
 		-->
 		<ListView id="listView" defaultItemTemplate="userTemplate" onItemclick="onItemClick">
-			<Templates>
-				
+			<Templates>	
 				<!-- UserTemplate - this is the default ListItem template -->
 				<ItemTemplate id="userTemplate" name="userTemplate" class="template">
 					<View class="left-buffer">
@@ -24,17 +26,13 @@
 							<Label id="userEmail" bindId="userEmail" class="subtitle" />
 							<Label id="userCompany" bindId="userCompany" class="subtitle" />
 						</View>
-						
 						<View class="hgroup right size">	
 							<Button id="sendMessage" bindId="sendMessage" class="sendMessage left-buffer right-buffer"></Button> 				
 						</View>
-						
 						<View class="gray-line bottom"/>
 					</View>
 				</ItemTemplate>
-				
 			</Templates>
-			
 		</ListView>		
 	</Window>
 </Alloy>

@@ -1,12 +1,22 @@
+/*
+ * Controller for Connections section
+ * Purpose: Provide functionality for the client's Connections section, which
+ * 			includes both establish contacts and pending contacts
+ */
+
 /**
  * Instantiate the local variables for this controller
  */
 var _args = arguments[0] || {}, // Any passed in arguments will fall into this property
-	App = Alloy.Globals.App; // reference to the APP singleton object
+	App = Alloy.Globals.App;    // Reference to the APP singleton object
 	
-var dataArray = [];	//FRANCESCA
-var namesJson = [];	//FRANCESCA
+// Arrays to store data retreived from server
+var dataArray = [];	
+var namesJson = [];	
 
+/**
+ * Return photo of user in conversation who is not the client
+ */
 var getOtherPhoto = function (id) {
 	for( var i=0; i<namesJson.length; i++) {
 		if ( namesJson[i].USER_ID == id)
@@ -19,8 +29,8 @@ var getOtherPhoto = function (id) {
 };
 
 /**
- *	FRANCESCA
- */	
+ * Create conversation string to be converted to JSON object and passed to Conversation view 
+ */
 var makeJsonConversationString = function (dataArray, index, otherID) {
 	var result = "{\"messages\":[";
 	var titleName = getOtherName(namesJson, otherID);
@@ -54,7 +64,7 @@ var makeJsonConversationString = function (dataArray, index, otherID) {
 };
 
 /**
- *	FRANCESCA
+ * Return name of user in conversation who is not the client
  */
 var getOtherName = function (array, otherID) {
 	for(var i=0; i<array.length; i++) {
@@ -67,7 +77,8 @@ var getOtherName = function (array, otherID) {
 };
 
 /**
- *	FRANCESCA
+ * Determine if otherUserID exists in dataArray
+ * If it does, return index
  */
 var exists = function(otherUserID) {
     	for (var i = 0; i < dataArray.length; i++) {
@@ -80,10 +91,12 @@ var exists = function(otherUserID) {
     }; 	
 
 /**
- *	FRANCESCA
+ *	Populate arrays by making calls to server
+ *  Called by init function
  */
 function popArrays () {
-	//function to use HTTP to connect to a web server and transfer the data. 
+	
+	// Function to use HTTP to connect to a web server and transfer the data. 
     var connection = Ti.Network.createHTTPClient({ 
     	onerror: function(e){ 
         	Ti.API.debug(e.error); 
@@ -92,29 +105,25 @@ function popArrays () {
         timeout:1000,
     });                      
 
-    //Here you have to change it for your local ip 
- //   connection.open('GET', '52.32.54.34/php/read_message_list.php');
+    // Here you have to change it for your local ip 
     connection.open('POST', '52.32.54.34/php/conversation_list.php');
     var params = ({ "USER_ID": Alloy.Globals.thisUserID });  
     connection.send(params);
-    //Function to be called upon a successful response 
-    connection.onload = function(){ 
+    
+    // Function to be called upon a successful response 
+    connection.onload = function() { 
     	var json = JSON.parse(this.responseText); 
     	var json = json.MESSAGE_ID;
     	//if the database is empty show an alert 
     	if(json.length == 0){
-			Titanium.API.log("CRAP");
-    //    $.tableView.headerTitle = "The database row is empty"; 
+			Titanium.API.log("Empty list");
     	}
     	
-    	//Emptying the data to refresh the view 
-
+    	// Emptying the data to refresh the view 
    	 	dataArray = new Array (0);                      
 
-    	//Insert the JSON data to the table view 
-
+    	// Insert the JSON data to the table view 
    		for( var i=0; i<json.length; i++){ 
-        
         	Titanium.API.log("MESSAGE_ID: " + json[i].MESSAGE_ID);                                          
      		Titanium.API.log("TO: " + json[i].TO_ID);
      		Titanium.API.log("FROM: " + json[i].FROM_ID);
@@ -134,12 +143,10 @@ function popArrays () {
 				var tempArray = new Array(0);
 				tempArray.push(json[i]);
 				dataArray.push(tempArray);
-			}
-			
-	//		orderArray();
-     //		dataArray.push(row);               
+			}         
 		}
-		//function to use HTTP to connect to a web server and transfer the data. 
+		
+		// Function to use HTTP to connect to a web server and transfer the data. 
 		var conn = Ti.Network.createHTTPClient({ 
 			onerror: function(e){ 	
 					Ti.API.debug(e.error); 	
@@ -149,10 +156,11 @@ function popArrays () {
 			timeout:1000, 
 		});
 		
-		//Here you have to change it for your local ip 
+		// Here you have to change it for your local ip 
 		conn.open('GET', '52.32.54.34/php/read_user_list.php');  
 		conn.send();
 		
+		// Called on load of connection
 		conn.onload = function() {
 			namesJson = JSON.parse(this.responseText);
 			namesJson = namesJson.NAME;
@@ -176,14 +184,17 @@ var homeButtonFunc = function () {
 
 /**
  *	NOTE: Some of this function's functionality is gathered from Appcelerator's Example Employee Directory app.
- *
  *	This function is used to populate the Contacts list from remote database.
  */
 function populateContacts()
 {
-	var tempArray = null;	//a temporary array 
-	var contactList = new Array();	//an array that will hold our contacts
-	//function to use HTTP to connect to a web server and transfer the data. 
+	// Temporary array
+	var tempArray = null; 
+	
+	// An array that will hold our contacts
+	var contactList = new Array();	
+	
+	// Function to use HTTP to connect to a web server and transfer the data. 
 	var request1 = Ti.Network.createHTTPClient({ 
 	onerror: function(e){ 	
 		Ti.API.debug(e.error); 	
@@ -192,7 +203,7 @@ function populateContacts()
 	timeout:1000, 
 	});
 
-	//Here you have to change it for your local ip 
+	// Here you have to change it for your local ip 
 	request1.open('POST', '52.32.54.34/php/read_contact_list.php');  
 	var params = ({ "USER_ID": Alloy.Globals.thisUserID }); 
 	request1.send(params);
@@ -200,21 +211,24 @@ function populateContacts()
 	request1.onload = function() {
 		var json = JSON.parse(this.responseText);
 		var json = json.OTHER_USER_ID;
-		tempArray = json; //HOLD USER_ID s of CONTACTS
 		
-		//function to use HTTP to connect to a web server and transfer the data. 
+		// HOLD USER_ID s of CONTACTS
+		tempArray = json; 
+		
+		// Function to use HTTP to connect to a web server and transfer the data. 
 		var request2 = Ti.Network.createHTTPClient({ 
 		onerror: function(e){ 	
-			Ti.API.debug(e.error); 	
-			alert('There was an error during the connection CONTACTS'); 	
-		}, 	
-		timeout:1000, 
+				Ti.API.debug(e.error); 	
+				alert('There was an error during the connection CONTACTS'); 	
+			}, 	
+			timeout:1000, 
 		});
 	
-		//Here you have to change it for your local ip 
+		// Here you have to change it for your local ip 
 		request2.open('GET', '52.32.54.34/php/read_user_list.php');  
 		request2.send();
 		
+		// Called on load of connection
 		request2.onload = function() {
 			var json = JSON.parse(this.responseText);
 			var json = json.NAME;	
@@ -223,14 +237,18 @@ function populateContacts()
 			{
 				for ( var j = 0; j < tempArray.length; j++)
 				{
-					if ( json[i].USER_ID === tempArray[j].OTHER_USER_ID)	//FIND THE CONTACT IN USER T
-					{//THESE ARE THE USER_ID s that I WANT TO USE FOR CONTACTS
-						contactList.push(json[i]); //contactList now holds all CONTACT's rows information
+					// Find the contact
+					if ( json[i].USER_ID === tempArray[j].OTHER_USER_ID)
+					{
+						//THESE ARE THE USER_ID s that I WANT TO USE FOR CONTACTS
+						contactList.push(json[i]); 
 					}
 				}
+				
+				// ContactList now holds all CONTACT's rows information
 			}
 			
-			//Sort by users' names
+			// Sort by users' names
 			contactList = _.sortBy(contactList, function(user){
 				return user.NAME
 			});
@@ -250,6 +268,7 @@ function populateContacts()
 				var userGroups  = _.groupBy(contactList, function(item){
 				 	return item.NAME.charAt(0);
 				});
+		        
 		        /**
 		         * Iterate through each group created, and prepare the data for the ListView
 		         * (Leverages the UnderscoreJS _.each function)
@@ -308,77 +327,88 @@ function populateContacts()
 					 * the ListView 
 					 */
 					sections.push(section);
-				});	//end of each function
+				});	// End of each function
 				
 				/**
 				 * Add the ListViewSections and data elements created above to the ListView
 				 */
 				$.listView.sections = sections;
-			}// end of if statement
+			} // End of if statement
 			
-		};	//end of second onload function
+		};	// End of second onload function
 		
-	};//end of first onload function
+	}; // End of first onload function
 
-}//end of populateContacts function
+} // End of populateContacts function
 
 /**
  *	NOTE: Some of this function's functionality is gathered from Appcelerator's Example Employee Directory app.
- *
  *	This function is used to populate the Pending Contacts list from remote database.
  */
 function populatePending()
 {
-	var tempArray = null;	//a temporary array
-	var pendingList = new Array();	//an array that will hold our pending contacts
-	//function to use HTTP to connect to a web server and transfer the data. 
+	// Temporary array
+	var tempArray = null;
+	
+	// Holds pending contacts
+	var pendingList = new Array();
+	
+	// Function to use HTTP to connect to a web server and transfer the data. 
 	var request1 = Ti.Network.createHTTPClient({ 
-	onerror: function(e){ 	
-		Ti.API.debug(e.error); 	
-		alert('There was an error during the connection PENDING'); 	
-	}, 	
-	timeout:1000, 
-	});
-
-	//Here you have to change it for your local ip 
-	request1.open('POST', '52.32.54.34/php/read_pending_list.php');  
-	var params = ({ "USER_ID": Alloy.Globals.thisUserID }); 
-	request1.send(params);
-
-	request1.onload = function() {
-		var json = JSON.parse(this.responseText);
-		var json = json.OTHER_USER_ID;
-		tempArray = json; //HOLD USER_ID s of PENDING CONTACTS
-		
-		//function to use HTTP to connect to a web server and transfer the data. 
-		var request2 = Ti.Network.createHTTPClient({ 
 		onerror: function(e){ 	
 			Ti.API.debug(e.error); 	
 			alert('There was an error during the connection PENDING'); 	
 		}, 	
 		timeout:1000, 
+	});
+
+	// Here you have to change it for your local ip 
+	request1.open('POST', '52.32.54.34/php/read_pending_list.php');  
+	var params = ({ "USER_ID": Alloy.Globals.thisUserID }); 
+	request1.send(params);
+
+	// Called on load of connection
+	request1.onload = function() {
+		var json = JSON.parse(this.responseText);
+		var json = json.OTHER_USER_ID;
+		
+		// HOLD USER_IDs of PENDING CONTACTS
+		tempArray = json; 
+		
+		// Function to use HTTP to connect to a web server and transfer the data. 
+		var request2 = Ti.Network.createHTTPClient({ 
+			onerror: function(e){ 	
+				Ti.API.debug(e.error); 	
+				alert('There was an error during the connection PENDING'); 	
+			}, 	
+			timeout:1000, 
 		});
 	
-		//Here you have to change it for your local ip 
+		// Here you have to change it for your local ip 
 		request2.open('GET', '52.32.54.34/php/read_user_list.php');  
 		request2.send();
 		
+		// Called upon connection
 		request2.onload = function() {
 			var json = JSON.parse(this.responseText);
 			var json = json.NAME;	
 			
 			for( var i=0; i < json.length; i++) 
 			{
+				//FIND THE PENDING CONTACT IN USER TABLE
 				for ( var j = 0; j < tempArray.length; j++)
 				{
-					if ( json[i].USER_ID === tempArray[j].OTHER_USER_ID)	//FIND THE PENDING CONTACT IN USER TABLE
-					{//THESE ARE THE USER_ID s that I WANT TO USE FOR PENDING CONTACTS
-						pendingList.push(json[i]); //pendingList now holds all PENDING CONTACT's rows information
+					if ( json[i].USER_ID === tempArray[j].OTHER_USER_ID)	
+					{
+						// THESE ARE THE USER_ID s that I WANT TO USE FOR PENDING CONTACTS
+						pendingList.push(json[i]); 
 					}
 				}
+				
+				// PendingList now holds all PENDING CONTACT's rows information
 			}
 			
-			//Sort by users' names
+			// Sort by users' names
 			pendingList = _.sortBy(pendingList, function(user){
 				return user.NAME
 			});
@@ -387,7 +417,6 @@ function populatePending()
 			{
 				/**
 				 * Setup our Sections Array for building out the ListView components
-				 * 
 				 */
 				var sections = [];
 				
@@ -398,6 +427,7 @@ function populatePending()
 				var userGroups  = _.groupBy(pendingList, function(item){
 				 	return item.NAME.charAt(0);
 				});
+				
 		        /**
 		         * Iterate through each group created, and prepare the data for the ListView
 		         * (Leverages the UnderscoreJS _.each function)
@@ -456,19 +486,19 @@ function populatePending()
 					 * the ListView 
 					 */
 					sections.push(section);
-				});	//end of each function
+				});	// End of each function
 				
 				/**
 				 * Add the ListViewSections and data elements created above to the ListView
 				 */
 				$.listView2.sections = sections;
-			}// end of if statement
+			} // End of if statement
 			
-		};	//end of second onload function
+		};	// End of second onload function
 		
-	};//end of first onload function
+	}; // End of first onload function
 
-}//end of populatePending function
+} // End of populatePending function
 
 /**
  *	NOTE: This function is gathered from Appcelerator's Example Employee Directory app. 
@@ -506,7 +536,7 @@ var preprocessForListView = function(rawData) {
  * 
  * @param {Object} Event data passed to the function
  */
-function onItemClick(e){
+function onItemClick(e) {
 	
 	/**
 	 * Get the Item that was clicked
@@ -514,22 +544,26 @@ function onItemClick(e){
 	var item = $.listView.sections[e.sectionIndex].items[e.itemIndex];
 	Alloy.Globals.profileViewID = item.properties.user.USER_ID;	//set the profile I want to view
 	
-	if (e.bindId == 'sendMessage')	//clicked on message button
+	// Clicked on message button
+	if (e.bindId == 'sendMessage')	
 	{
 		var newWindow = Alloy.createController('conversation', JSON.parse(makeJsonConversationString(dataArray, exists(Alloy.Globals.profileViewID), Alloy.Globals.profileViewID), Alloy.Globals.profileViewID)).getView();
 		newWindow.open();
 	}
-	else	//open profile view
+	
+	// Open profile view
+	else	
 	{
-		//Add my information to the profile's VIEWED ME list as I am going to view it
+		// Add my information to the profile's VIEWED ME list as I am going to view it
 		var request = Ti.Network.createHTTPClient({ 	
 		onerror: function(e){ 
 			Ti.API.debug(e.error); 
 			alert('There was an error during the connection'); 
 		}, 
 		timeout:1000, 	         
-		});  
-		//Request the data from the web service, Here you have to change it for your local ip 
+		});
+		  
+		// Request the data from the web service, Here you have to change it for your local ip 
 		request.open("POST","52.32.54.34/php/insert_into_viewed_me.php"); 
 		
 		var params = ({ "USER_ID": 				Alloy.Globals.profileViewID,	
@@ -538,7 +572,8 @@ function onItemClick(e){
 		
 		request.send(params);
 		
-		Alloy.Globals.comingFrom = 'connections';	//we are going to open profileView from connections
+		// Open profileView from connections
+		Alloy.Globals.comingFrom = 'connections';	
 		Alloy.Globals.Navigate($, $.connections, Alloy.createController('profileView').getView() );
 	}
 
@@ -551,31 +586,37 @@ function onItemClick(e){
  * 
  * @param {Object} Event data passed to the function
  */
-function onItemClick2(e){
+function onItemClick2 (e) {
 	
 	/**
 	 * Get the Item that was clicked
 	 */
 	var item = $.listView2.sections[e.sectionIndex].items[e.itemIndex];
-	Alloy.Globals.profileViewID = item.properties.user.USER_ID;	//set the profile I want to view
+	
+	// Set the profile I want to view
+	Alloy.Globals.profileViewID = item.properties.user.USER_ID;	
 	
 	if (e.bindId == 'sendMessage')
 	{
-		var newWindow = Alloy.createController('conversation', JSON.parse(makeJsonConversationString(dataArray, exists(Alloy.Globals.profileViewID), Alloy.Globals.profileViewID), Alloy.Globals.profileViewID)).getView();
+		var newWindow = Alloy.createController('conversation', JSON.parse(makeJsonConversationString(dataArray,
+			exists(Alloy.Globals.profileViewID), Alloy.Globals.profileViewID), Alloy.Globals.profileViewID)).getView();
 		newWindow.open();
 		Titanium.API.log('You clicked on send message!');
 	}
+	
+	// On click of accept
 	else if (e.bindId == 'accept')
 	{
-		//Add this profile to my contacts 
+		// Add this profile to my contacts 
 		var request1 = Ti.Network.createHTTPClient({ 	
 		onerror: function(e){ 
 			Ti.API.debug(e.error); 
 			alert('There was an error during the connection PROFILE VIEW'); 
 		}, 
 		timeout:1000, 	         
-		});  
-		//Request the data from the web service, Here you have to change it for your local ip 
+		});
+		  
+		// Request the data from the web service, Here you have to change it for your local ip 
 	    request1.open("POST","52.32.54.34/php/insert_into_contact.php"); 
 		
 		var params = ({ "USER_ID": 				Alloy.Globals.thisUserID,	
@@ -585,15 +626,16 @@ function onItemClick2(e){
 		request1.send(params);
 		
 		
-		//Add myself to this profile's contacts list
+		// Add myself to this profile's contacts list
 		var request2 = Ti.Network.createHTTPClient({ 	
-		onerror: function(e){ 
-			Ti.API.debug(e.error); 
-			alert('There was an error during the connection PROFILE VIEW'); 
-		}, 
-		timeout:1000, 	         
+			onerror: function(e){ 
+				Ti.API.debug(e.error); 
+				alert('There was an error during the connection PROFILE VIEW'); 
+			}, 
+			timeout:1000, 	         
 		});  
-		//Request the data from the web service, Here you have to change it for your local ip 
+		
+		// Request the data from the web service, Here you have to change it for your local ip 
 	    request2.open("POST","52.32.54.34/php/insert_into_contact.php"); 
 		
 		var params = ({ "USER_ID": 				Alloy.Globals.profileViewID,	
@@ -602,16 +644,16 @@ function onItemClick2(e){
 	
 		request2.send(params);
 		
-		
-		//Delete him from my pending list
+		// Delete him from my pending list
 		var request3 = Ti.Network.createHTTPClient({ 	
-		onerror: function(e){ 
-			Ti.API.debug(e.error); 
-			alert('There was an error during the connection PROFILE VIEW'); 
-		}, 
-		timeout:1000, 	         
-		});  
-		//Request the data from the web service, Here you have to change it for your local ip 
+			onerror: function(e){ 
+				Ti.API.debug(e.error); 
+				alert('There was an error during the connection PROFILE VIEW'); 
+			}, 
+			timeout:1000, 	         
+		}); 
+		 
+		// Request the data from the web service, Here you have to change it for your local ip 
 	    request3.open("POST","52.32.54.34/php/delete_pending.php"); 
 		
 		var params = ({ "USER_ID": 				Alloy.Globals.thisUserID,	
@@ -620,20 +662,26 @@ function onItemClick2(e){
 	
 		request3.send(params);
 		
-		populateContacts();	//refresh contacts
-		populatePending();	//refresh pending
+		// Refresh contacts
+		populateContacts();
+		
+		// Refresh pending
+		populatePending();
 	}
+	
+	// On click of decline
 	else if (e.bindId == 'decline')
 	{
-		//Delete him from my pending
+		// Delete him from my pending
 		var request = Ti.Network.createHTTPClient({ 	
-		onerror: function(e){ 
-			Ti.API.debug(e.error); 
-			alert('There was an error during the connection PROFILE VIEW'); 
-		}, 
-		timeout:1000, 	         
+			onerror: function(e){ 
+				Ti.API.debug(e.error); 
+				alert('There was an error during the connection PROFILE VIEW'); 
+			}, 
+			timeout:1000, 	         
 		});  
-		//Request the data from the web service, Here you have to change it for your local ip 
+		
+		// Request the data from the web service, Here you have to change it for your local ip 
 	    request.open("POST","52.32.54.34/php/delete_pending.php"); 
 		
 		var params = ({ "USER_ID": 				Alloy.Globals.thisUserID,	
@@ -642,20 +690,24 @@ function onItemClick2(e){
 	
 		request.send(params);
 		
-		populateContacts();	//refresh contacts
-		populatePending();	//refresh pending
+		// Refresh contacts
+		populateContacts();
+		
+		// Refresh pending
+		populatePending();
 	}
 	else
 	{
-		//Add my information to the profile's Viewed Me list as I am going to view it
+		// Add my information to the profile's Viewed Me list as I am going to view it
 		var request = Ti.Network.createHTTPClient({ 	
-		onerror: function(e){ 
-			Ti.API.debug(e.error); 
-			alert('There was an error during the connection PROFILE VIEW'); 
-		}, 
-		timeout:1000, 	         
+			onerror: function(e){ 
+				Ti.API.debug(e.error); 
+				alert('There was an error during the connection PROFILE VIEW'); 
+			}, 
+			timeout:1000, 	         
 		});  
-		//Request the data from the web service, Here you have to change it for your local ip 
+		
+		// Request the data from the web service, Here you have to change it for your local ip 
 		request.open("POST","52.32.54.34/php/insert_into_viewed_me.php"); 
 		
 		var params = ({ "USER_ID": 				Alloy.Globals.profileViewID,	
@@ -664,16 +716,17 @@ function onItemClick2(e){
 		
 		request.send(params);
 		
-		Alloy.Globals.comingFrom = 'connections';	//we are going to open profileView from connections
-		Alloy.Globals.Navigate($, $.connections, Alloy.createController('profileView').getView() );
+		// Open profileView from Connections
+		Alloy.Globals.comingFrom = 'connections';
+		Alloy.Globals.Navigate($, $.connections, Alloy.createController('profileView').getView());
 	}
 
 }
 
 /**
- * Initialize View
+ * Initialize View by populating arrays
  */
-popArrays ();	//Francesca
-populateContacts();	//Populate contacts list
-populatePending();	//Populate pending contacts list
+popArrays ();		// Populate arrays
+populateContacts();	// Populate contacts list
+populatePending();	// Populate pending contacts list
 

@@ -1,9 +1,11 @@
+/*
+ * Styles for New Message View
+ */
+
 "#picker":{
 	touchEnabled: true,
-//	pullBackgroundColor: '#000',
 	width: '75%',
 	height: '50dp',
-//    left : '40%',
     font: {
         fontFamily:'Arial',
         fontSize: '14dp',
@@ -18,9 +20,9 @@
     backgroundColor:"#800000",
     color:"#FFF"
 }
+
 "#areaView":{
-    color:"#000",
-    
+    color:"#000",   
 }
 
 "#messageText": { 

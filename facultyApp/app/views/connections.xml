@@ -1,5 +1,7 @@
+<!--
+	Connections view 
+-->
 <Alloy>
-
 	<TabGroup title="Connections">
 		<Menu id="menu" platform="android">
 			<MenuItem showAsAction="Ti.Android.SHOW_AS_ACTION_IF_ROOM" title="Home" icon="homeIcon.png" onClick="homeButtonFunc" />
@@ -14,7 +16,6 @@
 				-->
 				<ListView id="listView" defaultItemTemplate="userTemplate" onItemclick="onItemClick">
 					<Templates>
-						
 						<!-- UserTemplate - this is the default ListItem template -->
 						<ItemTemplate id="userTemplate" name="userTemplate" class="template">
 							<View class="left-buffer">
@@ -24,7 +25,6 @@
 									<Label id="userName" bindId="userName" class="title top-buffer" />
 									<Button id="button1" bindId="button1" class="greenCheckmark top-buffer" visible="true"></Button>
 								</View>
-								
 								<View class="hgroup right size">	
 									<Button id="sendMessage" bindId="sendMessage" class="sendMessage left-buffer right-buffer"></Button> 				
 								</View>
@@ -32,24 +32,20 @@
 							</View>
 						</ItemTemplate>
 						
-					</Templates>
-					
+					</Templates>	
 				</ListView>
 			</Window>
 		</Tab>
-		
 		<Tab title="Pending" icon="KS_nav_ui.png">
 			<!--
 				This view wraps all of the child views/lists etc. Creates a base layout, vertically aligned.
 			-->
 			<Window id="wrapper2" class="vgroup" title="Pending"> 
-							
 				<!--
 					The Pending Contacts list. 
 				-->
 				<ListView id="listView2" defaultItemTemplate="userTemplate" onItemclick="onItemClick2">
 					<Templates>
-						
 						<!-- UserTemplate - this is the default ListItem template -->
 						<ItemTemplate id="userTemplate" name="userTemplate" class="template">
 							<View class="left-buffer">
@@ -59,7 +55,6 @@
 									<Label id="userName" bindId="userName" class="title" />
 									<Button id="button1" bindId="button1" class="greenCheckmark top-buffer" visible="false"></Button>
 								</View>
-								
 								<View class="hgroup right size">					
 									<Button id="acceptButton" bindId="accept" class="accept right-buffer"></Button> 
 									<Button id="declineButton" bindId="decline" class="decline right-buffer" visible="true"></Button> 
@@ -68,9 +63,7 @@
 								<View class="gray-line bottom"/>
 							</View>
 						</ItemTemplate>
-						
 					</Templates>
-					
 				</ListView>
 			</Window>
 		</Tab>

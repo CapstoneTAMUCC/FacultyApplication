@@ -1,3 +1,8 @@
+/*
+ * Controller for Profile section
+ * Purpose: Provide functionality for the client's Profile section
+ */
+
 /**
  *	This function is used to convert regular buttons to checkboxes
  * 
@@ -9,7 +14,7 @@ function checkboxFunction(e)
         e.source.value = true;
         e.source.backgroundColor = '#007690';
         e.source.title = '\u2713';
-    } else{
+    } else {
         e.source.value = false;
         e.source.backgroundColor = '#aaa';
         e.source.title = '';
@@ -32,9 +37,11 @@ var homeButtonFunc = function () {
 
 /**
  *	Edit button enables editing all fields on click
+ *  For About section
  */
 $.editButton1.addEventListener('click', function(e)
 {
+	// Begin editing
 	if (false == e.source.value) {
 		e.source.value = true;
 		e.source.title = 'DONE';
@@ -48,6 +55,8 @@ $.editButton1.addEventListener('click', function(e)
 		$.committeeText.enabled = 'true';
 		$.otherInterestText.enabled = 'true';
 	}
+	
+	// Finish editing
 	else {
 		e.source.value = false;
 		e.source.title = 'EDIT';
@@ -64,10 +73,12 @@ $.editButton1.addEventListener('click', function(e)
 });
 
 /**
- *	Edit button enables editing all fields on click (this is the one on Questionnaire tab)
+ *	Edit button enables editing all fields on click 
+ *  This is the one on Questionnaire tab
  */
 $.editButton2.addEventListener('click', function(e)
 {
+	// Begin editing
 	if (false == e.source.value) {
 		e.source.value = true;
 		e.source.title = 'DONE';
@@ -104,6 +115,8 @@ $.editButton2.addEventListener('click', function(e)
 		$.bioenergyCheckbox.enabled = 'true';
 		$.wildlifeCheckbox.enabled = 'true';
 	}
+	
+	// Finish editing
 	else {
 		e.source.value = false;
 		e.source.title = 'EDIT';
@@ -271,7 +284,7 @@ function setCheckboxTrue(e)
  *	This function reads the 6 main information on About tab
  */
 function readTextfieldData(){
-	//function to use HTTP to connect to a web server and transfer the data. 
+	// Function to use HTTP to connect to a web server and transfer the data. 
 	var sendit = Ti.Network.createHTTPClient({ 
 	onerror: function(e){ 	
 		Ti.API.debug(e.error); 	
@@ -280,7 +293,7 @@ function readTextfieldData(){
 	timeout:1000, 
 	});
 
-	//Here you have to change it for your local ip 
+	// Here you have to change it for your local ip 
 	sendit.open('GET', '52.32.54.34/php/read_user_list.php');  
 	sendit.send();
 
@@ -291,7 +304,8 @@ function readTextfieldData(){
 
 		for( var i=0; i<json.length; i++) 
 		{
-			if ( json[i].USER_ID == Alloy.Globals.thisUserID) //used to be 1234 only without quotations READING JUSTIN GUERRA
+			// Used to be 1234 only without quotations READING JUSTIN GUERRA
+			if ( json[i].USER_ID == Alloy.Globals.thisUserID) 
 			{
 				$.nameField.value = json[i].NAME;
 				$.educationText.value = json[i].EDUCATION;
@@ -321,7 +335,7 @@ function readTextfieldData(){
  *	This function reads/populates Agency information for profile
  */
 function readAgencyData(){
-	//function to use HTTP to connect to a web server and transfer the data. 
+	// Function to use HTTP to connect to a web server and transfer the data 
 	var sendit = Ti.Network.createHTTPClient({ 
 	onerror: function(e){ 	
 		Ti.API.debug(e.error); 	
@@ -330,7 +344,7 @@ function readAgencyData(){
 	timeout:1000, 
 	});
 
-	//Here you have to change it for your local ip 
+	// Here you have to change it for your local ip 
 	sendit.open('GET', '52.32.54.34/php/read_agency_list.php');  
 	sendit.send();
 
@@ -340,7 +354,8 @@ function readAgencyData(){
 
 		for( var i=0; i<json.length; i++) 
 		{
-			if ( json[i].USER_ID == Alloy.Globals.thisUserID) //READING JUSTIN GUERRA
+			// User global client ID
+			if ( json[i].USER_ID == Alloy.Globals.thisUserID) 
 			{				
 				if (json[i].TAMU == 1) { setCheckboxTrue($.tamuCheckbox); }		
 				if (json[i].PVAMU == 1) { setCheckboxTrue($.prairieCheckbox); }
@@ -368,7 +383,7 @@ function readAgencyData(){
  *	This function reads/populates Areas of Research information for profile
  */
 function readResearchData(){
-	//function to use HTTP to connect to a web server and transfer the data. 
+	// Function to use HTTP to connect to a web server and transfer the data. 
 	var sendit = Ti.Network.createHTTPClient({ 
 	onerror: function(e){ 	
 		Ti.API.debug(e.error); 	
@@ -377,7 +392,7 @@ function readResearchData(){
 	timeout:1000, 
 	});
 
-	//Here you have to change it for your local ip 
+	// Here you have to change it for your local ip 
 	sendit.open('GET', '52.32.54.34/php/read_area_of_research.php');  
 	sendit.send();
 
@@ -387,7 +402,8 @@ function readResearchData(){
 
 		for( var i=0; i<json.length; i++) 
 		{
-			if ( json[i].USER_ID == Alloy.Globals.thisUserID) //READING JUSTIN GUERRA
+			// Use global client ID
+			if ( json[i].USER_ID == Alloy.Globals.thisUserID)
 			{				
 				if (json[i].FOOD_SAFETY == 1) { setCheckboxTrue($.foodSafetyCheckbox); }
 				if (json[i].NUTRITION == 1) { setCheckboxTrue($.nutritionCheckbox); }	
@@ -417,7 +433,7 @@ function updateData(){
 		}, 
 		timeout:1000, 	         
 	});  
-	//Request the data from the web service, Here you have to change it for your local ip 
+	// Request the data from the web service, Here you have to change it for your local ip 
     request.open("POST","52.32.54.34/php/update_user_list.php"); 
 
 	var params = ({ "USER_ID": 				Alloy.Globals.thisUserID,	
@@ -463,7 +479,14 @@ function updateData(){
 	alert('Saved successfully!');
 }
 
-$.profile.open();	//OPEN PROFILE WINDOW
-readTextfieldData();	//GET 6 MAIN INFORMATION ON ABOUT TAB
-readAgencyData();		//GET AGENCY INFORMATION ON QUESTIONNAIRE TAB
-readResearchData();		//GET AREAS OF RESEARCH INFORMATION ON QUESTIONNAIRE TAB
+//OPEN PROFILE WINDOW
+$.profile.open();	
+
+//GET 6 MAIN INFORMATION ON ABOUT TAB
+readTextfieldData();	
+
+//GET AGENCY INFORMATION ON QUESTIONNAIRE TAB
+readAgencyData();		
+
+//GET AREAS OF RESEARCH INFORMATION ON QUESTIONNAIRE TAB
+readResearchData();		

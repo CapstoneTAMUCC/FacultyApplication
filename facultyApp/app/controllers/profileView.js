@@ -1,11 +1,22 @@
+/*
+ * Controller for Profile Views
+ * Purpose: Provide functionality for viewing of other users' profile 
+ * 			information
+ */
+
 /**
  * Instantiate the local variables for this controller
+ * Store arguments passed to controller
  */
 var _args = arguments[0] || {};
 
-var dataArray = [];	//FRANCESCA
-var namesJson = [];	//FRANCESCA
+// Arrays to store data retreived from server
+var dataArray = [];	
+var namesJson = [];	
 
+/**
+ * Return photo of user in conversation who is not the client
+ */
 var getOtherPhoto = function (id) {
 	for( var i=0; i<namesJson.length; i++) {
 		if ( namesJson[i].USER_ID == id)
@@ -18,7 +29,7 @@ var getOtherPhoto = function (id) {
 };
 
 /**
- *	FRANCESCA
+ * Create conversation string to be converted to JSON object and passed to Conversation view 
  */
 var makeJsonConversationString = function (dataArray, index, otherID) {
 	var result = "{\"messages\":[";
@@ -53,7 +64,7 @@ var makeJsonConversationString = function (dataArray, index, otherID) {
 };
 
 /**
- *	FRANCESCA
+ * Return name of user in conversation who is not the client
  */
 var getOtherName = function (array, otherID) {
 	for(var i=0; i<array.length; i++) {
@@ -66,7 +77,8 @@ var getOtherName = function (array, otherID) {
 };
 
 /**
- *	FRANCESCA
+ * Determine if otherUserID exists in dataArray
+ * If it does, return index
  */
 var exists = function(otherUserID) {
     	for (var i = 0; i < dataArray.length; i++) {
@@ -79,10 +91,11 @@ var exists = function(otherUserID) {
     }; 
 
 /**
- *	FRANCESCA
+ *	Populate arrays by making calls to server
+ *  Called by init function
  */
 function popArrays () {
-	//function to use HTTP to connect to a web server and transfer the data. 
+	// Function to use HTTP to connect to a web server and transfer the data. 
     var connection = Ti.Network.createHTTPClient({ 
     	onerror: function(e){ 
         	Ti.API.debug(e.error); 
@@ -91,26 +104,26 @@ function popArrays () {
         timeout:1000,
     });                      
 
-    //Here you have to change it for your local ip 
- //   connection.open('GET', '52.32.54.34/php/read_message_list.php');
+    // Here you have to change it for your local ip 
     connection.open('POST', '52.32.54.34/php/conversation_list.php');
     var params = ({ "USER_ID": Alloy.Globals.thisUserID});  
     connection.send(params);
-    //Function to be called upon a successful response 
+    
+    // Function to be called upon a successful response 
     connection.onload = function(){ 
     	var json = JSON.parse(this.responseText); 
     	var json = json.MESSAGE_ID;
-    	//if the database is empty show an alert 
+    	
+    	// If the database is empty show an alert 
     	if(json.length == 0){
-			Titanium.API.log("CRAP");
-    //    $.tableView.headerTitle = "The database row is empty"; 
+			Titanium.API.log("List empty");
     	}
     	
-    	//Emptying the data to refresh the view 
+    	// Emptying the data to refresh the view 
 
    	 	dataArray = new Array (0);                      
 
-    	//Insert the JSON data to the table view 
+    	// Insert the JSON data to the table view 
 
    		for( var i=0; i<json.length; i++){ 
         
@@ -133,12 +146,10 @@ function popArrays () {
 				var tempArray = new Array(0);
 				tempArray.push(json[i]);
 				dataArray.push(tempArray);
-			}
-			
-	//		orderArray();
-     //		dataArray.push(row);               
+			}             
 		}
-		//function to use HTTP to connect to a web server and transfer the data. 
+		
+		// Function to use HTTP to connect to a web server and transfer the data. 
 		var conn = Ti.Network.createHTTPClient({ 
 			onerror: function(e){ 	
 					Ti.API.debug(e.error); 	
@@ -148,10 +159,11 @@ function popArrays () {
 			timeout:1000, 
 		});
 		
-		//Here you have to change it for your local ip 
+		// Here you have to change it for your local ip 
 		conn.open('GET', '52.32.54.34/php/read_user_list.php');  
 		conn.send();
 		
+		// Called on load of connection
 		conn.onload = function() {
 			namesJson = JSON.parse(this.responseText);
 			namesJson = namesJson.NAME;
@@ -160,12 +172,14 @@ function popArrays () {
 }
 
 /**
- *	FRANCESCA
+ *	Called when client wants to send message to user
+ *  Navigates to conversation between user and client
  */
 var onSendMessage = function(e){
-	var newWindow = Alloy.createController('conversation', JSON.parse(makeJsonConversationString(dataArray, exists(Alloy.Globals.profileViewID), Alloy.Globals.profileViewID), Alloy.Globals.profileViewID)).getView();
-		newWindow.open();
-		Titanium.API.log('You clicked on send message!');
+	var newWindow = Alloy.createController('conversation', JSON.parse(makeJsonConversationString(dataArray,
+		exists(Alloy.Globals.profileViewID), Alloy.Globals.profileViewID), Alloy.Globals.profileViewID)).getView();
+	newWindow.open();
+	Titanium.API.log('You clicked on send message!');
 };
 
 /**
@@ -191,53 +205,61 @@ function checkboxFunction(e)
  */
 function setConnectButtonStatus()
 {
-	var statusFound = false;	//if set to true, means that we know the button's status
+	// If set to true, means that we know the button's status
+	var statusFound = false;	
 	
-	//FIRST CHECK --> CHECK TO SEE IF THE PROFILE I AM VIEWING IS ALREADY A CONTACT OF MINE
+	// FIRST CHECK --> CHECK TO SEE IF THE PROFILE I AM VIEWING IS ALREADY A CONTACT OF MINE
 	var request1 = Ti.Network.createHTTPClient({ 
-	onerror: function(e){ 	
-		Ti.API.debug(e.error); 	
-		alert('There was an error during the connection'); 	
-	}, 	
-	timeout:1000, 
+		onerror: function(e){ 	
+			Ti.API.debug(e.error); 	
+			alert('There was an error during the connection'); 	
+		}, 	
+		timeout:1000, 
 	});
 
-	//open request
+	// Open request
 	request1.open('POST', '52.32.54.34/php/read_contact_list.php');  
 	var params = ({ "USER_ID": Alloy.Globals.thisUserID }); 
 	request1.send(params);
+	
+	// Called on load of connection
 	request1.onload = function() {
 		var json = JSON.parse(this.responseText);
 		var json = json.OTHER_USER_ID;
 		
 		for( var i = 0; i < json.length; i++)
 		{
-			if (json[i].OTHER_USER_ID == Alloy.Globals.profileViewID )	//THIS MEANS HE IS MY CONTACT
+			// THIS MEANS HE IS MY CONTACT
+			if (json[i].OTHER_USER_ID == Alloy.Globals.profileViewID )	
 			{
 				$.button1.title = '\u2713 Friends';
 				$.button1.backgroundColor = '#07ce00';
-				$.button2.visible = 'false';	//DECLINE BUTTON
+				
+				// DECLINE BUTTON
+				$.button2.visible = 'false';
 				statusFound = true;
 				break;
 			}
 		}
-	};	//end of onload function
+	};	// End of onload function
 	
 	if (statusFound == false)
 	{
-		//SECOND CHECK --> CHECK TO SEE IF I ALREADY SENT A REQUEST TO THE PROFILE I AM VIEWING
+		// SECOND CHECK --> CHECK TO SEE IF I ALREADY SENT A REQUEST TO THE PROFILE I AM VIEWING
 		var request2 = Ti.Network.createHTTPClient({ 
-		onerror: function(e){ 	
-			Ti.API.debug(e.error); 	
-			alert('There was an error during the connection'); 	
-		}, 	
-		timeout:1000, 
+			onerror: function(e){ 	
+				Ti.API.debug(e.error); 	
+				alert('There was an error during the connection'); 	
+			}, 	
+			timeout:1000, 
 		});
 	
-		//Here you have to change it for your local ip 
+		// Here you have to change it for your local ip 
 		request2.open('POST', '52.32.54.34/php/read_pending_list.php');  
 		var params = ({ "USER_ID": Alloy.Globals.profileViewID }); 
 		request2.send(params);
+		
+		// Called on load of connection
 		request2.onload = function() {
 			var json = JSON.parse(this.responseText);
 			var json = json.OTHER_USER_ID;
@@ -249,41 +271,48 @@ function setConnectButtonStatus()
 					Titanium.API.log("I am within if statement 1");
 					$.button1.title = 'Pending';
 					$.button1.backgroundColor = '#696969';
-					$.button2.visible = 'false';	//DECLINE BUTTON
+					
+					// DECLINE BUTTON
+					$.button2.visible = 'false';
 					statusFound = true;
 					break;
 				}
 			}
-		};	//end of onload function
+		};	// End of onload function
 	}
 	
 	if (statusFound == false)
 	{
-		//THIRD CHECK --> CHECK TO SEE IF THE PROFILE I AM VIEWING SENT ME A REQUEST
+		// THIRD CHECK --> CHECK TO SEE IF THE PROFILE I AM VIEWING SENT ME A REQUEST
 		var request3 = Ti.Network.createHTTPClient({ 
-		onerror: function(e){ 	
-			Ti.API.debug(e.error); 	
-			alert('There was an error during the connection'); 	
-		}, 	
-		timeout:1000, 
+			onerror: function(e){ 	
+				Ti.API.debug(e.error); 	
+				alert('There was an error during the connection'); 	
+			}, 	
+			timeout:1000, 
 		});
 	
-		//Here you have to change it for your local ip 
+		// Here you have to change it for your local ip 
 		request3.open('POST', '52.32.54.34/php/read_pending_list.php');  
 		var params = ({ "USER_ID": Alloy.Globals.thisUserID }); 
 		request3.send(params);
+		
+		// Called on load of connection
 		request3.onload = function() {
 			var json = JSON.parse(this.responseText);
 			var json = json.OTHER_USER_ID;
 			
 			for( var i = 0; i < json.length; i++)
 			{
-				if (json[i].OTHER_USER_ID == Alloy.Globals.profileViewID )	//THIS MEANS THAT HE SENT US A REQUEST ALREADY
+				// THIS MEANS THAT HE SENT US A REQUEST ALREADY
+				if (json[i].OTHER_USER_ID == Alloy.Globals.profileViewID )	
 				{
 					Titanium.API.log("I am within if statement 2");
 					$.button1.title = 'Accept';
 					$.button1.backgroundColor = '#07ce00';
-					$.button2.visible = 'true';	//DECLINE BUTTON
+					
+					// DECLINE BUTTON
+					$.button2.visible = 'true';
 					statusFound = true;
 					break;
 				}
@@ -308,7 +337,8 @@ function button1Click(e)
 		}, 
 		timeout:1000, 	         
 		});  
-		//Request the data from the web service, Here you have to change it for your local ip 
+		
+		// Request the data from the web service, Here you have to change it for your local ip 
 	    request.open("POST","52.32.54.34/php/insert_into_pending.php"); 
 		
 		var params = ({ "USER_ID": 				Alloy.Globals.profileViewID,	
@@ -317,13 +347,13 @@ function button1Click(e)
 	
 		request.send(params);
 		
-		//Set the button to Pending, I sent a request, now we are waiting for a response
+		// Set the button to Pending, I sent a request, now we are waiting for a response
 		e.source.title = 'Pending';
 		e.source.backgroundColor = '#696969';
 	}
 	else if (e.source.title == 'Accept')
 	{
-		//Add this profile to my contacts 
+		// Add this profile to my contacts 
 		var request1 = Ti.Network.createHTTPClient({ 	
 		onerror: function(e){ 
 			Ti.API.debug(e.error); 
@@ -331,7 +361,8 @@ function button1Click(e)
 		}, 
 		timeout:1000, 	         
 		});  
-		//Request the data from the web service, Here you have to change it for your local ip 
+		
+		// Request the data from the web service, Here you have to change it for your local ip 
 	    request1.open("POST","52.32.54.34/php/insert_into_contact.php"); 
 		
 		var params = ({ "USER_ID": 				Alloy.Globals.thisUserID,	
@@ -340,8 +371,7 @@ function button1Click(e)
 	
 		request1.send(params);
 		
-		
-		//Add myself to this profile's contacts list
+		// Add myself to this profile's contacts list
 		var request2 = Ti.Network.createHTTPClient({ 	
 		onerror: function(e){ 
 			Ti.API.debug(e.error); 
@@ -349,7 +379,8 @@ function button1Click(e)
 		}, 
 		timeout:1000, 	         
 		});  
-		//Request the data from the web service, Here you have to change it for your local ip 
+		
+		// Request the data from the web service, Here you have to change it for your local ip 
 	    request2.open("POST","52.32.54.34/php/insert_into_contact.php"); 
 		
 		var params = ({ "USER_ID": 				Alloy.Globals.profileViewID,	
@@ -358,16 +389,16 @@ function button1Click(e)
 	
 		request2.send(params);
 		
-		
-		//Delete him from my pending list
+		// Delete him from my pending list
 		var request3 = Ti.Network.createHTTPClient({ 	
-		onerror: function(e){ 
-			Ti.API.debug(e.error); 
-			alert('There was an error during the connection PROFILE VIEW'); 
-		}, 
-		timeout:1000, 	         
+			onerror: function(e){ 
+				Ti.API.debug(e.error); 
+				alert('There was an error during the connection PROFILE VIEW'); 
+			}, 
+			timeout:1000, 	         
 		});  
-		//Request the data from the web service, Here you have to change it for your local ip 
+		 
+		// Request the data from the web service, Here you have to change it for your local ip 
 	    request3.open("POST","52.32.54.34/php/delete_pending.php"); 
 		
 		var params = ({ "USER_ID": 				Alloy.Globals.thisUserID,	
@@ -376,7 +407,7 @@ function button1Click(e)
 	
 		request3.send(params);
 		
-		//Set the button to checkmark and get rid of decline button, we are now contacts
+		// Set the button to checkmark and get rid of decline button, we are now contacts
 		e.source.title = '\u2713 Friends';
 		e.source.backgroundColor = '#07ce00'; 
 		$.button2.visible = 'false';
@@ -390,15 +421,16 @@ function button1Click(e)
  */
 function button2Click(e)
 {
-	//Delete him from my pending
+	// Delete him from my pending
 	var request = Ti.Network.createHTTPClient({ 	
-	onerror: function(e){ 
-		Ti.API.debug(e.error); 
-		alert('There was an error during the connection PROFILE VIEW'); 
-	}, 
-	timeout:1000, 	         
+		onerror: function(e){ 
+			Ti.API.debug(e.error); 
+			alert('There was an error during the connection PROFILE VIEW'); 
+		}, 
+		timeout:1000, 	         
 	});  
-	//Request the data from the web service, Here you have to change it for your local ip 
+	
+	// Request the data from the web service, Here you have to change it for your local ip 
     request.open("POST","52.32.54.34/php/delete_pending.php"); 
 	
 	var params = ({ "USER_ID": 				Alloy.Globals.thisUserID,	
@@ -407,14 +439,16 @@ function button2Click(e)
 
 	request.send(params);
 	
-	e.source.visible = 'false';	//Decline button disappears once again
+	// Decline button disappears once again
+	e.source.visible = 'false';	
 }
 
 /**
  *	Use the androidback event to go back to Main Menu
  */
 $.profileView.addEventListener('androidback' , function (e) {
-	//Use the appropriate Navigate paramaters based on where we came from
+	
+	// Use the appropriate Navigate paramaters based on where we came from
 	if (Alloy.Globals.comingFrom == 'connections')
 	{
 		Alloy.Globals.Navigate ($, $.profileView, Alloy.createController('connections').getView());	
@@ -442,10 +476,10 @@ var homeButtonFunc = function () {	;
 
 /**
  *	This function is used to set checkboxes to true(checked)
- * 
+ *  Marks the checkbox (for READ function)
  * 	@param {Object} the button(checkbox)
  */
-function setCheckboxTrue(e)	//marks the checkbox (for READ function)
+function setCheckboxTrue(e)	
 {
 	e.value = true;
 	e.backgroundColor = '#007690';
@@ -456,29 +490,31 @@ function setCheckboxTrue(e)	//marks the checkbox (for READ function)
  *	This function reads the 6 main information on About tab
  */
 function readTextfieldData(){
-	//function to use HTTP to connect to a web server and transfer the data. 
+	
+	// function to use HTTP to connect to a web server and transfer the data. 
 	var sendit = Ti.Network.createHTTPClient({ 
-	onerror: function(e){ 	
-		Ti.API.debug(e.error); 	
-		alert('There was an error during the connection2222'); 	
-	}, 	
-	timeout:1000, 
+		onerror: function(e){ 	
+			Ti.API.debug(e.error); 	
+			alert('There was an error during the connection2222'); 	
+		}, 	
+		timeout:1000, 
 	});
 
-	//Here you have to change it for your local ip 
+	// Here you have to change it for your local ip 
 	sendit.open('GET', '52.32.54.34/php/read_user_list.php');  
 	sendit.send();
 
+	// Called on load of connection
 	sendit.onload = function() {
-		Ti.API.log('I am here!!!');
 		var json = JSON.parse(this.responseText);
 		var json = json.NAME;
 
+		// Find the profile we are viewing
 		for( var i=0; i<json.length; i++) 
 		{
-			if ( json[i].USER_ID == Alloy.Globals.profileViewID) //find the profile we are viewing
+			if ( json[i].USER_ID == Alloy.Globals.profileViewID) 
 			{
-				//set the text fields based on the information gathered from the database
+				// Set the text fields based on the information gathered from the database
 				$.nameField.value = json[i].NAME;
 				$.educationText.value = json[i].EDUCATION;
 				$.projectText.value = json[i].CURRENT_PROJ;
@@ -488,11 +524,11 @@ function readTextfieldData(){
 				$.contactInfoText.value = json[i].O_CONTACT_INFO;
 				$.profilePicture.image = json[i].PHOTO;
 				
-				//Set the first question on questionnaire tab
+				// Set the first question on questionnaire tab
 				if (json[i].EXPAND == 1) { setCheckboxTrue($.question1yes); }
 				else { setCheckboxTrue($.question1no); }
 				
-				//Set the second question on questionnaire tab
+				// Set the second question on questionnaire tab
 				if (json[i].FUNDING == 1) { setCheckboxTrue($.question2yes); }
 				else { setCheckboxTrue($.question2no); }	
 			}	
@@ -504,19 +540,20 @@ function readTextfieldData(){
  *	This function reads/populates Agency information for profile
  */
 function readAgencyData(){
-	//function to use HTTP to connect to a web server and transfer the data. 
+	// Function to use HTTP to connect to a web server and transfer the data. 
 	var sendit = Ti.Network.createHTTPClient({ 
-	onerror: function(e){ 	
-		Ti.API.debug(e.error); 	
-		alert('There was an error during the connection555'); 	
-	}, 	
-	timeout:1000, 
+		onerror: function(e){ 	
+			Ti.API.debug(e.error); 	
+			alert('There was an error during the connection555'); 	
+		}, 	
+		timeout:1000, 
 	});
 
-	//Here you have to change it for your local ip 
+	// Here you have to change it for your local ip 
 	sendit.open('GET', '52.32.54.34/php/read_agency_list.php');  
 	sendit.send();
 
+	// Sent on load of connection
 	sendit.onload = function() {
 		var json = JSON.parse(this.responseText);
 		var json = json.USER_ID;
@@ -525,7 +562,7 @@ function readAgencyData(){
 		{
 			if ( json[i].USER_ID == Alloy.Globals.profileViewID) 
 			{		
-				//find the user and populate checkboxes accordingly		
+				// Find the user and populate checkboxes accordingly		
 				if (json[i].TAMU == 1) { setCheckboxTrue($.tamuCheckbox); }		
 				if (json[i].PVAMU == 1) { setCheckboxTrue($.prairieCheckbox); }
 				if (json[i].TSU == 1) { setCheckboxTrue($.tarletonCheckbox); }		
@@ -552,19 +589,20 @@ function readAgencyData(){
  *	This function reads/populates Areas of Research information for profile
  */
 function readResearchData(){
-	//function to use HTTP to connect to a web server and transfer the data. 
+	// Function to use HTTP to connect to a web server and transfer the data. 
 	var sendit = Ti.Network.createHTTPClient({ 
-	onerror: function(e){ 	
-		Ti.API.debug(e.error); 	
-		alert('There was an error during the connection555'); 	
-	}, 	
-	timeout:1000, 
+		onerror: function(e){ 	
+			Ti.API.debug(e.error); 	
+			alert('There was an error during the connection555'); 	
+		}, 	
+		timeout:1000, 
 	});
 
-	//Here you have to change it for your local ip 
+	// Here you have to change it for your local ip 
 	sendit.open('GET', '52.32.54.34/php/read_area_of_research.php');  
 	sendit.send();
 
+	// Called on load of connection
 	sendit.onload = function() {
 		var json = JSON.parse(this.responseText);
 		var json = json.USER_ID;
@@ -573,7 +611,7 @@ function readResearchData(){
 		{
 			if ( json[i].USER_ID == Alloy.Globals.profileViewID) 
 			{		
-				//find the user and set the checkboxes accordingly		
+				// Find the user and set the checkboxes accordingly		
 				if (json[i].FOOD_SAFETY == 1) { setCheckboxTrue($.foodSafetyCheckbox); }
 				if (json[i].NUTRITION == 1) { setCheckboxTrue($.nutritionCheckbox); }	
 				if (json[i].PUBLIC_HEALTH == 1) { setCheckboxTrue($.publicHealthCheckbox); }	
@@ -589,9 +627,12 @@ function readResearchData(){
 	};
 }
 
-popArrays ();	//FRANCESCA
-$.profileView.open();	//OPEN PROFILE VIEW WINDOW
-setConnectButtonStatus();	//SET THE FIRST BUTTON
-readTextfieldData();	//GET 6 MAIN INFORMATION ON ABOUT TAB
-readAgencyData();		//GET AGENCY INFORMATION ON QUESTIONNAIRE TAB
-readResearchData();		//GET AREAS OF RESEARCH INFORMATION ON QUESTIONNAIRE TAB
+/*
+ * Initialize view
+ */
+popArrays ();				// Populate arrays
+$.profileView.open();		// OPEN PROFILE VIEW WINDOW
+setConnectButtonStatus();	// SET THE FIRST BUTTON
+readTextfieldData();		// GET 6 MAIN INFORMATION ON ABOUT TAB
+readAgencyData();			// GET AGENCY INFORMATION ON QUESTIONNAIRE TAB
+readResearchData();			// GET AREAS OF RESEARCH INFORMATION ON QUESTIONNAIRE TAB
