@@ -7,7 +7,7 @@
 		<View class="view vgroup">
 			<ImageView id="tamuLogo"></ImageView>
 			<Label id="loginLabel" class="top-buffer">User ID:</Label>
-			<TextArea id="userIDText" class="top-buffer"></TextArea>
+			<TextField id="userIDText" class="top-buffer"></TextField>
 			<Button id="loginButton" class="top-buffer" onClick="openProfile">Log In</Button>
 		</View>
 	</Window>
