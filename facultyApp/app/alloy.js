@@ -25,7 +25,6 @@ Alloy.Globals.Navigate = function Navigate(v, fromView, toView) {
 };
 
 Alloy.Globals.MMNavigate = function MMNavigate(v, fromView, toView) {
-	Titanium.API.log("Navigating from Main Menu");
  	var newWindow = toView;
 	newWindow.open();
  	fromView.close();

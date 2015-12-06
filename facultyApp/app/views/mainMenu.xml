@@ -1,5 +1,8 @@
 <Alloy>
 	<Window id="mainMenu">
+		<Menu id="menu" platform="android">
+			<MenuItem showAsAction="Ti.Android.SHOW_AS_ACTION_IF_ROOM" title="Logout" onClick="logoutFunction" />
+        </Menu> 
 		<ImageView id="profilePicture"></ImageView>
 		<Button id="profileBar" class="mainMenuOption"></Button>
 		<Button id="profileButton"  class="mainMenuOption" backgroundImage="/images/profile.png"></Button>

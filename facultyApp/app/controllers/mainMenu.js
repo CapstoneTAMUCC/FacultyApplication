@@ -28,6 +28,11 @@ function readName(){
 	};
 }
 
+function logoutFunction()
+{
+	Alloy.Globals.MMNavigate ($, $.mainMenu, Alloy.createController('index').getView());
+}
+
 // Here your window's event listener for android back button
 $.mainMenu.addEventListener('androidback' , function(e){
     Titanium.API.log("Can't go back on Main Menu");
